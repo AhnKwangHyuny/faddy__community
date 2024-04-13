@@ -12,6 +12,7 @@ const Snap = () => {
     const [tags, setTags] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState({});
 
+    console.log("a");
 
     return (
         <section className="main__body">
