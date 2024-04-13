@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+ // setting
+// setting
+@import "setting/fonts";
+@import "setting/vars";
+@import "setting/reset";
+@import "setting/mixin";
+@import "setting/common";
+
+// widgets style
+@import "widgets/Layout/layout";
+@import "widgets/Header/header";
+@import "widgets/BottomNavigationBar/bottomNavigationBar";
+@import "widgets/HighLightSnapCard/highlightSnapCard";
+@import "widgets/CreationMenuBar/creationMenuBar";
+@import "widgets/ImageUploader/imageUploader";
+@import "widgets/Filter/filter";
+
+/*
+page component
+*/
+
+// snap
+@import "pages/Snap/Components/Description/description";
+@import "pages/Snap/Components/HashTagBox/hashTagBox";
+
+
+
+ // pages style
+@import "pages/StyleShare/styleShare";
+@import "pages/Snap/index";
