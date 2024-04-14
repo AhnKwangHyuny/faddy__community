@@ -12,14 +12,17 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     @Autowired
@@ -110,28 +113,44 @@ public class JwtUtil {
     }
 
     public String getUsername(String accessToken) {
-        return Jwts.parser()
-                .setSigningKey(key)
-                .deserializeJsonWith(deserializer)
-                .parseClaimsJws(accessToken)
-                .getBody()
-                .getSubject();
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+
+            return claims.getSubject();
+        } catch (ExpiredJwtException e) {
+            // JWT가 만료되었을 경우, 만료된 username 추출 .
+            return null;
+        } catch (JwtException e) {
+            // 다른 모든 JWT 관련 예외 처리
+            return null;
+        }
     }
 
 
     public Boolean isExpired(String token) {
-        Jws<Claims> claimsJws = Jwts.parser()
-                .setSigningKey(key)
-                .deserializeJsonWith(deserializer)
-                .parseClaimsJws(token);
+        try {
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .deserializeJsonWith(deserializer)
+                    .build()
+                    .parseClaimsJws(token);
 
-        return claimsJws.getBody().getExpiration().before(new Date());
+            return claimsJws.getBody().getExpiration().before(new Date());
+
+        } catch (JwtException e) {
+            return true;
+        }
     }
+
 
 
     /**
      * @return refresh token redis 저장
-     * @param String username , String refresh_token
+     * @param :  username , String refresh_token
      * */
     @Transactional
     public void storeRefreshToken(String username, String refresh_token) {

@@ -9,9 +9,12 @@ import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ExceptionResponse;
 import faddy.backend.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,5 +85,23 @@ public class AuthController {
         return ResponseEntity.ok().body(response);
     }
 
+    /**
+     * @TITLE : access token 만료 검증 API
+     * @Param : HttpReq
+     */
+    @GetMapping("/verify-token")
+    public ResponseEntity verifyToken(HttpServletRequest request) {
+        // "Authorization" 헤더에서 토큰 가져오기
+        String token = request.getHeader("Authorization");
 
+        // 토큰 검증 결과 (jwtFilter에서 토큰 검증)
+        Boolean isValid = (Boolean) request.getAttribute("isTokenValid");
+        System.out.println("isValid = " + isValid);
+        // 초큰이 유효하지 않을 경우 403 error response
+        if (isValid == null || !isValid) {
+            return new ResponseEntity<>("Access is denied", HttpStatus.FORBIDDEN);
+        } else {
+            return ResponseEntity.ok("토큰 인증 완료 되었습니다.");
+        }
+    }
 }

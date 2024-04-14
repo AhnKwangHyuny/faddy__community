@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import {ValidateUsername , ValidatePassword} from 'utils/Validate';
 import { useNavigate } from 'react-router-dom';
 import {postUserLogin , setAccessToken} from 'api/post';
+import {concatWithoutDups} from "@yaireo/tagify/src/parts/helpers";
 
 
 
@@ -48,8 +49,13 @@ function LoginForm() {
         return;
       }
 
+      console.log(config);
+
       // access token local storage 저장
-      localStorage.setItem("access_token", config.accessToken);
+      localStorage.setItem("ACCESS_TOKEN", config.accessToken);
+      localStorage.setItem("REFRESH_TOKEN", config.refreshToken);
+      localStorage.setItem("TYPE_TOKEN" , config.grantType);
+
       navigate("/styleShare");
 
 

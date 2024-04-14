@@ -18,7 +18,7 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/auths")
+@RequestMapping("/api/v1/auths")
 public class ManagerReissueTokenController {
 
     private final ManagerReissueTokenService managerReissueTokenService;

@@ -10,6 +10,7 @@ import faddy.backend.filter.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -75,9 +76,16 @@ public class WebSecurityConfig {
         loginFilter.setFilterProcessesUrl("/api/v1/users/login"); // 로그인 요청을 처리할 URL 설정
 
 
-        http.exceptionHandling()
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .authenticationEntryPoint(entryPointUnauthorizedHandler);
+        http.exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    // 인증 실패 시 처리 로직
+                    new EntryPointUnauthorizedHandler().commence(request, response, authException);
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // 권한 거부 시 처리 로직
+                    new CustomAccessDeniedHandler().handle(request, response, accessDeniedException);
+                })
+        );
 
         //csrf disable
         http
@@ -106,6 +114,11 @@ public class WebSecurityConfig {
 
 
         http
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/snaps/**").authenticated()
+                                .anyRequest().permitAll()
+                )
                 .addFilterBefore(new JwtFilter(jwtUtil ,tokenBlackListService ) , LoginFilter.class)
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -91,8 +91,9 @@ function NicknameInputForm() {
           return;
         }
 
-        alert(response.data.responseMessage);
+        alert("방문해주셔서 감사합니다! 회원가입 완료 되었습니다! '\n' 로그인 부탁드립니다.");
         navigate("/login");
+
       })
       .catch((error) => {
         console.log(error);

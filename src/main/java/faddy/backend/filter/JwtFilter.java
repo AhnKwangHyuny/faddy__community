@@ -46,15 +46,22 @@ public class JwtFilter extends OncePerRequestFilter {
         // Bear 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
 
+        log.info("token : " + token);
+
         if (token == null) {
-            log.warn("token not exists");
+            log.warn(" token not exists");
+
+            // 토큰의 유효성 검증 결과 저장
+            request.setAttribute("isTokenValid" , false);
+
             filterChain.doFilter(request, response);
         }
 
         //토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
 
-            log.warn("token expired");
+            request.setAttribute("isTokenValid" , false);
+
             filterChain.doFilter(request, response);
 
             return;
@@ -81,6 +88,7 @@ public class JwtFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
 
+        request.setAttribute("isTokenValid" , true);
         filterChain.doFilter(request, response);
     }
 }
