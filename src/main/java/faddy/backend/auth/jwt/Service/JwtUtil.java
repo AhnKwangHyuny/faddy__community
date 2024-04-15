@@ -113,13 +113,14 @@ public class JwtUtil {
     }
 
     public String getUsername(String accessToken) {
+        System.out.println("this.validateToken(accessToken) = " + this.validateToken(accessToken));
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
-            System.out.println("claims = " + claims);
+
             return claims.getSubject();
         } catch (JwtException e) {
             return null;
@@ -162,4 +163,13 @@ public class JwtUtil {
                 .map(RefreshToken::getRefreshToken)
                 .orElse(null);
     }
+
+    public String extractRawToken(String bearerToken) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
 }
+

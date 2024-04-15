@@ -22,11 +22,14 @@ public class AuthTokensGenerator {
     @Transactional
     public AuthTokensResponse generate(String username) {
         // 유저네임 null 체크
+
+
         if (username == null) {
             throw new JwtValidationException(ExceptionCode.ERROR_TOKEN_CREATE);
         }
 
         long now = System.currentTimeMillis();
+
         Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 

@@ -17,7 +17,7 @@ public class Tag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id", nullable = false)
+    @Column(name = "tag_id")
     private Long tagId;
 
     @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
@@ -30,5 +30,14 @@ public class Tag extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private ContentType type;
+
+    public Tag(String name, ContentType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public Tag createTagInstance(String name, ContentType contentType) {
+        return new Tag(name , contentType);
+    }
 
 }

@@ -162,7 +162,6 @@ function RegistrationForm() {
                 localStorage.setItem('authToken', token);
 
 
-
             })
             .catch((error) => {
                 console.log(error);

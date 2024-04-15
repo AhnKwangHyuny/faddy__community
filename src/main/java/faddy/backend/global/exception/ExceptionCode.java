@@ -6,6 +6,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ExceptionCode {
 
+    /**
+     * @Title : 서버 에러
+     * */
+    FAIL_SAVE_ENTITY(500 , "엔티티 생성에 실패했습니다. "),
+
+
     INVALID_REQUEST(1000, "올바르지 않은 요청입니다."),
     NOT_FOUND_USER_ID(1001, ""),
     NOT_FOUND_DAY_LOG_ID(1002, "요청한 ID에 해당하는 데이로그가 존재하지 않습니다."),
@@ -96,6 +102,7 @@ public enum ExceptionCode {
     GENERATE_KEY_PAIR_ERROR(9100 ,"Failed to generate RSA key pair" ),
     ENCRYPT_USER_ID_ERROR(9101 , "Failed to encrypt user ID"),
     DECRYPT_USER_ID_ERROR(9102 , "Failed to decrypt user ID");
+
     private final int code;
     private final String message;
 

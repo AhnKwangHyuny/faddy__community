@@ -6,11 +6,12 @@ import {END_POINTS} from "../constants/api";
 
 
 export const getUserId = async(username) => {
-
     const config = {
-        username,
+        params: {
+            username,
+        }
     }
 
-    return await userRequestInstance.post(END_POINTS.GET_USER_ID , config );
+    return await userRequestInstance.get(END_POINTS.GET_USER_ID , config );
 
 };

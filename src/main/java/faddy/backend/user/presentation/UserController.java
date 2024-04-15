@@ -1,9 +1,8 @@
 package faddy.backend.user.presentation;
 
-import faddy.backend.auth.dto.LoginRequestDto;
-import faddy.backend.email.dto.EmailDto;
-import faddy.backend.email.service.MailService;
 import faddy.backend.api.Dto.ResponseDto;
+import faddy.backend.auth.dto.LoginRequestDto;
+import faddy.backend.email.service.MailService;
 import faddy.backend.global.Utils.UserValidator;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
@@ -16,13 +15,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -133,6 +130,7 @@ public class UserController {
     @GetMapping("/userId")
     public ResponseEntity<ResponseDto<String>> sendEncryptedUserId(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
+
         String encryptedUserId = userService.findEncryptedUserId(token);
 
         if (encryptedUserId == null) {

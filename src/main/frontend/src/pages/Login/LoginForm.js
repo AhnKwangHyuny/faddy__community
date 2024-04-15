@@ -18,66 +18,51 @@ function LoginForm() {
 
   const {login} = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
 
-    if(username === "") {
+    if (username === "") {
       setError("아이디를 입력해주세요");
       return false;
     }
 
-    if(!ValidateUsername(username) || !ValidatePassword(password)) {
+    if (!ValidateUsername(username) || !ValidatePassword(password)) {
       setError("아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
       return false;
-    };
+    }
 
     setError("");
 
     // 서버에 로그인 인증 요청
-    const result = postUserLogin({username, password});
-
-    result.then(async (response) => {
+    try {
+      const response = await postUserLogin({ username, password });
       const config = response.data;
 
       if (config.grantType !== "Bearer" || config.accessToken === undefined) {
         alert("오류 발생 다시 로그인 부탁드립니다.");
         navigate(0);
-
         return;
       }
-
-
-      // 로그인 유저 id authContext에 저장
-      const result = await getUserId(username);
-
-      result.then((response)=> {
-        // 로그인
-        console.log(response);
-        const userId = response.data.userId;
-
-        login(userId);
-
-      })
-      .catch((error)=>{
-
-
-      });
 
       // access token local storage 저장
       localStorage.setItem("ACCESS_TOKEN", config.accessToken);
       localStorage.setItem("REFRESH_TOKEN", config.refreshToken);
       localStorage.setItem("GRANT_TYPE", config.grantType);
 
+      // 로그인 유저 id authContext에 저장
+      const userIdResponse = await getUserId(username);
+      const userId = userIdResponse.data.data;
+      console.log(userId);
+
+      login(userId);
+
       navigate("/styleShare");
-
-
-    })
-    .catch((error) => {
+    } catch (error) {
+      console.log(error);
       alert("[error] 오류가 발생했습니다. 다시 로그인 부탁드립니다.");
-      navigate(0);
-    });
+    }
 
     return false;
   };

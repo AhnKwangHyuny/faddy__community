@@ -9,17 +9,13 @@ import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Optional;
-import java.util.Random;
 
 @Slf4j
 @Service
@@ -62,11 +58,11 @@ public class UserService {
         try {
 
             User user = new User.Builder()
-                .withUsername(info.getUsername ())
-                .withPassword(passwordEncoder.encode(info.getPassword())) // password 암호화 하여 저장
-                .withNickname(info.getNickname())
-                .withEmail(info.getEmail())
-                .build();
+                    .withUsername(info.getUsername())
+                    .withPassword(passwordEncoder.encode(info.getPassword())) // password 암호화 하여 저장
+                    .withNickname(info.getNickname())
+                    .withEmail(info.getEmail())
+                    .build();
 
             savedUser = userRepository.save(user);
 
@@ -76,7 +72,7 @@ public class UserService {
             throw new BadRequestException(ExceptionCode.INVALID_REQUEST);
         }
 
-        if(savedUser == null) {
+        if (savedUser == null) {
             throw new InternalServerException(ExceptionCode.NOT_SAVE_USER);
         }
 
@@ -84,14 +80,17 @@ public class UserService {
     }
 
     /**
-     * @title: 사용자 토큰(JWT)으로부터 사용자 ID를 가져와 암호화하여 반환합니다.
-     *
      * @param token 사용자 토큰(JWT)
      * @return 암호화된 사용자 ID, 사용자가 존재하지 않는 경우 null 반환
+     * @title: 사용자 토큰(JWT)으로부터 사용자 ID를 가져와 암호화하여 반환합니다.
      */
     @Transactional(readOnly = true)
     public String findEncryptedUserId(String token) {
-        String username = jwtUtil.getUsername(token);
+
+        String raw_data = jwtUtil.extractRawToken(token);
+
+        String username = jwtUtil.getUsername(raw_data);
+
         System.out.println("username = " + username);
         if (username == null || username.isEmpty()) {
             return null;
@@ -105,4 +104,5 @@ public class UserService {
             return null;
         }
     }
+
 }
