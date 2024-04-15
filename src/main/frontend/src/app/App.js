@@ -9,19 +9,23 @@ import SnapCreation from "pages/Snap/Index";
 import { useHideAddressBar } from 'shared/hooks/useHideAddressBar';
 import ProtectedRoute from "routes/ProtectedRoute";
 
+import {AuthProvider} from 'shared/context/AuthContext';
+
 function App() {
     useHideAddressBar();
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<OnTheBoard />} />
-                <Route path="/styleShare" element={<StyleShare />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup/*" element={<Signup />} />
-                <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
-            </Routes>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<OnTheBoard />} />
+                    <Route path="/styleShare" element={<StyleShare />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup/*" element={<Signup />} />
+                    <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
 }
 

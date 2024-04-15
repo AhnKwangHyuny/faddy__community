@@ -1,16 +1,13 @@
-import React, { useState , useContext , useRef } from 'react';
+import React, {useRef, useState} from 'react';
 import * as Style from "Common/SignUpStyle";
 
 
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import {ValidateUsername , ValidatePassword} from 'utils/Validate';
-import { useNavigate } from 'react-router-dom';
-import {postUserLogin , setAccessToken} from 'api/post';
-import {concatWithoutDups} from "@yaireo/tagify/src/parts/helpers";
-
-
-
+import {Link, useNavigate} from 'react-router-dom';
+import {ValidatePassword, ValidateUsername} from 'utils/Validate';
+import {postUserLogin} from 'api/post';
+import {getUserId} from 'api/get';
+import { useAuth } from 'shared/context/AuthContext'; // AuthContext 경로에 맞게 조정하세요
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -18,6 +15,8 @@ function LoginForm() {
   const passwordRef = useRef();
 
   const [error , setError] = useState('');
+
+  const {login} = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,22 +38,37 @@ function LoginForm() {
     // 서버에 로그인 인증 요청
     const result = postUserLogin({username, password});
 
-    result.then((response) => {
+    result.then(async (response) => {
       const config = response.data;
 
-      if(config.grantType !== "Bearer" || config.accessToken === undefined) {
+      if (config.grantType !== "Bearer" || config.accessToken === undefined) {
         alert("오류 발생 다시 로그인 부탁드립니다.");
         navigate(0);
 
         return;
       }
 
-      console.log(config);
+
+      // 로그인 유저 id authContext에 저장
+      const result = await getUserId(username);
+
+      result.then((response)=> {
+        // 로그인
+        console.log(response);
+        const userId = response.data.userId;
+
+        login(userId);
+
+      })
+      .catch((error)=>{
+
+
+      });
 
       // access token local storage 저장
       localStorage.setItem("ACCESS_TOKEN", config.accessToken);
       localStorage.setItem("REFRESH_TOKEN", config.refreshToken);
-      localStorage.setItem("TYPE_TOKEN" , config.grantType);
+      localStorage.setItem("GRANT_TYPE", config.grantType);
 
       navigate("/styleShare");
 

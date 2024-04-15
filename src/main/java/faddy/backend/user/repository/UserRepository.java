@@ -39,5 +39,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """
     )
     void deleteByUserId(@Param("userId") final Long userId);
+
+    @Modifying
+    @Query(
+            """
+            SELECT userId FROM User user WHERE user.username = :username
+            """
+    )
+    Long findUserIdByUsername(@Param("username") final String username);
 }
 

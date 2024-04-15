@@ -88,8 +88,14 @@ public enum ExceptionCode {
     IMAGE_DECODE_ERROR(9008 , "Error while decoding the file name"),
     IMAGE_NOT_FOUND(9009 , "해당 이미지를 찾을 수 없습니다."),
     FAIL_DELETE_IMAGE_FILE(9010 , "s3에서 이미지 삭제에 실패했습니다."),
-    FAIL_DELETE_IMAGE_INFO(9011 , "DB에서 이미지 삭제에 실패했습니다.");
+    FAIL_DELETE_IMAGE_INFO(9011 , "DB에서 이미지 삭제에 실패했습니다."),
 
+    /**
+     *  대칭키 암호화 에러
+     * */
+    GENERATE_KEY_PAIR_ERROR(9100 ,"Failed to generate RSA key pair" ),
+    ENCRYPT_USER_ID_ERROR(9101 , "Failed to encrypt user ID"),
+    DECRYPT_USER_ID_ERROR(9102 , "Failed to decrypt user ID");
     private final int code;
     private final String message;
 

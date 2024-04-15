@@ -119,13 +119,9 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
-
+            System.out.println("claims = " + claims);
             return claims.getSubject();
-        } catch (ExpiredJwtException e) {
-            // JWT가 만료되었을 경우, 만료된 username 추출 .
-            return null;
         } catch (JwtException e) {
-            // 다른 모든 JWT 관련 예외 처리
             return null;
         }
     }

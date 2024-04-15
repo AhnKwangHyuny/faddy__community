@@ -12,9 +12,11 @@ import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
 import faddy.backend.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -127,5 +129,18 @@ public class UserController {
         return null;
     }
 
+    @ApiOperation(value = "클라이언트에 사용자 엔티티 ID 보냄", notes = "성공적으로 로그인 후 authContext에 사용자 ID 저장")
+    @GetMapping("/userId")
+    public ResponseEntity<ResponseDto<String>> sendEncryptedUserId(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        String encryptedUserId = userService.findEncryptedUserId(token);
+
+        if (encryptedUserId == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseDto.response("404", "사용자를 찾을 수 없습니다."));
+        }
+
+        return ResponseEntity.ok(ResponseDto.response("200", "사용자 ID 전송 성공", encryptedUserId));
+    }
 
 }

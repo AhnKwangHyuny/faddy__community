@@ -1,5 +1,6 @@
 package faddy.backend.user.service;
 
+import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.global.Utils.RedisUtil;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
@@ -31,11 +32,17 @@ public class UserService {
 
     private final RedisUtil redisUtil;
 
+    private final JwtUtil jwtUtil;
+
+    private final UserIdEncryptionUtil userIdEncryptionUtil;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil, JwtUtil jwtUtil, UserIdEncryptionUtil userIdEncryptionUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.redisUtil = redisUtil;
+        this.jwtUtil = jwtUtil;
+        this.userIdEncryptionUtil = userIdEncryptionUtil;
     }
 
     public boolean isUserIdDuplicated(final String field, final String value) {
@@ -76,4 +83,26 @@ public class UserService {
         return Optional.ofNullable(savedUser.getUsername());
     }
 
+    /**
+     * @title: 사용자 토큰(JWT)으로부터 사용자 ID를 가져와 암호화하여 반환합니다.
+     *
+     * @param token 사용자 토큰(JWT)
+     * @return 암호화된 사용자 ID, 사용자가 존재하지 않는 경우 null 반환
+     */
+    @Transactional(readOnly = true)
+    public String findEncryptedUserId(String token) {
+        String username = jwtUtil.getUsername(token);
+        System.out.println("username = " + username);
+        if (username == null || username.isEmpty()) {
+            return null;
+        }
+
+        try {
+            Long userId = userRepository.findUserIdByUsername(username);
+            return userIdEncryptionUtil.encryptUserId(userId);
+        } catch (RuntimeException e) {
+            log.warn("do not find userId by username : " + username);
+            return null;
+        }
+    }
 }

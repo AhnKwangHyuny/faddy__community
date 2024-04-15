@@ -12,11 +12,11 @@ export const API_AUTH_CODE = '/api/v1/auth-codes'
 export const API_IMAGE = '/api/images'
 
 export const BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.52:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.61:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 export const AXIOS_BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.52:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.61:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 
@@ -33,6 +33,7 @@ export const END_POINTS = {
   //USER API
   CHECK_USER_ID : `${API_USER}/check-duplication/userId`,
   CHECK_USER_NICKNAME :`${API_USER}/check-duplication/nickname`,
+  GET_USER_ID : `${API_USER}/userId`,
 
   //SIGN UP API
   SIGN_UP : `${API_USER}`,
