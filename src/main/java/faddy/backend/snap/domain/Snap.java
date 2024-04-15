@@ -1,8 +1,9 @@
 package faddy.backend.snap.domain;
 
+import faddy.backend.category.domain.Category;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.image.domain.Image;
-import faddy.backend.tag.domain.Tag;
+import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -40,7 +41,8 @@ public class Snap extends BaseEntity  {
     private List<Image> snapImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "snap" , fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
-    private List<Tag> tags = new ArrayList<>();
+    private List<HashTag> tags = new ArrayList<>();
+
 
     @Column(name = "view_count", nullable = false, columnDefinition = "INT DEFAULT 0")
     private int viewCount = 0;

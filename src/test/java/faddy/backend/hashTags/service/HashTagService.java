@@ -1,42 +1,39 @@
-package faddy.backend.tags.service;
+package faddy.backend.hashTags.service;
 
-import faddy.backend.tag.domain.Tag;
-import faddy.backend.tag.domain.dto.request.TagRequestDto;
-import faddy.backend.tag.domain.dto.response.TagResponseDto;
-import faddy.backend.tag.repository.TagRepository;
-import faddy.backend.tag.service.TagService;
+import faddy.backend.hashTags.domain.HashTag;
+import faddy.backend.hashTags.domain.dto.request.HashTagRequestDto;
+import faddy.backend.hashTags.domain.dto.response.HashTagResponseDto;
+import faddy.backend.hashTags.repository.HashTagRepository;
 import faddy.backend.type.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class TagServiceTest {
+public class HashTagService {
 
     @Autowired
     private TagService tagService;
 
     @Autowired
-    private TagRepository tagRepository;
+    private HashTagRepository hashTagRepository;
 
     @Test
     public void saveTagsTest() {
         // Given
         List<String> tagNames = Arrays.asList("tag1", "tag2");
-        TagRequestDto tagRequest = new TagRequestDto(ContentType.SNAP, tagNames);
-        List<Tag> tags = Arrays.asList(new Tag("tag1", ContentType.SNAP), new Tag("tag2", ContentType.SNAP));
+        HashTagRequestDto tagRequest = new HashTagRequestDto(ContentType.SNAP, tagNames);
+        List<HashTag> tags = Arrays.asList(new HashTag("tag1", ContentType.SNAP), new HashTag("tag2", ContentType.SNAP));
 
 
         // When
-        List<TagResponseDto> savedTags = tagService.saveTags(tagRequest);
+        List<HashTagResponseDto> savedTags = tagService.saveTags(tagRequest);
 
         // Then
         assertEquals(2, savedTags.size());

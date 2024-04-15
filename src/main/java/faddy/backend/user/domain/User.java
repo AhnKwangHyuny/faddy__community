@@ -48,7 +48,7 @@ public class User extends BaseEntity  {
     @JoinColumn(name = "profile_image_id" )
     private ProfileImage profileImage;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     private List<Snap> snaps = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
