@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/tags")
+@RequestMapping("/api/v1/hashTags")
 public class HashTagController {
 
     private final TagService tagService;

@@ -40,4 +40,8 @@ public class HashTag extends BaseEntity {
         return new HashTag(name , contentType);
     }
 
+    public void linkedSnap(Snap snap) {
+        this.snap = snap;
+        snap.getHashTags().add(this);
+    }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static faddy.backend.global.exception.ExceptionCode.NULL_IMAGE;
@@ -182,4 +183,10 @@ public class ImageServiceImpl implements ImageService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Image findById(Long imageId) {
+        Optional<Image> image = imageRepository.findById(imageId);
+        return image.orElse(null);
+    }
 }

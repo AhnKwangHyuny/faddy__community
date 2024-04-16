@@ -46,7 +46,7 @@ public class Image extends BaseEntity {
         this.format = format;
     }
 
-    public void updateImage(Snap snap) {
+    public void linkSnap(Snap snap) {
         this.snap = snap;
         snap.getSnapImages().add(this);
     }

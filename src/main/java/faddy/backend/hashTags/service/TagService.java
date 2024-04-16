@@ -6,5 +6,5 @@ import faddy.backend.hashTags.domain.dto.response.HashTagResponseDto;
 import java.util.List;
 
 public interface TagService {
-    List<HashTagResponseDto> saveTags(HashTagRequestDto tagRequest);
+    List<HashTagResponseDto> saveTags(HashTagRequestDto request);
 }

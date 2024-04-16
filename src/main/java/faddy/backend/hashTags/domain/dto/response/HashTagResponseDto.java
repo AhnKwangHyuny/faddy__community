@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class HashTagResponseDto {
-    private String name;
     private Long id;
 }

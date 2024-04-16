@@ -4,6 +4,7 @@ import Description from "pages/Snap/Components/Description/Description";
 import HashTagBox from "./Components/HashTagBox/HashTagBox";
 import SnapCategory from "pages/Snap/Components/SnapCategory/SnapCategory"
 import {useState} from "react";
+import {useAuth} from "shared/context/AuthContext";
 
 
 const Snap = () => {
@@ -11,8 +12,7 @@ const Snap = () => {
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState({});
-
-    console.log("a");
+    const {userId} = useAuth();
 
     return (
         <section className="main__body">

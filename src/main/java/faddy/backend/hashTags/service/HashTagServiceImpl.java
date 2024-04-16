@@ -24,12 +24,13 @@ public class HashTagServiceImpl implements TagService {
 
     @Override
     @Transactional
-    public List<HashTagResponseDto> saveTags(HashTagRequestDto tagRequest) {
-        List<HashTag> hashTags = tagRequest.getList().stream()
-                .map(tagName -> new HashTag(tagName, tagRequest.getContentType()))
+    public List<HashTagResponseDto> saveTags(HashTagRequestDto request) {
+        List<HashTag> hashTags = request.getTags().stream()
+                .map(tagName -> new HashTag(tagName, request.getContentType()))
                 .collect(Collectors.toList());
 
         List<HashTag> savedTags;
+
         try {
             savedTags = hashTagRepository.saveAll(hashTags);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class HashTagServiceImpl implements TagService {
         }
 
         return savedTags.stream()
-                .map(hashTag -> new HashTagResponseDto(hashTag.getName(), hashTag.getHashTagId()))
+                .map(hashTag -> new HashTagResponseDto( hashTag.getHashTagId()))
                 .collect(Collectors.toList());
     }
 

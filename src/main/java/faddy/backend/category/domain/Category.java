@@ -1,13 +1,14 @@
 package faddy.backend.category.domain;
 
 import faddy.backend.global.BaseEntity;
-import faddy.backend.snap.domain.Snap;
+import faddy.backend.type.ContentType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -20,9 +21,9 @@ public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    private Long id;
 
-    @Column(name = "name" , nullable = false)
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
 
     @ManyToOne
@@ -32,7 +33,41 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> children = new ArrayList<>();
 
-    // snap & talk 은 카테고리와 n:m 관계
+    @Enumerated(EnumType.STRING)
+    private ContentType contentType;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category category)) return false;
+        return Objects.equals(id, category.id)
+                && Objects.equals(name, category.name)
+                && Objects.equals(parent, category.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, parent);
+    }
+
+    public Category(String name, Category parent) {
+        this.name = name;
+        this.parent = parent;
+        if (parent != null) {
+            parent.addChildCategory(this);
+        }
+    }
+
+    public Category(String name, Category parent, ContentType contentType) {
+        this.name = name;
+        this.parent = parent;
+        this.contentType = contentType;
+    }
+
+    public void addChildCategory(Category child) {
+        children.add(child);
+        child.parent = this;
+    }
 
 
 }

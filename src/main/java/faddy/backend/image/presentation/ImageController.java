@@ -1,13 +1,11 @@
 package faddy.backend.image.presentation;
 
 import faddy.backend.image.dto.ImageRequestDto;
+import faddy.backend.image.dto.ImageResponseDto;
 import faddy.backend.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

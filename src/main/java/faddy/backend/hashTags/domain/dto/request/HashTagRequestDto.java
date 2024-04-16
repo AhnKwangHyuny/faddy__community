@@ -12,5 +12,5 @@ import java.util.List;
 @Getter
 public class HashTagRequestDto {
     private ContentType contentType;
-    private List<String> list;
+    private List<String> tags;
 }
