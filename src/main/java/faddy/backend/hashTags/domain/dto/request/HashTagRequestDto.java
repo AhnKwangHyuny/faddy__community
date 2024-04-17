@@ -13,4 +13,12 @@ import java.util.List;
 public class HashTagRequestDto {
     private ContentType contentType;
     private List<String> tags;
+
+    @Override
+    public String toString() {
+        return "HashTagRequestDto{" +
+                "contentType=" + contentType +
+                ", tags=" + tags +
+                '}';
+    }
 }

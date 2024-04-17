@@ -1,5 +1,6 @@
 package faddy.backend.image.service;
 
+import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ImageException;
 import faddy.backend.image.domain.Image;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -189,4 +191,20 @@ public class ImageServiceImpl implements ImageService{
         Optional<Image> image = imageRepository.findById(imageId);
         return image.orElse(null);
     }
+
+    public List<Image> findByHashedNames(List<String> hashedNames) {
+        // 리스트가 null이거나 비어있는 경우 검사
+        if (hashedNames == null || hashedNames.isEmpty()) {
+            throw new BadRequestException(400, "이미지 해쉬 이름 리스트가 존재하지 않습니다.");
+        }
+
+        // 리스트 요소 중 null이 있는지 검사
+        if (hashedNames.stream().anyMatch(Objects::isNull)) {
+            throw new BadRequestException(400, "이미지 해쉬 이름 리스트에 null 값이 포함되어 있습니다.");
+        }
+
+        // 리스트의 해쉬 이름을 사용하여 이미지 찾기 로직 구현
+        return imageRepository.findByHashedNameIn(hashedNames);
+    }
+
 }

@@ -29,9 +29,7 @@ const Filter = ({ category_list, selectedCategories, setSelectedCategories }) =>
                 newSelectedCategories[categoryKey] = updatedSelectedStates[categoryKey];
             }
             setSelectedCategories(newSelectedCategories);
-
             // DOM을 직접 조작하여 selected 클래스 추가 또는 제거
-
             setTimeout(() => {
                 document.querySelectorAll(`.category__container`).forEach(container => {
                     if(container.querySelector('.logo').textContent.trim() === categoryKey){

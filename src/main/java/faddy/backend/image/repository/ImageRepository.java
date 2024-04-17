@@ -24,4 +24,5 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
     @Query(value = "SELECT * FROM images", nativeQuery = true)
     List<Image> findAll();
 
-}
+    @Query("SELECT i FROM Image i WHERE i.hashName IN :hashedNames")
+    List<Image> findByHashedNameIn(@Param("hashedNames") List<String> hashedNames);}

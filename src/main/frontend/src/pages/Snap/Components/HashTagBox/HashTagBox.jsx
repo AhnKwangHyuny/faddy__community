@@ -12,17 +12,19 @@ const HashTagBox = ({ tags, setTags }) => {
                 maxTags: 5,
                 placeholder: "type something",
                 dropdown: {
-                    enabled: 0, // always show suggestions dropdown
+                    enabled: 0,
                     maxItems: 5,
                 },
             });
 
             tagifyInstance.current.on('change', handleTagChange);
+            tagifyInstance.current.on('remove', handleTagRemove);
         }
 
         return () => {
             if (tagifyInstance.current) {
                 tagifyInstance.current.off('change', handleTagChange);
+                tagifyInstance.current.off('remove', handleTagRemove);
                 tagifyInstance.current.destroy();
                 tagifyInstance.current = null;
             }
@@ -30,10 +32,33 @@ const HashTagBox = ({ tags, setTags }) => {
     }, []);
 
     const handleTagChange = (e) => {
-        const parsed = JSON.parse(e.detail.value);
-        const value = parsed[0].value;
 
-        setTags(value);
+        if(e.detail.value === "") {
+            return;
+        }
+
+        const values = JSON.parse(e.detail.value);
+
+        const tagList = values.map(item => item.value);
+
+        setTags(tagList);
+    };
+
+
+    const handleTagRemove = (e) => {
+        const { index } = e.detail;
+
+        // 태그 리스트가 비었을 때 return
+        if (tags.length === 0) {
+            return;
+        }
+
+        // 마지막 태그를 삭제하려는 경우
+        if (index === tags.length - 1) {
+            setTags(tags.slice(0, -1));
+        } else {
+            setTags(tags.filter((_item, i) => i !== index));
+        }
     };
 
     useEffect(() => {
@@ -47,12 +72,7 @@ const HashTagBox = ({ tags, setTags }) => {
                     <div className="logo">태그</div>
                 </div>
                 <div className="tags__input">
-                    <input
-                        ref={inputRef}
-                        name="tags-outside"
-                        className="tagify--outside"
-                        placeholder="태그를 입력 후 엔터를 누르세요 (최대 5개)"
-                    />
+                    <input ref={inputRef} name="tags-outside" className="tagify--outside" placeholder="태그를 입력 후 엔터를 누르세요 (최대 5개)" />
                 </div>
                 <div className="tags__footer">
                     <div className="line"></div>

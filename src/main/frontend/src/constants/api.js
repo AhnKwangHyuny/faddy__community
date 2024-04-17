@@ -7,9 +7,15 @@ export const DEVICE = process.env.NODE_DEVICE  === 'DESKTOP';
 export const API_PATH = '/api';
 export const API_USER = '/api/v1/users';
 export const API_AUTH = '/api/v1/auth';
-export const API_AUTH_CODE = '/api/v1/auth-codes'
+export const API_AUTH_CODE = '/api/v1/auth-codes';
 
-export const API_IMAGE = '/api/images'
+export const API_IMAGE = '/api/images';
+
+export const API_HASH_TAG = 'api/v1/hashTags';
+
+export const API_SNAP  = 'api/v1/snaps';
+
+export const API_CATEGORY  = 'api/v1/categories';
 
 export const BASE_URL = DEV
   ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.61:9000'
@@ -45,7 +51,19 @@ export const END_POINTS = {
   UPLOAD_IMAGES : `${API_IMAGE}/multiple`,
   UPLOAD_IMAGE : `${API_IMAGE}`,
   DELETE_IMAGE : `${API_IMAGE}`,
-  DELETE_IMAGES : `${API_IMAGE}/multiple`
+  DELETE_IMAGES : `${API_IMAGE}/multiple`,
+
+
+  //HashTag
+  UPLOAD_HASH_TAG : `${API_HASH_TAG}`,
+
+  //SNAP
+  POST_SNAP : `${API_SNAP}`,
+  UPDATE_SNAP_IMAGE_RELATIONSHIP: `${API_IMAGE}/images/link`,
+
+  //Category
+  UPLOAD_CATEGORY : `${API_CATEGORY}`,
+
 };
 
 

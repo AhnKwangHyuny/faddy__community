@@ -105,4 +105,11 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public User getUserById(Long userId) {
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+    }
+
 }

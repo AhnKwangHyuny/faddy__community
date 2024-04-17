@@ -1,58 +1,60 @@
 import axios from 'axios';
-import { isValidDescription, isValidTags, isValidCategories, isValidUserId } from 'utils/snap/SnapDataValidation';
-import {useNavigate} from "react-router-dom";
+import {isValidCategories, isValidDescription, isValidTags, isValidUserId} from 'utils/snap/SnapDataValidation';
 import {userRequestInstance} from "api/axiosInstance";
+import {END_POINTS} from "constants/api";
 
-const uploadSNSPost = async (userId, imageList , description, tags, selectedCategories) => {
-
-    const navigate = useNavigate();
-
+const UploadSnap = async (userId, imageList, description, tags, selectedCategories) => {
     try {
-        /**
-         * 입력 데이터 유효성 검사
-         */
 
-        if (!isValidUserId(userId)) {
-            throw new Error('Invalid user ID');
+        /*** 입력 데이터 유효성 검사 */
+        if (!isValidUserId(userId.userId)) {
+            // throw new Error('Invalid user ID');
             // 로그 아웃 구현
-
-            navigate("/login");
-
+            // window.location.replace('/login');
         }
-
         if(imageList.length === 0) {
-            throw new Error("이미지를 한 장 이상 꼭 넣어주세요!");
+            // throw new Error("이미지를 한 장 이상 꼭 넣어주세요!");
         }
-
         if (!isValidDescription(description)) {
             // descripton으로 커서 이동
-
         }
-
         if (!isValidTags(tags)) {
             // 태그로 커서 이동
         }
-
         if (!isValidCategories(selectedCategories)) {
             //카테고리고 커서 이동
         }
 
-
         // 태그 엔티티 생성 및 ID 목록 받아오기
-        const tagIds = await createTags(tags);
+        const hashTagRequestData = {
+            "contentType" : "SNAP",
+            tags : tags
+        }
+
+        const hashTagIds = await createTags(hashTagRequestData);
 
         // 카테고리 엔티티 생성 및 ID 목록 받아오기
-        const categoryIds = await createCategories(selectedCategories);
+        const categoryPairs = {
+            contentType : "SNAP",
+            "categories" : Object.keys(selectedCategories).map(key => ({
+                [key] : selectedCategories[key]
+            }))
+        }
+        const categoryIds = await createCategories(categoryPairs);
 
-        // Snap 엔티티 생성
-        const snapData = {
-            description,
-            userId,
-            tagIds,
-            categoryIds
-        };
+        // requestBody에 담을 데이터 서버 측 dto에 맞게 가공
+        userId = userId.userId;
 
-        const response = await axios.post('/api/v1/snaps', snapData);
+        imageList = imageList.map(({format, originalName, size, ...rest}) => rest);
+
+        // Snap 생성 requestBody data set
+        const snapData = { description, userId , hashTagIds, categoryIds, imageList };
+        console.log(snapData);
+
+        const response = await userRequestInstance.post(END_POINTS.POST_SNAP , snapData );
+
+        console.log(response);
+
         const snapId = response.data.id;
 
         // 이미지 엔티티와 Snap 엔티티 간 관계 지어주기
@@ -60,51 +62,42 @@ const uploadSNSPost = async (userId, imageList , description, tags, selectedCate
 
         // 성공 메시지 등 필요한 처리
         return { success: true };
+
     } catch (error) {
 
         console.error('Error uploading Snap post:', error);
-        return { success: false, error: error.message };
+        return { success: false,  error: error.message };
     }
 };
 
-const updateSnapImageRelationship = async (imageList, snapId) => {
+export const updateSnapImageRelationship = async (imageList, snapId) => {
     try {
-
-        const requestBody = {
-            "snapId": snapId,
-            "images": imageList
-        };
-
-        await userRequestInstance.put('/snap', requestBody);
+        const requestBody = { "snapId": snapId, "images": imageList };
+        // await userRequestInstance.put(, requestBody);
     } catch (error) {
         console.error('Error linking images to Snap:', error);
         throw error;
     }
 };
 
-const createTags = async (tags) => { // tags = [ name1 , name2 ... ]
+export const createTags = async (requestData) => {
     try {
-        const requestBody = {
-            contentType : "SNAP",
-            tags: tags,
+        const response = await userRequestInstance.post(END_POINTS.UPLOAD_HASH_TAG, requestData);
 
-        };
+        return response.data;
 
-        const response = await userRequestInstance.post('/api/v1/hashTags', requestBody);
-
-        return response.data.tagIds;
     } catch (error) {
         console.error('Error creating tags:', error);
         throw error;
     }
 };
 
-
-const createCategories = async (selectedCategories) => {
+export const createCategories = async (categoryPairs) => {
     try {
         // 카테고리 엔티티 생성 및 ID 목록 받아오기
-        const response = await axios.post('/api/categories', selectedCategories);
-        return response.data.categoryIds;
+        const response = await userRequestInstance.post(END_POINTS.UPLOAD_CATEGORY, categoryPairs);
+
+        return response.data;
     } catch (error) {
         console.error('Error creating categories:', error);
         throw error;
@@ -112,4 +105,6 @@ const createCategories = async (selectedCategories) => {
 };
 
 
-export default uploadSNSPost;
+export default UploadSnap;
+
+

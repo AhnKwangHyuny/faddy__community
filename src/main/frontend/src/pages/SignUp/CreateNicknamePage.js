@@ -19,7 +19,7 @@ function NicknameInputForm() {
   useEffect(() => {
     if (!username || !password || !email) {
       alert("누락된 회원 정보가 존재합니다.");
-      navigate('/signup/passoword');
+      navigate('/signup/password');
     }
   }, [username, password, email, navigate]);
 

@@ -1,13 +1,16 @@
 package faddy.backend.hashTags.presentation;
 
-import faddy.backend.hashTags.domain.dto.response.HashTagResponseDto;
 import faddy.backend.hashTags.domain.dto.request.HashTagRequestDto;
+import faddy.backend.hashTags.domain.dto.response.HashTagIdResponseDto;
 import faddy.backend.hashTags.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,8 +28,9 @@ public class HashTagController {
 
     @ApiOperation(value = "다중 태그 입력 시 태그 list를 받아와 서버에 저장", notes = "저장 후 tag id list를 클라이언트에 반환")
     @PostMapping()
-    public ResponseEntity<List<HashTagResponseDto>> saveTags(@RequestBody HashTagRequestDto tagRequest) {
-        List<HashTagResponseDto> savedTags = tagService.saveTags(tagRequest);
-        return ResponseEntity.ok(savedTags);
+    public ResponseEntity<List<HashTagIdResponseDto>> saveTags(@RequestBody HashTagRequestDto tagRequest) {
+
+        List<HashTagIdResponseDto> savedTags = tagService.saveTags(tagRequest);
+        return ResponseEntity.ok().body(savedTags);
     }
 }

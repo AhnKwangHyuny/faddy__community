@@ -1,6 +1,7 @@
 package faddy.backend.category.domain;
 
 import faddy.backend.global.BaseEntity;
+import faddy.backend.snap.domain.Snap;
 import faddy.backend.type.ContentType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,8 +34,12 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> children = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category" , cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
+    private List<CategorySnap> categorySnaps = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private ContentType contentType;
+
 
     @Override
     public boolean equals(Object o) {
@@ -69,5 +74,10 @@ public class Category extends BaseEntity {
         child.parent = this;
     }
 
+    public void addSnap(Snap snap) {
+        CategorySnap categorySnap = new CategorySnap(this , snap);
+        categorySnaps.add(categorySnap);
+        snap.getCategorySnaps().add(categorySnap);
+    }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,10 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (categoryName == null) {
                 throw new BadRequestException(9200, "Invalid category name: " + name);
             }
-            // 부모 카테고리가 존재하는지 확인
-            if (!categoryRepository.existsByNameAndContentType(name, contentType)) {
-                throw new BadRequestException(9200, "Category does not exist: " + name);
-            }
+
         } catch (IllegalArgumentException e) {
             throw new BadRequestException(9200, "Invalid category name: " + name);
         }
@@ -56,9 +54,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public Map<Long, Long> createAndLinkCategories(Map<String, String> categoryPairs, ContentType contentType) {
         Map<Long, Long> linkedCategories = new HashMap<>();
+
         for (Map.Entry<String, String> entry : categoryPairs.entrySet()) {
+
             String parentName = entry.getKey();
             String childName = entry.getValue();
+
+            System.out.println("parentName = " + parentName + "  childName  = " + childName );
 
             // 부모 카테고리의 유효성을 확인
             ensureCategoryExists(parentName, contentType);
@@ -68,6 +70,8 @@ public class CategoryServiceImpl implements CategoryService {
 
             // 자식 카테고리 저장
             Category childCategory = saveChildCategory(childName, parentCategory, contentType);
+
+
 
             // 생성된 부모와 자식 카테고리의 ID를 맵에 추가
             linkedCategories.put(parentCategory.getId(), childCategory.getId());
@@ -113,13 +117,26 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category saveParentCategory(String parentCategoryName, ContentType contentType) {
         // 부모 카테고리가 이미 존재하는지 확인
-        Optional<Category> existingCategory = categoryRepository.findByNameAndContentType(parentCategoryName, contentType);
-        if (existingCategory.isPresent()) {
-            return existingCategory.get();
-        }
+//        Optional<Category> existingCategory = categoryRepository.findByNameAndContentType(parentCategoryName, contentType);
+//        if (existingCategory.isPresent()) {
+//            return existingCategory.get();
+//        }
 
         // 부모 카테고리가 존재하지 않는 경우 새로 생성
         Category category = new Category(parentCategoryName, null, contentType);
         return categoryRepository.save(category);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Category> findByIdsIn(List<Long> ids) {
+
+        List<Category> categories = categoryRepository.findByIdIn(ids);
+
+        if(categories.size() != ids.size()) {
+            throw new BadRequestException(400 , "존재하지 않는 카테고리 id가 있습니다.");
+        }
+
+        return  categories;
     }
 }

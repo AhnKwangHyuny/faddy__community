@@ -21,7 +21,7 @@ public class Image extends BaseEntity {
     @Column(name = "image_url", nullable = false, length=1024)
     private String imageUrl;
 
-    @Column(name = "hash_name", nullable = false )
+    @Column(name = "hash_name", nullable = false  , unique = true)
     private String hashName;
 
     @Column(name = "image_name", nullable = false)

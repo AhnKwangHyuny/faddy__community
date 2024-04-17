@@ -3,6 +3,7 @@ package faddy.backend.category.service;
 import faddy.backend.category.domain.Category;
 import faddy.backend.type.ContentType;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CategoryService {
@@ -46,4 +47,12 @@ public interface CategoryService {
      * @return 저장된 부모 카테고리
      */
     Category saveParentCategory(String parentCategoryName, ContentType contentType);
+
+    /**
+     * ids로 category entities 반환
+     * @param List<Long> 카테고리 아이디 셋
+     * @return 아이디에 해당하는 카테고리 리스트
+     */
+
+    List<Category> findByIdsIn(List<Long> ids);
 }

@@ -147,5 +147,9 @@ public class User extends BaseEntity  {
         }
     }
 
+    // 연관관계 메소드
+    public void addSnap(Snap snap) {
+        this.snaps.add(snap);
+    }
 
 }

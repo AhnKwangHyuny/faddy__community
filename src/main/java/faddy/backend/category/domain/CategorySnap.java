@@ -21,4 +21,8 @@ public class CategorySnap extends BaseEntity {
     @JoinColumn(name = "snap_id")
     private Snap snap;
 
+    public CategorySnap(Category category, Snap snap) {
+        this.category = category;
+        this.snap = snap;
+    }
 }

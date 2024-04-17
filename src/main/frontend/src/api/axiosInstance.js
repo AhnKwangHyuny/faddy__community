@@ -23,9 +23,6 @@ userRequestInstance.interceptors.request.use((config) => {
 
   }
 
-  // 기본 헤더 정보 추가
-  config.headers['Content-Type'] = 'application/json';
-
   return config;
 
 } , (error) => {

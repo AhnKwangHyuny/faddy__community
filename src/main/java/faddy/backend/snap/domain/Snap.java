@@ -1,6 +1,7 @@
 package faddy.backend.snap.domain;
 
 import faddy.backend.category.domain.Category;
+import faddy.backend.category.domain.CategorySnap;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.image.domain.Image;
 import faddy.backend.hashTags.domain.HashTag;
@@ -54,6 +55,9 @@ public class Snap extends BaseEntity  {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt = null;
 
+    @OneToMany(mappedBy = "snap" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    private List<CategorySnap> categorySnaps = new ArrayList<>();
+
     public void recoverSnap() {
         if (this.deletedAt != null) {
             this.deletedAt = null;
@@ -87,6 +91,10 @@ public class Snap extends BaseEntity  {
         this.hashTags.forEach(hashTag -> hashTag.linkedSnap(this));
     }
 
-
+    public void addCategory(Category category) {
+        CategorySnap categorySnap = new CategorySnap(category, this);
+        this.categorySnaps.add(categorySnap);
+        category.getCategorySnaps().add(categorySnap);
+    }
 }
 

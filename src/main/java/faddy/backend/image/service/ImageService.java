@@ -22,4 +22,6 @@ public interface ImageService {
     void deleteImages(List<ImageRequestDto> images);
 
     Image findById(Long imageId);
+
+    List<Image> findByHashedNames(List<String> hashedNames);
 }
