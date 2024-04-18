@@ -2,8 +2,6 @@ package faddy.backend.snap.service;
 
 import faddy.backend.category.domain.Category;
 import faddy.backend.category.service.CategoryService;
-import faddy.backend.global.exception.ExceptionCode;
-import faddy.backend.global.exception.InternalServerException;
 import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.service.TagService;
 import faddy.backend.image.domain.Image;
@@ -19,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,7 +43,6 @@ public class SnapPostingService {
 
         //snap 연관관계 연결을 위한 HashTag entities
         List<Long> hashTagIds = requestDto.getHashTagIds();
-
         List<HashTag> hashTags = hashTagService.findHashTagsByIds(hashTagIds);
 
         //snap 연관관계 연결을 위한 Category entities
@@ -69,17 +67,16 @@ public class SnapPostingService {
         writer.addSnap(snap);
 
         // snap : image = 1 : N
-        for (Image image : images) {
-            image.linkSnap(snap);
-        }
+        images.forEach(image -> image.addSnap(snap));
+
+        // concurrentModfiy error 우회 하기 위해 클래스 필드 값인 컬랙션 객체는 한 번만 수정
+        snap.getSnapImages().addAll(images);
 
         // snap : hashTag = 1 : N
-        for (HashTag hashTag : hashTags) {
-            hashTag.addSnap(snap);
-        }
+        hashTags.forEach(hashTag -> hashTag.addSnap(snap));
+        snap.getHashTags().addAll(hashTags);
 
-        return snapRepository.save(snap)
-                .orElseThrow(() -> new InternalServerException(ExceptionCode.FAIL_CREATE_SNAP));
+        return snapRepository.save(snap);
     }
 
 }

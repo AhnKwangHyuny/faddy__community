@@ -10,11 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface SnapRepository extends JpaRepository<Snap , Long> {
-    @Modifying
-    @Query("UPDATE Snap s SET s.deleted = true WHERE s.id = ?1")
-    void deleteById(Long id);
+//    @Modifying
+//    @Query("UPDATE Snap s SET s.deleted = true WHERE s.id = ?1")
+//    void deleteById(Long id);
 
-    Optional<Snap> save(Snap snap);
 
 
 }

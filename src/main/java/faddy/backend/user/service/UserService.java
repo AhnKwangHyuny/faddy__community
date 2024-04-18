@@ -112,4 +112,15 @@ public class UserService {
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
     }
 
+    public Boolean checkEncrptedUserIdExists(String encrptedUserId) {
+
+        Long userId = userIdEncryptionUtil.decryptUserId(encrptedUserId);
+
+        if(userId == null) {
+            throw new BadRequestException(ExceptionCode.DECRYPT_USER_ID_ERROR);
+        }
+
+        return userRepository.existsById(userId);
+    }
+
 }

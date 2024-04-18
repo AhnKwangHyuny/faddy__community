@@ -50,7 +50,7 @@ public class HashTagServiceImpl implements TagService {
         }
 
         return savedTags.stream()
-                .map(hashTag -> new HashTagIdResponseDto( hashTag.getHashTagId()))
+                .map(hashTag -> new HashTagIdResponseDto( hashTag.getId()))
                 .collect(Collectors.toList());
     }
 

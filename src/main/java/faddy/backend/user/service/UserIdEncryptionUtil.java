@@ -3,6 +3,7 @@ package faddy.backend.user.service;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ServerProcessingException;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 
 @Service
+@Slf4j
 public class UserIdEncryptionUtil {
 
     @Value("${user.id-encryption.public-key}")
@@ -63,7 +65,8 @@ public class UserIdEncryptionUtil {
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedUserId));
             return Long.parseLong(new String(decryptedBytes));
         } catch (Exception e) {
-            throw new ServerProcessingException(ExceptionCode.DECRYPT_USER_ID_ERROR);
+            log.warn(e.getMessage());
+            return null;
         }
     }
 }

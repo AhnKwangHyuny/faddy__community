@@ -15,3 +15,13 @@ export const getUserId = async(username) => {
     return await userRequestInstance.get(END_POINTS.GET_USER_ID , config );
 
 };
+
+export const checkUserIdExists = async (userId) => {
+  const config = {
+      params: {
+          userId,
+      }
+  }
+
+  return await userRequestInstance.get(END_POINTS.CHECK_USER_ID_EXISTS , config);
+};

@@ -31,7 +31,7 @@ public class Snap extends BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "snap_id", nullable = false)
-    private Long snapId;
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -78,9 +78,6 @@ public class Snap extends BaseEntity  {
         this.description = description;
     }
 
-    public void updateImages() {
-        snapImages.forEach(image -> image.linkSnap(this));
-    }
 
     public void linkUser(User user) {
         user.getSnaps().add(this);
@@ -95,6 +92,16 @@ public class Snap extends BaseEntity  {
         CategorySnap categorySnap = new CategorySnap(category, this);
         this.categorySnaps.add(categorySnap);
         category.getCategorySnaps().add(categorySnap);
+    }
+
+    public void addImage(Image image) {
+        image.addSnap(this);
+        this.getSnapImages().add(image);
+    }
+
+    public void removeImage(Image image) {
+        image.addSnap(null);
+        this.snapImages.remove(image);
     }
 }
 

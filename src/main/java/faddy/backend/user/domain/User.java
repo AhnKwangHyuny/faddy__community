@@ -38,7 +38,7 @@ public class User extends BaseEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "profile_id")

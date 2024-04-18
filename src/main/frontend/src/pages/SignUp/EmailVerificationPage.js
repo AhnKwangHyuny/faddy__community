@@ -108,9 +108,7 @@ function RegistrationForm() {
         const data = {
             code: authCode,
             email: value,
-            value
         };
-
         const authTokenResponse = verifyAuthCodeAndRequestAuthToken(data);
 
         authTokenResponse
@@ -405,26 +403,19 @@ function RegistrationForm() {
       )
     }
 
-    <
-    Style.VerifyButton type = "submit"
-    disabled = {
-      !isAvailable
-    }
-    disabled = {
-      authCode.length !== 6
-    }
+    <Style.VerifyButton type = "submit"
+    disabled = {!isAvailable}
+    disabled = {authCode.length !== 6}
     onClick = {
       onAuthCodeVerificationHandler
-    } >
-    인증 확인 <
-    /Style.VerifyButton> <
-    /Style.FormSection>
+    } >인증 확인
 
-    <
-    Style.ProgressIndicator / >
-    <
-    /Style.MainContainer>
-  );
-}
+    </Style.VerifyButton>
 
+    </Style.FormSection>
+
+    <Style.ProgressIndicator/>
+    </Style.MainContainer>
+  )
+};
 export default RegistrationForm;

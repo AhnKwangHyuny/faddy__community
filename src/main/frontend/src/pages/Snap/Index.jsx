@@ -18,7 +18,7 @@ const Snap = () => {
         try {
             const result = await uploadSnap(userId, imageList, description, tags, selectedCategories);
             if (result.success) {
-                // Handle success, e.g., navigate to a different page
+                // snap details로 이동
             } else {
                 // Handle error, e.g., display an error message
                 console.error(result.error);

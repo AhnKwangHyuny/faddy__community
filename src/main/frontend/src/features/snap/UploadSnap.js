@@ -8,21 +8,26 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
 
         /*** 입력 데이터 유효성 검사 */
         if (!isValidUserId(userId.userId)) {
-            // throw new Error('Invalid user ID');
-            // 로그 아웃 구현
-            // window.location.replace('/login');
+            throw new Error('Invalid user ID');
+            window.location.replace('/login');
         }
         if(imageList.length === 0) {
-            // throw new Error("이미지를 한 장 이상 꼭 넣어주세요!");
+            throw new Error("이미지를 한 장 이상 꼭 넣어주세요!");
         }
         if (!isValidDescription(description)) {
             // descripton으로 커서 이동
+            alert("description 입력은 필수입니다!");
+            return;
         }
         if (!isValidTags(tags)) {
             // 태그로 커서 이동
+            alert("해시태그 입력은 필수입니다!");
+            return;
         }
         if (!isValidCategories(selectedCategories)) {
             //카테고리고 커서 이동
+            alert("카테고리 선택은 필수입니다!");
+            return;
         }
 
         // 태그 엔티티 생성 및 ID 목록 받아오기

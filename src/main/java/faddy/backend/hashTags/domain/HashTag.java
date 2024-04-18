@@ -20,7 +20,7 @@ public class HashTag extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hashTag_id")
-    private Long hashTagId;
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id" )

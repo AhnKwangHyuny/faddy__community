@@ -1,4 +1,5 @@
 import { snap_category } from 'data/category';
+import {checkUserIdExists} from "../../api/get";
 export const isValidDescription = (description) => {
     // 설명 필드 유효성 검사 로직 구현
     return description.length <= 1500;
@@ -29,5 +30,9 @@ export const isValidCategories = (selectedCategories) => {
 
 export const isValidUserId = (userId) => {
     // 사용자 ID 유효성 검사 로직 구현
+
+    // db에 사용자 있는지 확인
+    checkUserIdExists(userId);
+
     return typeof userId === 'string' && userId !== "";
 };

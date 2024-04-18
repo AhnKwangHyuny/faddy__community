@@ -141,4 +141,12 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.response("200", "사용자 ID 전송 성공", encryptedUserId));
     }
 
+    @ApiOperation(value = "서버에 해당 유저 아이디 존재하는지 확인", notes = "있으면 ok , 없으면 bad request")
+    @PostMapping("/check-userId")
+    public ResponseEntity<String> checkUserId(@RequestBody String userId) {
+        if(userService.checkEncrptedUserIdExists(userId)) {
+            return ResponseEntity.ok("User ID exists.");
+        }
+        return ResponseEntity.badRequest().body("User ID does not exist.");
+    }
 }

@@ -40,6 +40,7 @@ export const END_POINTS = {
   CHECK_USER_ID : `${API_USER}/check-duplication/userId`,
   CHECK_USER_NICKNAME :`${API_USER}/check-duplication/nickname`,
   GET_USER_ID : `${API_USER}/userId`,
+  CHECK_USER_ID_EXISTS : `${API_USER}/check-userId`,
 
   //SIGN UP API
   SIGN_UP : `${API_USER}`,

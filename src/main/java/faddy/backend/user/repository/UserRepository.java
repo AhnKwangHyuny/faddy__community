@@ -40,7 +40,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     )
     void deleteByUserId(@Param("userId") final Long userId);
 
-    @Query("SELECT u.userId FROM User u WHERE u.username = :username")
+    @Query("SELECT u.id FROM User u WHERE u.username = :username")
     Long findUserIdByUsername(@Param("username") String username);
 
 

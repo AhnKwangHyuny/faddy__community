@@ -16,7 +16,7 @@ public class Image extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", nullable = false)
-    private Long imageId;
+    private Long id;
 
     @Column(name = "image_url", nullable = false, length=1024)
     private String imageUrl;
@@ -46,9 +46,8 @@ public class Image extends BaseEntity {
         this.format = format;
     }
 
-    public void linkSnap(Snap snap) {
+    public void addSnap(Snap snap) {
         this.snap = snap;
-        snap.getSnapImages().add(this);
     }
 
 }

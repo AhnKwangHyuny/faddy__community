@@ -49,7 +49,6 @@ public class AuthCodeController {
         String token = null;
 
         AuthCodeVerificationResult result = mailService.verifiedCode(email, code);
-
         try {
             if(result.getResult()) {
 

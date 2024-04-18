@@ -28,9 +28,9 @@ public class SnapPostingController {
     @PostMapping
     public ResponseEntity<Snap> createSnap(@RequestBody @Valid CreateSnapRequestDto request) {
 
+        // snap생성 후 엔티티 반환
+        Snap snap = snapUploadService.createSnap(request);
 
-
-
-        return null;
+        return ResponseEntity.ok().body(snap);
     }
 }
