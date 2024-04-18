@@ -142,7 +142,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "서버에 해당 유저 아이디 존재하는지 확인", notes = "있으면 ok , 없으면 bad request")
-    @PostMapping("/check-userId")
+    @GetMapping("/check-userId")
     public ResponseEntity<String> checkUserId(@RequestBody String userId) {
         if(userService.checkEncrptedUserIdExists(userId)) {
             return ResponseEntity.ok("User ID exists.");
