@@ -10,6 +10,7 @@ import { useHideAddressBar } from 'shared/hooks/useHideAddressBar';
 import ProtectedRoute from "routes/ProtectedRoute";
 
 import {AuthProvider} from 'shared/context/AuthContext';
+import SnapDetail from "pages/SnapDetail/index";
 
 function App() {
     useHideAddressBar();
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup/*" element={<Signup />} />
                     <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
+                    <Route path="/snaps/detail" element={<SnapDetail userid={"123123"}/>} />
                 </Routes>
             </Router>
         </AuthProvider>

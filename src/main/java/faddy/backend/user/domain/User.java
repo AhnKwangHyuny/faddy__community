@@ -44,9 +44,6 @@ public class User extends BaseEntity  {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_image_id" )
-    private ProfileImage profileImage;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     private List<Snap> snaps = new ArrayList<>();
@@ -69,10 +66,6 @@ public class User extends BaseEntity  {
 
     @Column(name = "email" , length =  255 , unique = true , nullable = false)
     private String email;
-
-//    @Enumerated(value = STRING)
-//    @Column(name = "user_level", length = 10, nullable = false)
-//    private UserLevel userLevel = UserLevel.LEVEL_1;
 
     @Enumerated(value = STRING)
     private UserStatus status;

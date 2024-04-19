@@ -4,7 +4,7 @@ body {
 }
 
 // 섹션 공통 요소
-section {
+section:not(.snapDetail) {
     padding: 40px;
 
     @media (max-width: 800px){
@@ -84,4 +84,20 @@ section {
             opacity: 1;
         }
     }
+}
+
+// 유저 프로필 이름
+.upn-1 {
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.level {
+    font-size : 0.8rem;
+
+}
+
+//유저 motto
+.mto-1 {
+    font-size: 0.8rem;
 }

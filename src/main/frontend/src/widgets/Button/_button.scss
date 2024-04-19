@@ -1,0 +1,27 @@
+// BackButton.scss
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding : 2px 4px 2px 4px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .back-button__wrapper {
+    padding-bottom: 30px;
+
+    .back-button {
+      font-size: 35px;
+      color : #000000;
+    }
+
+  }
+
+}

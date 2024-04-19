@@ -123,4 +123,19 @@ public class UserService {
         return userRepository.existsById(userId);
     }
 
+
+    /**
+     * 일정 스냅 , talk 포스팅 , 유저 팔로우 , 좋아요 획득 시 레벨 업
+     * @param  User : 해당 유저
+     * */
+    public void updateUserLevel(User user) {
+        int postCount = user.getSnaps().size();
+
+//        for (UserLevel level : UserLevel.values()) {
+//            if (postCount >= level.getRequiredPostCount() && followerCount >= level.getRequiredFollowerCount()) {
+//                user.setUserLevel(level);
+//                break;
+//            }
+//        }
+    }
 }

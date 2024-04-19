@@ -10,6 +10,7 @@ import faddy.backend.global.exception.ExceptionResponse;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
 import faddy.backend.user.service.UserService;
+import io.micrometer.common.util.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

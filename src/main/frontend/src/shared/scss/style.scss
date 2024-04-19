@@ -16,6 +16,10 @@
 @import "widgets/CreationMenuBar/creationMenuBar";
 @import "widgets/ImageUploader/imageUploader";
 @import "widgets/Filter/filter";
+@import "widgets/UserProfile/userProfile";
+@import "widgets/Button/button";
+
+
 
 /*
 page component
@@ -25,8 +29,12 @@ page component
 @import "pages/Snap/Components/Description/description";
 @import "pages/Snap/Components/HashTagBox/hashTagBox";
 
+// snap/detail
+@import "pages/SnapDetail/Components/Header/header";
+
 
 
  // pages style
 @import "pages/StyleShare/styleShare";
 @import "pages/Snap/index";
+@import "pages/SnapDetail/index";

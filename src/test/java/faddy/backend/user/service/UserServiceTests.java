@@ -1,14 +1,7 @@
 package faddy.backend.user.service;
 
 
-import faddy.backend.auth.infrastructure.WebSecurityConfig;
-import faddy.backend.global.Utils.RedisUtil;
-import faddy.backend.global.exception.BadRequestException;
-import faddy.backend.log.DBAccessTimeTraceAop;
-import faddy.backend.user.domain.Profile;
 import faddy.backend.user.domain.User;
-import faddy.backend.user.domain.UserLevel;
-import faddy.backend.user.domain.UserStatus;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
