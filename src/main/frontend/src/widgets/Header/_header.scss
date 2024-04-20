@@ -1,4 +1,5 @@
 .header__logo {
+    flex:1;
     display: flex;
     justify-content: space-between; /* 자식 요소들 사이에 공간을 균등하게 배분 */
     align-items: center; /* 자식 요소들을 세로 방향으로 가운데 정렬 */

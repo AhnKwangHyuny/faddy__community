@@ -1,14 +1,13 @@
-// BackButton.scss
+@import "shared/styles/mixins";
 
 .back-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex:1;
+  @include centerFlex();
   background-color: transparent;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  padding : 2px 4px 2px 4px;
+  padding: 2px 3px 2px 5px;
 
   &:hover {
     opacity: 0.8;
@@ -18,10 +17,27 @@
     padding-bottom: 30px;
 
     .back-button {
-      font-size: 35px;
-      color : #000000;
+      font-size: 20px;
+      font-weight: 100;
+      color: #000000;
+      font-weight: 300;
     }
-
   }
 
+}
+
+/** snap detail back button */
+.snap-detail__header .snap-detail__back-button {
+  padding : 0 5px 2px 3px;
+  flex:1;
+  display: flex;
+  justify-content: flex-start;
+
+  .back-button__wrapper {
+    @include centerFlex();
+    padding : 0;
+    .back-button {
+
+    }
+  }
 }

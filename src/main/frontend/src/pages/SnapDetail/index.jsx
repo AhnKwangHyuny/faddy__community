@@ -1,6 +1,6 @@
 import React from "react";
-
-import Header from "pages/SnapDetail/Components/Header/header";
+import ProfileFollowAction from "./Components/ProfileFollowAction/ProfileFollowAction";
+import Header from "pages/SnapDetail/Components/Header/Header"
 
 
 const SnapDetail = ({userId}) => {
@@ -8,6 +8,7 @@ const SnapDetail = ({userId}) => {
     return (
         <div id = {userId} className="main__body">
             <Header/>
+            <ProfileFollowAction/>
         </div>
     );
 
