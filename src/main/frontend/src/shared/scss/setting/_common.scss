@@ -1,7 +1,15 @@
+html {
+    overflow-x: hidden;
+}
+
+
 body {
     background-color: var(--white);
+    width: 100%;
+    overflow-x: hidden;
 //     color: var(--black);
 }
+
 
 // 섹션 공통 요소
 section:not(.snapDetail) {
@@ -100,4 +108,9 @@ section:not(.snapDetail) {
 //유저 motto
 .mto-1 {
     font-size: 0.7rem;
+}
+
+.mp-0 {
+    margin:0;
+    padding:0;
 }

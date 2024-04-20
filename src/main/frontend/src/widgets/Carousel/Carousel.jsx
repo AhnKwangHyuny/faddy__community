@@ -1,34 +1,57 @@
-import Carousel from 'react-bootstrap/Carousel';
-import ExampleCarouselImage from 'components/ExampleCarouselImage';
-
-function UncontrolledExample() {
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+function ImageCarousel() {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 600,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows:false,
+    };
     return (
-        <Carousel>
-            <Carousel.Item>
-                <ExampleCarouselImage text="First slide" />
-                <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-                <ExampleCarouselImage text="Second slide" />
-                <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-                <ExampleCarouselImage text="Third slide" />
-                <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                    </p>
-                </Carousel.Caption>
-            </Carousel.Item>
-        </Carousel>
+        <section className="carousel">
+            <Slider {...settings} className="mp-0">
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+
+                <div className="image">
+                    <div className="image__wrapper">
+                        <img src="/default_profile.jpg" alt="default image"/>
+                    </div>
+                </div>
+            </Slider>
+        </section>
     );
 }
 
-export default UncontrolledExample;
+export default ImageCarousel;

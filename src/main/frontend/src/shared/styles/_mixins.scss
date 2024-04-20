@@ -3,3 +3,13 @@
   align-items: center;
   justify-content: center;
 }
+
+@mixin fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 50px;
+  z-index: 1000; /* 다른 요소들 위에 보이도록 z-index 설정 */
+  background-color: #ffffff;
+}
