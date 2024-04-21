@@ -1,8 +1,17 @@
+/** display mixins */
+
 @mixin centerFlex {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+@mixin display_end__inMyBox {
+  display: flex;
+  align-items: center;
+  justify-content:flex-end;
+}
+
 
 @mixin fixed {
   position: fixed;

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+/** src 루트 폴더 아래 생성되는 모든 scss 등록*/
 // setting
 @import "setting/fonts";
 @import "setting/vars";
@@ -19,6 +19,9 @@
 @import "widgets/Button/button";
 @import "widgets/Button/FollowButton/followButton";
 @import "widgets/Carousel/carousel";
+@import "widgets/LikeButton/likeButton";
+@import "widgets/CommentButton/commentButton";
+@import "widgets/ShareButton/shareButton";
 
 /*
 page component
@@ -42,5 +45,9 @@ page component
 @import "shared/ui/Logo/logo";
 @import "../../pages/SnapDetail/Components/MenuIcons/menuIcons";
 
+/** feature */
+
+//interaction
+@import "features/Interaction/index";
 
 
