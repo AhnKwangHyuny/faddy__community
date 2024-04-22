@@ -20,9 +20,14 @@
 @import "widgets/Button/FollowButton/followButton";
 @import "widgets/Carousel/carousel";
 @import "widgets/LikeButton/likeButton";
-@import "widgets/CommentButton/commentButton";
+@import "../../widgets/Comment/CommentButton/commentButton";
 @import "widgets/ShareButton/shareButton";
-
+@import "widgets/HashtagViewer/hashtagViewer";
+@import "widgets/TextArea/textArea";
+@import "../../widgets/Comment/CommentInputBox/commentInputBox";
+@import "../../widgets/Modal/CommentModal/commentModal";
+@import "widgets/Comment/ReplyCommentCard/reflyCommentCard";
+@import "widgets/Comment/CommentCard/commentCard";
 /*
 page component
 */

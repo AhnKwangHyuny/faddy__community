@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import LikeButton from "widgets/LikeButton/LikeButton";
-import CommentButton from "widgets/CommentButton/CommentButton";
 import ShareButton from "widgets/ShareButton/ShareButton";
+import CommentButton from "widgets/Comment/CommentButton/CommentButton";
 
 const Interaction = () => {
     const [isLiked, setIsLiked] = useState(false);
