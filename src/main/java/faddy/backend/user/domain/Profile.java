@@ -24,7 +24,7 @@ public class Profile extends BaseEntity {
 
     @Column(name = "grade")
     @Enumerated(EnumType.STRING)
-    private UserLevel userLevel = UserLevel.LEVEL_1
+    private UserLevel userLevel = UserLevel.LEVEL_1;
 
     public Profile(String motto) {
         this.motto = motto;

@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import CommentModal from "widgets/Modal/CommentModal/CommentModal"
 
 const CommentInputBox = () => {
     const [showModal, setShowModal] = useState(false);
     const [comment, setComment] = useState('');
 
+    useEffect(() => {
+        if (showModal) {
+            document.body.classList.add('modal-open');
+        } else {
+            document.body.classList.remove('modal-open');
+        }
+    }, [showModal]);
+
     const handleOpenModal = () => {
         setShowModal(true);
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setComment('');
-    };
 
     const handleSubmitComment = () => {
         // 댓글 처리 로직 추가
-        handleCloseModal();
     };
 
     const handleCommentChange = (e) => {
@@ -24,16 +27,14 @@ const CommentInputBox = () => {
     };
 
     return (
-        <div className="comment-inputBox">
-            <div
-                className="comment-inputBox__wrapper"
-                onClick={showModal ? null : handleOpenModal}
-            >
+        <div className="comment-inputBox" onClick={showModal ? null : handleOpenModal}>
+
+            <div className="comment-inputBox__wrapper">
                 <div className="emoticon-box">
                     <div className="emoticon-icon">
-            <span className="material-icons button-icon">
-              sentiment_satisfied_alt
-            </span>
+                        <span className="material-icons button-icon">
+                          sentiment_satisfied_alt
+                        </span>
                     </div>
                 </div>
                 <div className="inputBox">
@@ -53,11 +54,8 @@ const CommentInputBox = () => {
                 </div>
             </div>
             <CommentModal
-                isOpen={showModal}
-                onClose={handleCloseModal}
-                onSubmit={handleSubmitComment}
-                comment={comment}
-                setComment={setComment}
+                showModal={showModal}
+                setShowModal={setShowModal}
             />
         </div>
     );

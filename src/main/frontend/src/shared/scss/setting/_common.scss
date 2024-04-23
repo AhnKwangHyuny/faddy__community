@@ -1,5 +1,13 @@
+html, body {
+    overscroll-behavior: none;
+}
+
 html {
     overflow-x: hidden;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 
@@ -7,7 +15,7 @@ body {
     background-color: var(--white);
     width: 100%;
     overflow-x: hidden;
-//     color: var(--black);
+
 }
 
 
