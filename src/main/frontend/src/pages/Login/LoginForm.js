@@ -96,8 +96,8 @@ function LoginForm() {
           <ForgotLink>아이디 / 비밀번호 찾기</ForgotLink>
           <ProviderContainer>
             <ProviderLogo src="https://cdn.builder.io/api/v1/image/assets/TEMP/10fd1fa74f83c31c1287c86f02a1f88e476f6d5e3e201af9f94da0625e06de3b?apiKey=a65641faa3d54339891445c030384eb2&" />
-            <button type="submit">
-              <ProviderText>회원가입</ProviderText>
+            <button type="submit" style={{backgroundColor: 'black'}}>
+              <ProviderText>로그인</ProviderText>
             </button>
           </ProviderContainer>
 

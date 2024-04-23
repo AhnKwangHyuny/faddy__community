@@ -1,5 +1,6 @@
 package faddy.backend.image.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.snap.domain.Snap;
 import jakarta.persistence.*;
@@ -33,6 +34,7 @@ public class Image extends BaseEntity {
     @Column(name = "image_format", nullable = false)
     private String format; // e.g., "jpeg", "png", etc.
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "snap_id")
     private Snap snap;

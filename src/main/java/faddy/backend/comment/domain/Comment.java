@@ -61,7 +61,6 @@ public class Comment extends BaseEntity {
     //댓글 수정
     public void edit(String content) {
         this.content = content;
-        this.updated_at = LocalDateTime.now();
     }
 
 }

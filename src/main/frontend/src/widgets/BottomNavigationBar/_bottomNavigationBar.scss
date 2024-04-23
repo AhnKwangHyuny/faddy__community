@@ -8,11 +8,11 @@
     z-index: 1000;
 
     .nav__bar {
-        width : inherit !important;
-        height : 60px;
+        width: inherit !important;
+        height: 60px;
 
         .item__list {
-            height : inherit;
+            height: inherit;
             list-style: none;
             padding: 0;
             margin: 0;
@@ -25,7 +25,7 @@
                 flex: 1;
                 margin: 0;
                 padding: 0;
-                display : flex;
+                display: flex;
                 padding-top: 10px;
 
                 .item__container {
@@ -40,9 +40,10 @@
 
                     .icon__container {
                         font-size: 20px;
-                        margin-bottom:0;
-                        width : 20px;
+                        margin-bottom: 0;
+                        width: 20px;
                         height: 20px;
+
                     }
 
                     .menu__name {
@@ -52,8 +53,11 @@
                     }
                 }
 
+                a {
+                    text-decoration: none;
+                    color: inherit;
+                }
             }
         }
-
     }
 }

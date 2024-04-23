@@ -10,14 +10,14 @@ export const UploadImage = async (event) => {
         return alert('파일이 업로드되지 않았습니다.');
     }
 
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
-        return alert('파일 크기가 5MB를 초과합니다.');
-    }
+        alert('파일 크기가 5MB를 초과합니다.');
 
+        return;
+    }
     const formData = new FormData();
 
-    // 파일 하나만 추가
     formData.append('image', file);
 
     try {

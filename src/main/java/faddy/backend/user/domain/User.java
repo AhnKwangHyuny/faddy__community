@@ -1,5 +1,6 @@
 package faddy.backend.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.auth.domain.EmailVerifications;
 import faddy.backend.auth.domain.SocialLogin;
 import faddy.backend.global.BaseEntity;
@@ -44,7 +45,7 @@ public class User extends BaseEntity  {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     private List<Snap> snaps = new ArrayList<>();
 

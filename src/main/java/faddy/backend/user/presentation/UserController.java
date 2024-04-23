@@ -8,6 +8,7 @@ import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ExceptionResponse;
 import faddy.backend.user.dto.request.SignupInfoDto;
+import faddy.backend.user.dto.response.UserIdDto;
 import faddy.backend.user.repository.UserRepository;
 import faddy.backend.user.service.UserService;
 import io.micrometer.common.util.StringUtils;
@@ -143,8 +144,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "서버에 해당 유저 아이디 존재하는지 확인", notes = "있으면 ok , 없으면 bad request")
-    @GetMapping("/check-userId")
-    public ResponseEntity<String> checkUserId(@RequestBody String userId) {
+    @PostMapping("/check-userId")
+    public ResponseEntity<String> checkUserId(@RequestBody UserIdDto userIdDto) {
+
+        String userId = userIdDto.getUserId();
+        
         if(userService.checkEncrptedUserIdExists(userId)) {
             return ResponseEntity.ok("User ID exists.");
         }

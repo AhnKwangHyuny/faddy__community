@@ -6,6 +6,7 @@ import SnapCategory from "pages/Snap/Components/SnapCategory/SnapCategory";
 import { useState } from "react";
 import { useAuth } from "shared/context/AuthContext";
 import uploadSnap from "../../features/snap/UploadSnap";
+import {useNavigate} from "react-router-dom";
 
 const Snap = () => {
     const [imageList, setImageList] = useState([]);
@@ -13,15 +14,22 @@ const Snap = () => {
     const [tags, setTags] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState({});
     const { userId } = useAuth();
-
+    const navigate = new useNavigate();
     const handleUploadSnap = async () => {
+
+
         try {
             const result = await uploadSnap(userId, imageList, description, tags, selectedCategories);
             if (result.success) {
-                // snap details로 이동
+                // snap 포스팅 성공 시 메인 페이지로 이동
+                navigate("/styleShare");
             } else {
                 // Handle error, e.g., display an error message
                 console.error(result.error);
+                alert("스냅 포스팅을 실패했습니다. 다시 작성해주세요.");
+
+                // 현재 스냅 작성하는 페이지로 다시 리다이렉트
+                window.location.reload();
             }
         } catch (error) {
             console.error("Error uploading SNS post:", error);

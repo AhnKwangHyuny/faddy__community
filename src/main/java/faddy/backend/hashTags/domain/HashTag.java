@@ -1,5 +1,6 @@
 package faddy.backend.hashTags.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.type.ContentType;
@@ -23,6 +24,7 @@ public class HashTag extends BaseEntity {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "snap_id" )
     private Snap snap;
 

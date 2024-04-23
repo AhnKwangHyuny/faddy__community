@@ -9,7 +9,6 @@ function StyleShare() {
         <Layout>
             <section id="StyleShare__main__section">
                 <TrendSnapCardList/>
-
                 <HighlightSnapCard/>
             </section>
         </Layout>

@@ -96,6 +96,7 @@ public class JwtUtil {
             // check sign validation
 
             String username = claims.getBody().getSubject();
+
             if (username == null || username.isEmpty()) {
                 return false;
             }

@@ -2,10 +2,10 @@ import axios from 'axios';
 import {isValidCategories, isValidDescription, isValidTags, isValidUserId} from 'utils/snap/SnapDataValidation';
 import {userRequestInstance} from "api/axiosInstance";
 import {END_POINTS} from "constants/api";
+import {uploadSnap} from "../../api/post";
 
 const UploadSnap = async (userId, imageList, description, tags, selectedCategories) => {
     try {
-
         /*** 입력 데이터 유효성 검사 */
         if (!isValidUserId(userId.userId)) {
             throw new Error('Invalid user ID');
@@ -24,6 +24,8 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
             alert("해시태그 입력은 필수입니다!");
             return;
         }
+
+
         if (!isValidCategories(selectedCategories)) {
             //카테고리고 커서 이동
             alert("카테고리 선택은 필수입니다!");
@@ -54,11 +56,8 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
 
         // Snap 생성 requestBody data set
         const snapData = { description, userId , hashTagIds, categoryIds, imageList };
-        console.log(snapData);
 
-        const response = await userRequestInstance.post(END_POINTS.POST_SNAP , snapData );
-
-        console.log(response);
+        const response = await uploadSnap(snapData);
 
         const snapId = response.data.id;
 

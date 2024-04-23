@@ -38,6 +38,7 @@ public class SnapPostingService {
 
         // userId로 해당 user entity 찾기
         Long userId = userIdEncryptionUtil.decryptUserId(requestDto.getUserId());
+        System.out.println("userId = " + userId);
 
         User writer = userService.getUserById(userId);
 

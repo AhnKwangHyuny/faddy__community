@@ -22,7 +22,6 @@ export const saveImages = async (files) => {
 }
 
 export const saveImage = async (formData) => {
-
     return await userRequestInstance.post(END_POINTS.UPLOAD_IMAGE , formData , {
         headers: {
             'content-Type': 'multipart/form-data',
@@ -30,5 +29,9 @@ export const saveImage = async (formData) => {
     });
 }
 
+export const uploadSnap =  async (snapData) => {
+
+    return await userRequestInstance.post(END_POINTS.POST_SNAP , snapData );
+}
 
 

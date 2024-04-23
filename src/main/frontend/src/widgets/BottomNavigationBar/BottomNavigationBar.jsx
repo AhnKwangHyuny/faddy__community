@@ -16,50 +16,44 @@ export default function BottomNavigationBar() {
             <nav className="nav__bar">
                 <ul className="item__list">
                     <li className="item">
-                        <div className="item__container">
+                        <Link to="/styleShare" className="item__container">
                             <div className="icon__container">
-                                <FontAwesomeIcon icon={faHouse} />
+                                <FontAwesomeIcon icon={faHouse} className="icon"/>
                             </div>
                             <div className="menu__name">Home</div>
-                        </div>
+                        </Link>
                     </li>
-
-                    <Link to = "/snaps">
-                        <li className="item">
-                                <div className="item__container">
-                                    <div className="icon__container">
-                                        <FontAwesomeIcon icon={faCamera} />
-                                    </div>
-                                    <div className="menu__name">Snap</div>
-                                </div>
-                        </li>
-                    </Link>
-
                     <li className="item">
-                        <div className="item__container">
+                        <Link to="/snaps" className="item__container">
                             <div className="icon__container">
-                                <FontAwesomeIcon icon={faComments} />
+                                <FontAwesomeIcon icon={faCamera} className="icon"/>
+                            </div>
+                            <div className="menu__name">Snap</div>
+                        </Link>
+                    </li>
+                    <li className="item">
+                        <Link to="/talks" className="item__container">
+                            <div className="icon__container">
+                                <FontAwesomeIcon icon={faComments} className="icon"/>
                             </div>
                             <div className="menu__name">Talk</div>
-                        </div>
+                        </Link>
                     </li>
-
                     <li className="item">
-                        <div className="item__container">
+                        <Link to="/talks" className="item__container">
                             <div className="icon__container">
-                                <FontAwesomeIcon icon={faComments} />
+                                <FontAwesomeIcon icon={faComments} className="icon"/>
                             </div>
                             <div className="menu__name">Talk</div>
-                        </div>
+                        </Link>
                     </li>
-
                     <li className="item">
-                        <div className="item__container">
+                        <Link to="/myPage" className="item__container">
                             <div className="icon__container">
-                                <FontAwesomeIcon icon={faUser} />
+                                <FontAwesomeIcon icon={faUser} className="icon"/>
                             </div>
                             <div className="menu__name">My</div>
-                        </div>
+                        </Link>
                     </li>
                 </ul>
             </nav>

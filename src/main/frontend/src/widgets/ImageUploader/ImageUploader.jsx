@@ -11,11 +11,12 @@ const ImageUploader = ({imageList , setImageList}) => {
         imageInputRef.current.click();
     };
 
-    // 이미지 업로드 메소드
+    /**이미지 서버로 전송 api*/
     const handleUploadImage = async (event) => {
         const config = await UploadImage(event);
-
+        console.log(config);
         const uploadedImageInfo = config.data;
+
 
         if (!uploadedImageInfo || typeof uploadedImageInfo !== 'object') {
             return alert("사진을 불러오는데 실패했습니다. ");
