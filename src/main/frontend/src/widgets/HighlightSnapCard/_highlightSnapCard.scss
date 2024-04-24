@@ -1,20 +1,21 @@
 // 변수 선언
-$thumbnail-width: 175px;
-$Thumbnail-height: 234px;
+$thumbnail-width: 182px;
+$Thumbnail-height: 243px;
 $Icon-size: 16px;
 
 
 .snap__root {
     width:auto;
     height: auto;
-    padding: 10px 12px 0px;
+    padding-top : 10px;
     box-sizing: border-box;
-    gap: 281px;
     letter-spacing: normal;
     text-align: left;
     font-size: 12px;
     color: #000;
     font-family: Inter;
+    margin-right: 16px;
+
 
     .thumbnail__container {
         width: $thumbnail-width;

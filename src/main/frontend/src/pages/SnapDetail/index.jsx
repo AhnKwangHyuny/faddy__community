@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileFollowAction from "./Components/ProfileFollowAction/ProfileFollowAction";
 import Header from "pages/SnapDetail/Components/Header/Header"
-import ImageCarousel from "widgets/Carousel/Carousel";
+import {ImageCarouselWithHTML} from "widgets/Carousel/Carousel";
 import Interaction from "features/interaction";
 import HashtagViewer from "widgets/HashtagViewer/HashtagViewer";
 import TextArea from "widgets/TextArea/TextArea";
@@ -14,12 +14,23 @@ const SnapDetail = ({userId}) => {
 저녁에는 친구들과 만나서 저녁 식사를 할 예정입니다.
 정말 기대됩니다!`;
 
+    const testSetting = {
+        dots: true,
+        infinite: true,
+        speed: 600,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows:false,
+    };
+
+    const testDataList = Array.from({ length: 6 }, () => <img src="/default_profile.jpg" alt="default image"/>);
+
     return (
         <div>
-        <Header/>
-        <div id = {userId} className="main__body">
+            <Header/>
+            <div id={userId} className="main__body">
             <ProfileFollowAction/>
-            <ImageCarousel/>
+            <ImageCarouselWithHTML setting= {testSetting} htmlList = {testDataList}/>
         </div>
         <Interaction/>
         <HashtagViewer hashtagList={['나이키', '한정판', '황금돼지띠', '킴미히']}/>

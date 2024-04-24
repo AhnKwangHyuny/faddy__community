@@ -18,9 +18,14 @@ body {
 
 }
 
+#style-share {
+    padding-bottom: 60px; /* 메뉴바의 높이만큼 패딩 추가 */
+    min-height: calc(100vh - 60px); /* 뷰포트 높이에서 메뉴바 높이 빼기 */
+}
+
 
 // 섹션 공통 요소
-section:not(.snapDetail) {
+section:not(.snapDetail, #style-share) {
     padding: 40px;
 
     @media (max-width: 800px){

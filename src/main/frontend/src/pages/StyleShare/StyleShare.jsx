@@ -1,15 +1,16 @@
 import Layout from 'widgets/Layout/Layout';
-import HighlightSnapCard from "widgets/HighlightSnapCard/HighlightSnapCard";
-import TrendSnapCardList from "pages/StyleShare/TrendSnapCardList";
+import TrendSnapCardList from "pages/StyleShare/components/TrendSnapList/TrendSnapList";
+import React from "react";
+import SnapSortingButton from "pages/StyleShare/components/SnapSortingButton/SnapSortingButton";
 
 
 function StyleShare() {
 
     return (
         <Layout>
-            <section id="StyleShare__main__section">
+            <section id="style-share">
                 <TrendSnapCardList/>
-                <HighlightSnapCard/>
+                <SnapSortingButton/>
             </section>
         </Layout>
       );

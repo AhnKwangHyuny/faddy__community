@@ -40,10 +40,18 @@ page component
 @import "../../pages/SnapDetail/Components/ProfileFollowAction/profileFollowAction";
 @import "pages/snapDetail/Components/Header/header";
 
- // pages style
+/**pages style*/
+
+//styleShare (main page)
 @import "pages/StyleShare/styleShare";
+@import "pages/StyleShare/components/SnapSortingButton/snapSortingButton";
+
+
 @import "pages/Snap/index";
 @import "pages/SnapDetail/index";
+
+// StyleShare (main page)
+@import "pages/StyleShare/components/TrendSnapList/trendSnapList";
 
 // shared ui
 @import "shared/ui/MoreIcon/moreIcon";
