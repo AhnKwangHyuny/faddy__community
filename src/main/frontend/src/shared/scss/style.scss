@@ -53,12 +53,16 @@ page component
 // StyleShare (main page)
 @import "pages/StyleShare/components/TrendSnapList/trendSnapList";
 
-// shared ui
+/**shared ui*/
 @import "shared/ui/MoreIcon/moreIcon";
 @import "shared/ui/Logo/logo";
 @import "../../pages/SnapDetail/Components/MenuIcons/menuIcons";
 
 /** feature */
+
+//sorting menu
+@import "features/Sorting/SortingMenu/sortingMenu";
+@import "features/Sorting/SortingMenu/sortingMenu";
 
 //interaction
 @import "features/Interaction/index";

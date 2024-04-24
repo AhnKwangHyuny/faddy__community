@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Filter from "widgets/Filter/Filter";
-import { snap_category } from "data/category";
+import { snapCategoryData } from "data/category";
 
 const SnapCategory = ({ selectedCategories, setSelectedCategories }) => {
 
-    const categoryProps = snap_category.reduce((acc, cur) => {
-        acc[cur.group] = cur.items;
+    const categoryProps = snapCategoryData.reduce((acc, cur) => {
+        acc[cur.label] = cur.subCategories;
         return acc;
     }, {});
 
