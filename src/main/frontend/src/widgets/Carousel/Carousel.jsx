@@ -5,19 +5,11 @@ import "slick-carousel/slick/slick-theme.css";
 import HighlightSnapCard from "widgets/HighlightSnapCard/HighlightSnapCard";
 
 function ImageCarouselWithComponents({ settings, componentList }) {
-    const defaultSettings = {
-        dots: true,
-        infinite: true,
-        speed: 600,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        ...settings,
-    };
+    const customSettings = customSettings(settings)
 
     return (
         <section className="carousel">
-            <Slider {...defaultSettings} className="mp-0">
+            <Slider {...customSettings} className="mp-0">
                 {componentList.map((Component, index) => (
                     <div className="image" key={`component-${index}`}>
                         <div className="image__wrapper">

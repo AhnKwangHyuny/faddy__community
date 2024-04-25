@@ -28,10 +28,12 @@
 @import "../../widgets/Modal/CommentModal/commentModal";
 @import "widgets/Comment/ReplyCommentCard/reflyCommentCard";
 @import "../../widgets/Comment/CommentCard/commentCard";
-/*
-page component
-*/
+@import "widgets/TaggingImage/taggingImage";
 
+//Snap Components
+@import "widgets/Snap/Thumbnail/thumbnail";
+
+/**page component*/
 // snap
 @import "pages/Snap/Components/Description/description";
 @import "pages/Snap/Components/HashTagBox/hashTagBox";
@@ -40,8 +42,12 @@ page component
 @import "../../pages/SnapDetail/Components/ProfileFollowAction/profileFollowAction";
 @import "pages/snapDetail/Components/Header/header";
 
-/**pages style*/
+/**features components*/
+//thumbnail-card
+@import "features/Thumbnail/ThumbnailList/thumbnailList";
 
+
+/**pages style*/
 //styleShare (main page)
 @import "pages/StyleShare/styleShare";
 @import "pages/StyleShare/components/SnapSortingButton/snapSortingButton";

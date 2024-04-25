@@ -1,20 +1,9 @@
 import {ImageCarouselWithSnapCards} from "widgets/Carousel/Carousel";
+import {trendingSnapCarouselSettings} from "widgets/Carousel/carouselSetting";
 
 function TrendingSnapCard() {
 
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 700,
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        arrows: false,
-        draggable: true, // enable drag and drop
-        // swipeToSlide: true, // enable swipe gesture
-        initialSlide: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-    };
+
 
     const snapDataList = [
         {
@@ -66,7 +55,7 @@ function TrendingSnapCard() {
             </div>
 
             <div className = "trend-snap-list">
-                <ImageCarouselWithSnapCards settings={settings} snapDataList={snapDataList}/>
+                <ImageCarouselWithSnapCards settings={trendingSnapCarouselSettings} snapDataList={snapDataList}/>
             </div>
         </section>
     );
