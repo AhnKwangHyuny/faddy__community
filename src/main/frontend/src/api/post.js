@@ -34,4 +34,12 @@ export const uploadSnap =  async (snapData) => {
     return await userRequestInstance.post(END_POINTS.POST_SNAP , snapData );
 }
 
+export const reissueToken = (refreshToken) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${refreshToken}`,
+        }
+    }
 
+    return userRequestInstance.post(END_POINTS.REISSUE_TOKEN , config);
+}

@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import {userRequestInstance} from "../api/axiosInstance";
+import React, {useEffect, useState} from 'react';
+import {Navigate, useNavigate} from 'react-router-dom';
+import {checkAuthStatus} from "utils/auth/checkAuthStatus";
 
-
-// 인증 상태 확인 함수
-const checkAuthStatus = async () => {
-    try {
-        const token = localStorage.getItem('ACCESS_TOKEN');
-        if (!token) {
-            return false;
-        }
-        const response = await userRequestInstance.get('/api/v1/auths/verify-token');
-
-        // 인증 성공 시 true 반환
-        return response.status === 200;
-
-    } catch (error) {
-        // 403 에러 발생으로 userRequesrInstance에서 response intercept
-        console.log(error);
-        return false;
-    }
-};
 
 // 인증된 사용자만 접근 가능한 컴포넌트를 위한 보호된 경로 컴포넌트
 const ProtectedRoute = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+    const [isAuthenticated , setIsAuthenticated ] = useState(null);
+    const navigate = useNavigate();
+    //토큰 검증 함수
+    /**user authentication 유효성 검증 요청*/
+    const verifyAuth = async () => {
+
+        //유저 토큰 유효한지 확인 (로그인 상태 유지 : true , 토큰 만료 및 유효하지 않음 : false)
+        const isVerified = await checkAuthStatus(navigate);
+
+        //isAuthenticated 에 현재 유저 상태 반환
+        setIsAuthenticated(isVerified);
+
+    };
 
     useEffect(() => {
-        const verifyAuth = async () => {
-            const authStatus = await checkAuthStatus();
-            setIsAuthenticated(authStatus);
-        };
 
         verifyAuth();
 
@@ -41,6 +31,7 @@ const ProtectedRoute = ({ children }) => {
         return <div>인증 확인 중...</div>;
     }
 
+    // 유저 로그인 상태가 유효하면 children component 렌더링
     return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

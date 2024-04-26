@@ -6,7 +6,7 @@ export const DEVICE = process.env.NODE_DEVICE  === 'DESKTOP';
 
 export const API_PATH = '/api';
 export const API_USER = '/api/v1/users';
-export const API_AUTH = '/api/v1/auth';
+export const API_AUTH = '/api/v1/auths';
 export const API_AUTH_CODE = '/api/v1/auth-codes';
 
 export const API_IMAGE = '/api/images';
@@ -18,11 +18,11 @@ export const API_SNAP  = 'api/v1/snaps';
 export const API_CATEGORY  = 'api/v1/categories';
 
 export const BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.53:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.38:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 export const AXIOS_BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.53:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.38:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 
@@ -41,6 +41,10 @@ export const END_POINTS = {
   CHECK_USER_NICKNAME :`${API_USER}/check-duplication/nickname`,
   GET_USER_ID : `${API_USER}/userId`,
   CHECK_USER_ID_EXISTS : `${API_USER}/check-userId`,
+
+  //token API
+  REISSUE_TOKEN : `${API_AUTH}/reissue-token`,
+  VERIFY_TOKEN : `${API_AUTH}/verify-token`,
 
   //SIGN UP API
   SIGN_UP : `${API_USER}`,

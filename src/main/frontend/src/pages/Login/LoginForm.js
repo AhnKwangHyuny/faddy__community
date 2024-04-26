@@ -54,7 +54,6 @@ function LoginForm() {
       // 로그인 유저 id authContext에 저장
       const userIdResponse = await getUserId(username);
       const userId = userIdResponse.data.data;
-      console.log(userId);
 
       login(userId);
 

@@ -1,5 +1,4 @@
 
-
 // 토큰 갱신 요청 (refresh-token)
 import {userRequestInstance} from "./axiosInstance";
 import {END_POINTS} from "../constants/api";
@@ -29,3 +28,15 @@ export const checkUserIdExists = async (userId) => {
     return await userRequestInstance.post(END_POINTS.CHECK_USER_ID_EXISTS,requestBody , config);
 
 };
+
+
+
+export const verifyToken = (accessToken) => {
+    const config = {
+        headers : {
+            'Authentication': `Bearer ${accessToken}`,
+        }
+    }
+
+    return userRequestInstance.get(END_POINTS.VERIFY_TOKEN , config);
+}
