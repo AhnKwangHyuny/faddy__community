@@ -3,6 +3,7 @@ package faddy.backend.user.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.auth.domain.EmailVerifications;
 import faddy.backend.auth.domain.SocialLogin;
+import faddy.backend.follows.domain.Follow;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.ExceptionCode;
@@ -73,6 +74,13 @@ public class User extends BaseEntity  {
 
     @Enumerated(value = STRING)
     private Authority authority;
+
+    // User.java
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    private List<Follow> followings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL)
+    private List<Follow> followers = new ArrayList<>();
 
 
     /**
