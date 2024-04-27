@@ -7,11 +7,7 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [userId, setUserId] = useState(null);
-
-    useEffect(() => {
-        console.log(userId);
-    }, [userId]);
+    const [userId, setUserId] = useState(localStorage.getItem("userId")||null);
 
     const login = (userId) => {
         // 사용자 정보 생성

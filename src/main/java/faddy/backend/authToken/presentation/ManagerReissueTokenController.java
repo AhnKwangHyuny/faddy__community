@@ -1,19 +1,16 @@
 package faddy.backend.authToken.presentation;
 
 import faddy.backend.auth.api.response.AuthTokensResponse;
+import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.authToken.service.ManagerReissueTokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import static org.springframework.boot.web.server.Cookie.SameSite.NONE;
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 
 @RequiredArgsConstructor
@@ -23,19 +20,27 @@ public class ManagerReissueTokenController {
 
     private final ManagerReissueTokenService managerReissueTokenService;
 
-    @GetMapping("/reissue-token")
-    public ResponseEntity<AuthTokensResponse> reissueToken(
-            @CookieValue(name = "REFRESH_TOKEN") String refreshToken,
+    private final JwtUtil jwtUtil;
+
+    private final String ERROR_MESSAGE = "톤큰이 존재하지 않거나 유효한 토큰 형식이 아닙니다.";
+
+    @PostMapping("/reissue-token")
+    public ResponseEntity reissueToken(
+            HttpServletRequest request,
             HttpServletResponse response
     ) {
+        // 1. 요청 헤더에서 Authorization 헤더 값 가져오기
+        String refreshToken = jwtUtil.extractRawToken(request.getHeader("Authorization"));
+
+        if(refreshToken == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ERROR_MESSAGE);
+        }
+
+        // 2. 서비스 단에서 토큰 재발급 로직 수행 (새 access , refresh 토큰 반환)
         AuthTokensResponse tokenResponse = managerReissueTokenService.reissueToken(refreshToken);
-        ResponseCookie cookie = ResponseCookie.from("REFRESH_TOKEN", tokenResponse.getRefreshToken())
-                .httpOnly(true)
-                .secure(true)
-                .path("/api/auth-tokens-reissue-token")
-                .sameSite(NONE.attributeValue())
-                .build();
-        response.addHeader(SET_COOKIE, cookie.toString());
+
         return ResponseEntity.ok(tokenResponse);
     }
 }

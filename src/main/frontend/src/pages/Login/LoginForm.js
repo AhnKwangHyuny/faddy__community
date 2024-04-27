@@ -55,6 +55,8 @@ function LoginForm() {
       const userIdResponse = await getUserId(username);
       const userId = userIdResponse.data.data;
 
+      // 암호화된 유저 아이디 세션에 저장
+      localStorage.setItem("userId" , userId);
       login(userId);
 
       navigate("/styleShare");

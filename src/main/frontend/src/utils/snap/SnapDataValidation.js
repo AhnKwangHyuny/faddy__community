@@ -21,18 +21,27 @@ export const isValidCategories = (selectedCategories) => {
     // snap_category에서 categoryGroup와 일치하는 카테고리를 찾고 없다면 false 반환
     return Object.entries(selectedCategories).every(([categoryGroup, selectedItem]) => {
         const matchingCategory = snapCategoryData.find(c => c.label === categoryGroup);
+
+        // matchingCategory가 undefined인 경우 false 반환
         if (!matchingCategory) {
             return false;
         }
-        return matchingCategory.items.includes(selectedItem);
+        return matchingCategory.subCategories.includes(selectedItem);
     });
 };
 
-export const isValidUserId = (userId) => {
+export const isValidUserId = async (userId) => {
     // 사용자 ID 유효성 검사 로직 구현
+    if (!(typeof userId === 'string' && userId !== "")) {
+        return false;
+    }
 
-    // db에 사용자 있는지 확인
-    checkUserIdExists(userId);
+    try {
+        // db에 사용자 있는지 확인
+        const response = await checkUserIdExists(userId);
 
-    return typeof userId === 'string' && userId !== "";
+        return response.status === 200;
+    } catch (error) {
+        return false;
+    }
 };

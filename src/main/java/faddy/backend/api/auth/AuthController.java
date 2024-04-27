@@ -96,6 +96,7 @@ public class AuthController {
 
         // 토큰 검증 결과 (jwtFilter에서 토큰 검증)
         Boolean isValid = (Boolean) request.getAttribute("isTokenValid");
+
         System.out.println("isValid = " + isValid);
         // 초큰이 유효하지 않을 경우 403 error response
         if (isValid == null || !isValid) {

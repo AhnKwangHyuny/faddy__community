@@ -6,6 +6,7 @@ import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -21,12 +22,14 @@ public class Follow extends BaseEntity {
     @Column(name = "follow_id", nullable = false)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "follower_id", nullable = false)
     private User follower;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "followed_id", nullable = false)
     private User followed;
 
     @Enumerated(EnumType.STRING)

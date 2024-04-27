@@ -42,7 +42,7 @@ const refreshTokenAndSaveNewTokens = async (refreshToken) => {
     try {
         const response = await reissueToken(refreshToken);
         if (response.status !== 200) {
-            console.log(response);
+
             return false;
         }
         const { accessToken, refreshToken: newRefreshToken } = response.data;
@@ -57,7 +57,7 @@ const refreshTokenAndSaveNewTokens = async (refreshToken) => {
 const isVerifiedToken = async (accessToken) => {
     try {
         const response = await verifyToken(accessToken);
-        console.log(response);
+
         if(response.status === 200) {
             return true;
         }

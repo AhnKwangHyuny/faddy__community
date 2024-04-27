@@ -3,10 +3,12 @@ import ImageUploader from "widgets/ImageUploader/ImageUploader";
 import Description from "pages/Snap/Components/Description/Description";
 import HashTagBox from "./Components/HashTagBox/HashTagBox";
 import SnapCategory from "pages/Snap/Components/SnapCategory/SnapCategory";
-import { useState } from "react";
-import { useAuth } from "shared/context/AuthContext";
-import uploadSnap from "../../features/snap/UploadSnap";
+import {useState} from "react";
+import {useAuth} from "shared/context/AuthContext";
+import uploadSnap from "features/snap/UploadSnap";
 import {useNavigate} from "react-router-dom";
+import useResourceCleanup from "shared/hooks/useResourceCleanup";
+import {deleteImageList} from "utils/Image/ImageUtils";
 
 const Snap = () => {
     const [imageList, setImageList] = useState([]);
@@ -14,10 +16,9 @@ const Snap = () => {
     const [tags, setTags] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState({});
     const { userId } = useAuth();
+
     const navigate = new useNavigate();
     const handleUploadSnap = async () => {
-
-
         try {
             const result = await uploadSnap(userId, imageList, description, tags, selectedCategories);
             if (result.success) {
@@ -35,6 +36,10 @@ const Snap = () => {
             console.error("Error uploading SNS post:", error);
         }
     };
+
+    //s3 image 저장 후 리로딩 시 (리다이렉트) image삭제 요청
+    useResourceCleanup(imageList , deleteImageList);
+
 
     return (
         <section className="main__body">

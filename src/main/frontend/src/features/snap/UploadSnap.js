@@ -7,7 +7,9 @@ import {uploadSnap} from "../../api/post";
 const UploadSnap = async (userId, imageList, description, tags, selectedCategories) => {
     try {
         /*** 입력 데이터 유효성 검사 */
-        if (!isValidUserId(userId.userId)) {
+        const isValidUser = await isValidUserId(userId);
+
+        if (!isValidUser) {
             throw new Error('Invalid user ID');
             window.location.replace('/login');
         }
@@ -39,7 +41,7 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
         }
 
         const hashTagIds = await createTags(hashTagRequestData);
-
+        console.log(hashTagIds);
         // 카테고리 엔티티 생성 및 ID 목록 받아오기
         const categoryPairs = {
             contentType : "SNAP",
@@ -48,15 +50,12 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
             }))
         }
         const categoryIds = await createCategories(categoryPairs);
-
         // requestBody에 담을 데이터 서버 측 dto에 맞게 가공
-        userId = userId.userId;
 
         imageList = imageList.map(({format, originalName, size, ...rest}) => rest);
 
         // Snap 생성 requestBody data set
         const snapData = { description, userId , hashTagIds, categoryIds, imageList };
-
         const response = await uploadSnap(snapData);
 
         const snapId = response.data.id;

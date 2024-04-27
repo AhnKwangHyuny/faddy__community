@@ -46,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
         // Bear 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
 
-        log.info("token : " + token);
 
         if (token == null) {
             log.warn(" token not exists");
