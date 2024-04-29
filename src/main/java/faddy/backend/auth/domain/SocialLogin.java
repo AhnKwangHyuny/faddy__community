@@ -13,9 +13,9 @@ public class SocialLogin extends BaseEntity {
     @Column(name = "social_login_id", nullable = false)
     private int socialLoginId;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @OneToOne(cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
 
     @Column(name = "social_code")

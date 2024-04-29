@@ -1,7 +1,7 @@
 package faddy.backend.snap.presentation;
 
-import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.domain.dto.request.CreateSnapRequestDto;
+import faddy.backend.snap.domain.dto.response.SnapIdResponse;
 import faddy.backend.snap.service.SnapPostingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,11 +26,11 @@ public class SnapPostingController {
 
     @ApiOperation(value = "새로운 스냅 포스팅", notes = "포스팅 데이터를 클라이언트에게 받아 만든 snap entity를 db에 저장한다.")
     @PostMapping
-    public ResponseEntity<Snap> createSnap(@RequestBody @Valid CreateSnapRequestDto request) {
+    public ResponseEntity<SnapIdResponse> createSnap(@RequestBody @Valid CreateSnapRequestDto request) throws Exception {
 
         // snap생성 후 엔티티 반환
-        Snap snap = snapUploadService.createSnap(request);
+        String snapToken = snapUploadService.createSnap(request);
 
-        return ResponseEntity.ok().body(snap);
+        return ResponseEntity.ok().body(new SnapIdResponse(snapToken));
     }
 }

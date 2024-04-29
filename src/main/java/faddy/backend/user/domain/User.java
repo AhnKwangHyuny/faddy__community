@@ -1,8 +1,6 @@
 package faddy.backend.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import faddy.backend.auth.domain.EmailVerifications;
-import faddy.backend.auth.domain.SocialLogin;
 import faddy.backend.follows.domain.Follow;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.global.exception.AuthorizationException;
@@ -11,13 +9,9 @@ import faddy.backend.snap.domain.Snap;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -50,11 +44,11 @@ public class User extends BaseEntity  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     private List<Snap> snaps = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
-    private EmailVerifications emailVerifications;
+//    @OneToOne(mappedBy = "user")
+//    private EmailVerifications emailVerifications; (보류)
 
-    @OneToOne(mappedBy = "user")
-    private SocialLogin socialLogin;
+//    @OneToOne(mappedBy = "user")
+//    private SocialLogin socialLogin;
 
     @Column(name = "username", length = 128, unique = true, nullable = false)
     private String username;

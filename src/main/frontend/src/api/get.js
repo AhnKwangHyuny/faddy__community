@@ -40,3 +40,20 @@ export const verifyToken = (accessToken) => {
 
     return userRequestInstance.get(END_POINTS.VERIFY_TOKEN , config);
 }
+
+/**스냅 데이터 가져오기*/
+export const getSnapData = async (snapId) => {
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: {
+            snapId: snapId
+        }
+    }
+
+    const response =  await userRequestInstance.get(END_POINTS.SNAP_DETAIL , config);
+
+    console.log(response);
+};

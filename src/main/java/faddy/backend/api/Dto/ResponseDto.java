@@ -2,6 +2,7 @@ package faddy.backend.api.Dto;
 
 
 import lombok.*;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @Builder
@@ -28,5 +29,9 @@ public class ResponseDto<T> {
                 .responseMessage(responseMessage)
                 .data(data)
                 .build();
+    }
+
+    public static <T> ResponseDto<T> success(T data) {
+        return new ResponseDto<>(String.valueOf(HttpStatus.OK.value()), "Success", data);
     }
 }

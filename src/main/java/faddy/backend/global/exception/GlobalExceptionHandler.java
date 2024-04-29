@@ -100,5 +100,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
+    @ExceptionHandler(SnapException.class)
+    public ResponseEntity<ExceptionResponse> handleSnapException(final SnapException e) {
+        log.error("SnapException occurred", e); // 스택 트레이스를 로그에 출력
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    }
+
 }
 

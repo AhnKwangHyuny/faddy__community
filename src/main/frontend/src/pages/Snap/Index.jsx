@@ -9,6 +9,7 @@ import uploadSnap from "features/snap/UploadSnap";
 import {useNavigate} from "react-router-dom";
 import useResourceCleanup from "shared/hooks/useResourceCleanup";
 import {deleteImageList} from "utils/Image/ImageUtils";
+import {END_POINTS} from "../../constants/api";
 
 const Snap = () => {
     const [imageList, setImageList] = useState([]);
@@ -21,11 +22,11 @@ const Snap = () => {
     const handleUploadSnap = async () => {
         try {
             const result = await uploadSnap(userId, imageList, description, tags, selectedCategories);
-            if (result.success) {
-                // snap 포스팅 성공 시 메인 페이지로 이동
-                navigate("/styleShare");
+
+            if (result.success && result.snapId) {
+                // snap 포스팅 성공 시 해당 스냅 detail page로 이동
+                navigate(END_POINTS.SNAP_DETAIL(result.snapId));
             } else {
-                // Handle error, e.g., display an error message
                 console.error(result.error);
                 alert("스냅 포스팅을 실패했습니다. 다시 작성해주세요.");
 
@@ -34,6 +35,11 @@ const Snap = () => {
             }
         } catch (error) {
             console.error("Error uploading SNS post:", error);
+
+            alert("알 수 없는 에러가 발생했습니다.");
+
+            // 현재 스냅 작성하는 페이지로 다시 리다이렉트
+            window.location.reload();
         }
     };
 

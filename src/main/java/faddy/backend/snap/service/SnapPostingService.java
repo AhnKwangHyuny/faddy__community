@@ -2,6 +2,7 @@ package faddy.backend.snap.service;
 
 import faddy.backend.category.domain.Category;
 import faddy.backend.category.service.CategoryService;
+import faddy.backend.global.Utils.EncryptionUtils;
 import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.service.TagService;
 import faddy.backend.image.domain.Image;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,7 +36,7 @@ public class SnapPostingService {
     private final SnapRepository snapRepository;
 
     @Transactional
-    public Snap createSnap(CreateSnapRequestDto requestDto) {
+    public String createSnap(CreateSnapRequestDto requestDto) throws Exception {
 
         // userId로 해당 user entity 찾기
         Long userId = userIdEncryptionUtil.decryptUserId(requestDto.getUserId());
@@ -77,7 +79,12 @@ public class SnapPostingService {
         hashTags.forEach(hashTag -> hashTag.addSnap(snap));
         snap.getHashTags().addAll(hashTags);
 
-        return snapRepository.save(snap);
+        Snap savedSnap = snapRepository.save(snap);
+
+        //저장된 snap id token화
+        String snapToken = EncryptionUtils.encryptEntityId(savedSnap.getId());
+
+        return snapToken;
     }
 
 }

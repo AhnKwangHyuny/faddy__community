@@ -3,15 +3,16 @@ import {isValidCategories, isValidDescription, isValidTags, isValidUserId} from 
 import {userRequestInstance} from "api/axiosInstance";
 import {END_POINTS} from "constants/api";
 import {uploadSnap} from "../../api/post";
+import {useNavigate} from "react-router-dom";
 
 const UploadSnap = async (userId, imageList, description, tags, selectedCategories) => {
+
     try {
         /*** 입력 데이터 유효성 검사 */
         const isValidUser = await isValidUserId(userId);
 
         if (!isValidUser) {
             throw new Error('Invalid user ID');
-            window.location.replace('/login');
         }
         if(imageList.length === 0) {
             throw new Error("이미지를 한 장 이상 꼭 넣어주세요!");
@@ -56,15 +57,17 @@ const UploadSnap = async (userId, imageList, description, tags, selectedCategori
 
         // Snap 생성 requestBody data set
         const snapData = { description, userId , hashTagIds, categoryIds, imageList };
+
+        // snap 생성 요청 api
         const response = await uploadSnap(snapData);
 
-        const snapId = response.data.id;
+        const snapId = response.data.snapToken;
 
         // 이미지 엔티티와 Snap 엔티티 간 관계 지어주기
         await updateSnapImageRelationship(imageList, snapId);
 
         // 성공 메시지 등 필요한 처리
-        return { success: true };
+        return { success: true , snapId};
 
     } catch (error) {
 
