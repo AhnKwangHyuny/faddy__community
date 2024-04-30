@@ -25,7 +25,7 @@ const Snap = () => {
 
             if (result.success && result.snapId) {
                 // snap 포스팅 성공 시 해당 스냅 detail page로 이동
-                navigate(END_POINTS.SNAP_DETAIL(result.snapId));
+                navigate(`${END_POINTS.SNAP_DETAIL_LOCATION}?snapId=${result.snapId}`);
             } else {
                 console.error(result.error);
                 alert("스냅 포스팅을 실패했습니다. 다시 작성해주세요.");

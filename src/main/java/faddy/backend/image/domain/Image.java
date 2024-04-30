@@ -57,7 +57,7 @@ public class Image extends BaseEntity {
         return "Image{" +
                 "id=" + id +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", hashName='" + hashName + '\'' +
+                ", hashedName='" + hashName + '\'' +
                 '}';
     }
 }

@@ -6,7 +6,6 @@ import HighlightSnapCard from "widgets/HighlightSnapCard/HighlightSnapCard";
 
 function ImageCarouselWithComponents({ settings, componentList }) {
     const customSettings = customSettings(settings)
-
     return (
         <section className="carousel">
             <Slider {...customSettings} className="mp-0">
@@ -22,7 +21,7 @@ function ImageCarouselWithComponents({ settings, componentList }) {
     );
 }
 
-function ImageCarouselWithHTML({ settings, htmlList }) {
+function ImageCarouselWithHTML({ settings, imageListHtml =[] }) {
     const defaultSettings = {
         dots: true,
         infinite: true,
@@ -32,15 +31,24 @@ function ImageCarouselWithHTML({ settings, htmlList }) {
         arrows: false,
         ...settings,
     };
+    console.log(imageListHtml);
 
     return (
         <section className="carousel">
             <Slider {...defaultSettings} className="mp-0">
-                {htmlList.map((item, index) => (
-                    <div className="image" key={index}>
-                        <div className="image__wrapper">{item}</div>
+                {imageListHtml.length > 0 ? (
+                    imageListHtml.map((item, index) => (
+                        <div className="image" key={index}>
+                            <div className="image__wrapper">{item}</div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="image">
+                        <div className="image__wrapper">
+                            <p>이미지가 없습니다.</p>
+                        </div>
                     </div>
-                ))}
+                )}
             </Slider>
         </section>
     );

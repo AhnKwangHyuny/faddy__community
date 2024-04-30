@@ -134,19 +134,19 @@ public class SnapResponseDto {
         private String imageUrl;
 
         @NotBlank
-        private String hashedName;
+        private String hashName;
 
         @Builder
-        public ImageDto(String imageUrl, String hashedName) {
+        public ImageDto(String imageUrl, String hashName) {
             this.imageUrl = imageUrl;
-            this.hashedName = hashedName;
+            this.hashName = hashName;
         }
 
         @Override
         public String toString() {
             return "ImageDto{" +
                     "imageUrl='" + imageUrl + '\'' +
-                    ", hashedName='" + hashedName + '\'' +
+                    ", hashName='" + hashName + '\'' +
                     '}';
         }
     }

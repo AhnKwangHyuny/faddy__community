@@ -1,4 +1,3 @@
-
 // 토큰 갱신 요청 (refresh-token)
 import {userRequestInstance} from "./axiosInstance";
 import {END_POINTS} from "../constants/api";
@@ -53,7 +52,5 @@ export const getSnapData = async (snapId) => {
         }
     }
 
-    const response =  await userRequestInstance.get(END_POINTS.SNAP_DETAIL , config);
-
-    console.log(response);
+    return await userRequestInstance.get(END_POINTS.SNAP_DETAIL, config);
 };

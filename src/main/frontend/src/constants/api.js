@@ -70,6 +70,8 @@ export const END_POINTS = {
   //Category
   UPLOAD_CATEGORY : `${API_CATEGORY}`,
 
+  //location
+  SNAP_DETAIL_LOCATION : `/snaps/detail`,
 };
 
 

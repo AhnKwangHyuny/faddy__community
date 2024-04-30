@@ -6,7 +6,6 @@ import MenuIcons from "pages/SnapDetail/Components/MenuIcons/MenuIcons.jsx";
 
 const Header = () => {
 
-
     return (
         <header className='snap-detail__header' >
             <BackButton className={"snap-detail__back-button"}/>

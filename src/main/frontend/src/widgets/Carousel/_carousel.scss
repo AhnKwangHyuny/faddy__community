@@ -7,8 +7,12 @@ $ratio: 1.15; // 가로 대비 세로의 비율
   overscroll-behavior-y: contain;
 
   .slick-carousel {
+    width: 100%;
+
     .image {
+      width: 100%;
       &__wrapper {
+        width: 100%;
         img {
           width: $width;
           height: auto;

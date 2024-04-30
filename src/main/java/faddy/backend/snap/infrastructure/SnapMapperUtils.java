@@ -44,7 +44,7 @@ public class SnapMapperUtils {
     private static SnapResponseDto.ImageDto mapToImageDto(ImageProjection imageProjection) {
         return SnapResponseDto.ImageDto.builder()
                 .imageUrl(imageProjection.getImageUrl())
-                .hashedName(imageProjection.getHashedName())
+                .hashName(imageProjection.getHashedName())
                 .build();
     }
 
