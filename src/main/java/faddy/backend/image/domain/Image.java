@@ -52,4 +52,12 @@ public class Image extends BaseEntity {
         this.snap = snap;
     }
 
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", hashName='" + hashName + '\'' +
+                '}';
+    }
 }

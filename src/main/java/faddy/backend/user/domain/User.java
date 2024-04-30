@@ -148,4 +148,13 @@ public class User extends BaseEntity  {
         this.snaps.add(snap);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

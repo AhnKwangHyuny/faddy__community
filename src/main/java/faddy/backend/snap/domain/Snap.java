@@ -103,5 +103,20 @@ public class Snap extends BaseEntity  {
         image.addSnap(null);
         this.snapImages.remove(image);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Snap{id=").append(id)
+                .append(", user=").append(user) // User 엔티티의 toString() 호출
+                .append(", snapImages=").append(snapImages.stream().map(Image::toString).collect(Collectors.joining(", ", "[", "]"))) // Image 리스트의 각 엔티티의 toString() 호출
+                .append(", hashTags=").append(hashTags.stream().map(HashTag::toString).collect(Collectors.joining(", ", "[", "]"))) // HashTag 리스트의 각 엔티티의 toString() 호출
+                .append(", viewCount=").append(viewCount)
+                .append(", shareCount=").append(shareCount)
+                .append(", description='").append(description).append('\'')
+                .append(", deletedAt=").append(deletedAt)
+                .append('}');
+        return sb.toString();
+    }
 }
 

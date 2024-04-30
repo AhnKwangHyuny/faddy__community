@@ -4,6 +4,7 @@ import faddy.backend.global.Utils.EncryptionUtils;
 import faddy.backend.global.exception.SnapException;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.domain.dto.response.SnapResponseDto;
+import faddy.backend.snap.infrastructure.mapper.SnapMapper;
 import faddy.backend.snap.repository.CustomSnapRepository;
 import faddy.backend.snap.repository.SnapRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class SnapService {
 
     private final SnapRepository snapRepository;
-    private final CustomSnapRepository queryDslRepository;
+    private final SnapMapper snapMapper;
 
     /**
      * 활성화된 Snap을 ID로 조회
@@ -55,10 +56,15 @@ public class SnapService {
         //snapProjection 조회 by snapId
         Optional<Snap> snapOpt = snapRepository.findById(rawId);
 
-        System.out.println("snapOpt.get() = " + snapOpt.get());
-        
-        //SnapProjection 생성 성공 시 responseDto로 변환
-        return new SnapResponseDto();
+        Snap snap = snapOpt.orElseThrow(() ->
+                new SnapException(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "존재하지 않는 스냅 입니다. (조회x)"
+                )
+        );
+
+        // snap to responseDto
+        return snapMapper.toDto(snap , snap.getSnapImages() , snap.getHashTags() , snap.getUser());
     };
 
     private void validateSnapExists(Long rawId, String encryptedSnapId) {

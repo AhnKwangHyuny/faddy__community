@@ -29,4 +29,13 @@ public class Profile extends BaseEntity {
     public Profile(String motto) {
         this.motto = motto;
     }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", motto='" + motto + '\'' +
+                ", userLevel=" + userLevel +
+                '}';
+    }
 }

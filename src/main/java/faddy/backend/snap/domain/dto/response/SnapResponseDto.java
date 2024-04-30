@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonDeserialize(using = JsonDeserializer.class)
@@ -63,7 +63,7 @@ public class SnapResponseDto {
         @NotBlank
         @Size(max = 128)
         @JsonProperty("username")
-        private String usernameField;
+        private String username;
 
         @NotBlank
         @Size(max = 20)
@@ -77,9 +77,9 @@ public class SnapResponseDto {
         private String email;
 
         @Builder
-        public UserDto(Long id, String usernameField, String nickname, String email, ProfileDto profile) {
+        public UserDto(Long id, String username, String nickname, String email, ProfileDto profile) {
             this.id = id;
-            this.usernameField = usernameField;
+            this.username = username;
             this.nickname = nickname;
             this.email = email;
             this.profile = profile; // 생성자에 profile 추가
@@ -90,7 +90,7 @@ public class SnapResponseDto {
         public String toString() {
             return "UserDto{" +
                     "id=" + id +
-                    ", usernameField='" + usernameField + '\'' +
+                    ", username='" + username + '\'' +
                     ", nickname='" + nickname + '\'' +
                     ", email='" + email + '\'' +
                     ", profile=" + profile + // profile 추가
