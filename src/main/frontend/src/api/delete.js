@@ -31,3 +31,14 @@ export const deleteImages = async(imageList) => {
 
     return await userRequestInstance.delete(END_POINTS.DELETE_IMAGES , config);
 }
+
+/** 좋아요 취소 요청*/
+export const deleteLike = async (snapId) => {
+    try {
+        const response = await userRequestInstance.delete(END_POINTS.UNLIKE_CLICK(snapId));
+        return response.data;
+    } catch (error) {
+        console.error('좋아요 취소 요청 실패', error);
+        throw error;
+    }
+};

@@ -8,9 +8,6 @@ const LikeButton = ({onLikeChange, showLikeCount = true }) => {
     const [isLiked , setIsLiked] = useState(false);
     const handleLikeClick = () => {
 
-        //isLiked
-        setIsLiked(!isLiked);
-
         // 서버로 like 업데이트 요청 api
         onLikeChange();
 

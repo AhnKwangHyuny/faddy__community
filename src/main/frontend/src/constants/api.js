@@ -17,6 +17,8 @@ export const API_SNAP  = 'api/v1/snaps';
 
 export const API_CATEGORY  = 'api/v1/categories';
 
+export const API_LIKE = 'api/v1/likes';
+
 export const BASE_URL = DEV
   ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.38:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
@@ -69,6 +71,11 @@ export const END_POINTS = {
 
   //Category
   UPLOAD_CATEGORY : `${API_CATEGORY}`,
+
+  //lie request
+  LIKE_CLICK: (snapId) => `${API_LIKE}/${snapId}`,
+  UNLIKE_CLICK: (snapId) => `${API_LIKE}/${snapId}`,
+  GET_LIKE_COUNT: (snapId) => `${API_LIKE}/${snapId}`,
 
   //location
   SNAP_DETAIL_LOCATION : `/snaps/detail`,

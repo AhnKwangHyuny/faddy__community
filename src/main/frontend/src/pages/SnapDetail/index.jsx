@@ -62,7 +62,7 @@ const SnapDetail = () => {
                 <>
                     <Header />
                     <div className="main__body">
-                        <ProfileFollowAction />
+                        <ProfileFollowAction user={snapData.user} />
                         <ImageCarouselWithHTML
                             setting={testSetting}
                             imageListHtml={
@@ -72,7 +72,7 @@ const SnapDetail = () => {
                             }
                         />
                     </div>
-                    <Interaction />
+                    <Interaction objectId = {encryptedSnapId} />
                     <HashtagViewer hashtagList={snapData.hashTags} />
                     <TextArea textData={snapData.description} />
                     <CommentInputBox />

@@ -54,3 +54,14 @@ export const getSnapData = async (snapId) => {
 
     return await userRequestInstance.get(END_POINTS.SNAP_DETAIL, config);
 };
+
+/**좋아요 수 조회*/
+export const getLikeCount = async (snapId) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.GET_LIKE_COUNT);
+        return response.data;
+    } catch (error) {
+        console.error('좋아요 수 조회 요청 실패', error);
+        throw error;
+    }
+};

@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QLikes is a Querydsl query type for Likes
+ * QLike is a Querydsl query type for Like
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QLikes extends EntityPathBase<Likes> {
+public class QLike extends EntityPathBase<Like> {
 
-    private static final long serialVersionUID = -530664065L;
+    private static final long serialVersionUID = -709854860L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QLikes likes = new QLikes("likes");
+    public static final QLike like = new QLike("like1");
 
     public final faddy.backend.global.QBaseEntity _super = new faddy.backend.global.QBaseEntity(this);
 
@@ -38,23 +38,23 @@ public class QLikes extends EntityPathBase<Likes> {
 
     public final faddy.backend.user.domain.QUser user;
 
-    public QLikes(String variable) {
-        this(Likes.class, forVariable(variable), INITS);
+    public QLike(String variable) {
+        this(Like.class, forVariable(variable), INITS);
     }
 
-    public QLikes(Path<? extends Likes> path) {
+    public QLike(Path<? extends Like> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QLikes(PathMetadata metadata) {
+    public QLike(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QLikes(PathMetadata metadata, PathInits inits) {
-        this(Likes.class, metadata, inits);
+    public QLike(PathMetadata metadata, PathInits inits) {
+        this(Like.class, metadata, inits);
     }
 
-    public QLikes(Class<? extends Likes> type, PathMetadata metadata, PathInits inits) {
+    public QLike(Class<? extends Like> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.snap = inits.isInitialized("snap") ? new faddy.backend.snap.domain.QSnap(forProperty("snap"), inits.get("snap")) : null;
         this.user = inits.isInitialized("user") ? new faddy.backend.user.domain.QUser(forProperty("user"), inits.get("user")) : null;

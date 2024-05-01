@@ -39,6 +39,7 @@ function LoginForm() {
     try {
       const response = await postUserLogin({ username, password });
       const config = response.data;
+      console.log(response);
 
       if (config.grantType !== "Bearer" || config.accessToken === undefined) {
         alert("오류 발생 다시 로그인 부탁드립니다.");
@@ -84,13 +85,13 @@ function LoginForm() {
           <Title>로그인</Title>
           <Row>
             <Image src="https://cdn.builder.io/api/v1/image/assets/TEMP/03fcec9516568a3453c5faa1b3c809f19f272f9e808d97a582f111c385346473?apiKey=a65641faa3d54339891445c030384eb2&" />
-            <Label>Email</Label>
+            <Label>아이디</Label>
               <Input type ="text" ref={usernameRef} placeHolder="아이디를 입력하세요" />
           </Row>
           <Separator />
           <Row>
             <Image src="https://cdn.builder.io/api/v1/image/assets/TEMP/2d0794d2546ba119bb5a020c3fb1dd626fce12688ef8e425b8786179a83bc69c?apiKey=a65641faa3d54339891445c030384eb2&" />
-            <Label>Password</Label>
+            <Label>패스워드</Label>
               <Input type="password" ref={passwordRef} placeHolder="naV#123456" />
           </Row>
           <Separator />

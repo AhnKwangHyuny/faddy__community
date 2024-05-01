@@ -36,20 +36,28 @@ userRequestInstance.interceptors.response.use((response) => {
   return response;
 
 }, async (error) => {
-  const originalRequest = error.config;
-  console.log(error.config);
+  try {
+    const originalRequest = error.config;
 
-  if (error.response.status === 403 && !originalRequest._retry) {
+    // error 객체 전체 로깅
+    console.log(error);
 
-    originalRequest._retry = true; // 재시도 플래그 설정
+    // 에러의 response 속성 여부 및 상태 코드 검사
+    if (error.response && error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true; // 재시도 플래그 설정
 
-    // 토큰 재발급
-    await refreshAccessToken();
+      await refreshAccessToken();
 
-    // 재발급 후 다시 요청. originalRequest를 사용하여 요청을 다시 보냅니다.
-    return userRequestInstance(originalRequest);
+      return userRequestInstance(originalRequest);
+    }
+
+    return Promise.reject(error);
+
+  } catch (error) {
+
+    console.error('An error occurred during the request retry logic', error);
+    return Promise.reject(error);
   }
-  return Promise.reject(error);
 });
 
 // 유저 헤더에 쿠키 추가

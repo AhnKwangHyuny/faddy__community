@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,6 +43,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.id FROM User u WHERE u.username = :username")
     Long findUserIdByUsername(@Param("username") String username);
+
+    //여러 유저 아이디 셋으로 해당 유저 entity list 반환
+    @Query("SELECT u FROM User u WHERE u.id IN (:userIds)")
+    List<User> findByUserIds(@Param("userIds") List<Long> userIds);
 
 
 }

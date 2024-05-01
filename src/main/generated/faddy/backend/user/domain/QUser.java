@@ -37,6 +37,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final ListPath<faddy.backend.like.domain.Like, faddy.backend.like.domain.QLike> likes = this.<faddy.backend.like.domain.Like, faddy.backend.like.domain.QLike>createList("likes", faddy.backend.like.domain.Like.class, faddy.backend.like.domain.QLike.class, PathInits.DIRECT2);
+
     public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");

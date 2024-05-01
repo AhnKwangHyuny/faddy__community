@@ -21,7 +21,7 @@ const Snap = () => {
     const navigate = new useNavigate();
     const handleUploadSnap = async () => {
         try {
-            const result = await uploadSnap(userId, imageList, description, tags, selectedCategories);
+            const result = await uploadSnap(userId.userId, imageList, description, tags, selectedCategories);
 
             if (result.success && result.snapId) {
                 // snap 포스팅 성공 시 해당 스냅 detail page로 이동

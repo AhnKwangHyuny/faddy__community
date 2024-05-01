@@ -131,7 +131,6 @@ function RegistrationForm() {
 
                 deleteResponse
                     .then((res) => {
-                        alert(authCodeMessage);
 
                         setEmail(value);
 
@@ -166,7 +165,6 @@ function RegistrationForm() {
                 setAuthCodeError(error.message);
 
                 alert(authCodeError);
-
                 setIsAvailable(false);
             });
     };

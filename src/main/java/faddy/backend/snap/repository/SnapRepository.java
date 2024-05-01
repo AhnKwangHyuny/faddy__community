@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +26,7 @@ public interface SnapRepository extends JpaRepository<Snap, Long> {
     // 특정 ID를 기준으로 Snap 엔티티를 찾으며, user, snapImages, hashTags 필드를 EAGER 로딩으로 가져옵니다.
     @EntityGraph(attributePaths = {"user", "user.profile", "snapImages", "hashTags"}, type = EntityGraph.EntityGraphType.LOAD)
     Optional<Snap> findById(Long id);
+
+    @Query("SELECT s FROM Snap s WHERE s.updated_at > :lastSyncTime ORDER BY s.updated_at ASC")
+    List<Snap> findByUpdatedAtGreaterThanOrderByUpdatedAtAsc(@Param("lastSyncTime") Date lastSyncTime);
 }

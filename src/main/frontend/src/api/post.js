@@ -44,3 +44,14 @@ export const reissueToken = (refreshToken) => {
     return userRequestInstance.post(END_POINTS.REISSUE_TOKEN , config);
 }
 
+/** 좋아요 요청 */
+export const postLike = async (snapId) => {
+    try {
+        const response = await userRequestInstance.post(END_POINTS.LIKE_CLICK(snapId));
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error('좋아요 요청 실패', error);
+        throw error;
+    }
+};

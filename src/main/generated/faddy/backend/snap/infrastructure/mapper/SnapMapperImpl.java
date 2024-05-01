@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-30T16:48:35+0900",
+    date = "2024-05-01T04:17:02+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.7 (JetBrains s.r.o.)"
 )
 @Component
@@ -44,6 +44,7 @@ public class SnapMapperImpl implements SnapMapper {
         SnapResponseDto.UserDto.UserDtoBuilder userDto = SnapResponseDto.UserDto.builder();
 
         userDto.id( user.getId() );
+        userDto.username( user.getUsername() );
         userDto.nickname( user.getNickname() );
         userDto.email( user.getEmail() );
         userDto.profile( toProfileDto( user.getProfile() ) );
@@ -91,6 +92,7 @@ public class SnapMapperImpl implements SnapMapper {
         SnapResponseDto.ImageDto.ImageDtoBuilder imageDto = SnapResponseDto.ImageDto.builder();
 
         imageDto.imageUrl( image.getImageUrl() );
+        imageDto.hashName( image.getHashName() );
 
         return imageDto.build();
     }

@@ -25,7 +25,8 @@ public class EncryptionUtils {
 
         byte[] encryptedBytes = cipher.doFinal(entityId.toString().getBytes());
 
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+        //암호화 된 아이디 url사용할 수 있도록 인코딩 (특수문자 , 공백 제거)
+        return Base64.getUrlEncoder().encodeToString(encryptedBytes);
     }
 
     public static Long decryptEntityId(String encryptedEntityId) throws Exception {

@@ -5,6 +5,7 @@ import faddy.backend.follows.domain.Follow;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.ExceptionCode;
+import faddy.backend.like.domain.Like;
 import faddy.backend.snap.domain.Snap;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -76,6 +77,8 @@ public class User extends BaseEntity  {
     @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL)
     private List<Follow> followers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
+    private List<Like> likes = new ArrayList<>();
 
     /**
      * @Param entity method
@@ -146,6 +149,10 @@ public class User extends BaseEntity  {
     // 연관관계 메소드
     public void addSnap(Snap snap) {
         this.snaps.add(snap);
+    }
+
+    public void addLike(Like like) {
+        this.likes.add(like);
     }
 
     @Override

@@ -5,7 +5,6 @@ import faddy.backend.global.exception.SnapException;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.domain.dto.response.SnapResponseDto;
 import faddy.backend.snap.infrastructure.mapper.SnapMapper;
-import faddy.backend.snap.repository.CustomSnapRepository;
 import faddy.backend.snap.repository.SnapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

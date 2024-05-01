@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Tables;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
@@ -23,9 +21,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Where(clause = "deleted_at is null")
-@SQLDelete(sql = "UPDATE likes SET deleted_at = current_timestamp WHERE id = ?")
 @Table(name = "likes")
-public class Likes extends BaseEntity {
+public class Like extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -47,7 +44,7 @@ public class Likes extends BaseEntity {
 //    private
 
 
-    public Likes(User user, Snap snap) {
+    public Like(User user, Snap snap) {
         this.user = user;
         this.snap = snap;
     }
@@ -58,7 +55,7 @@ public class Likes extends BaseEntity {
      *      좋아요 복귀 메소드
      *  </p>
      * */
-    public void recoverLike(Likes likes) {
+    public void recoverLike(Like likes) {
 
         if(this.id == likes.getId()) {
             this.deletedAt = null ;
