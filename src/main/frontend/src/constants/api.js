@@ -68,6 +68,7 @@ export const END_POINTS = {
   POST_SNAP : `${API_SNAP}`,
   UPDATE_SNAP_IMAGE_RELATIONSHIP: `${API_IMAGE}/images/link`,
   SNAP_DETAIL: `${API_SNAP}/detail`,
+  MORE_THUMBNAILS: (page) => `${API_SNAP}/thumbnails?page=${page + 1}`,
 
   //Category
   UPLOAD_CATEGORY : `${API_CATEGORY}`,

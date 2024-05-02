@@ -43,7 +43,7 @@ const TaggingImages = () => {
     return (
         <div className="tagging-list">
             <div className="tagging-list__wrapper">
-                <ImageCarouselWithHTML settings={taggingCarouselSettings} htmlList = {taggingList}/>
+                <ImageCarouselWithHTML settings={taggingCarouselSettings} imageListHtml = {taggingList}/>
             </div>
         </div>
     );

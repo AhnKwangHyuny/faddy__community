@@ -58,10 +58,24 @@ export const getSnapData = async (snapId) => {
 /**좋아요 수 조회*/
 export const getLikeCount = async (snapId) => {
     try {
-        const response = await userRequestInstance.get(END_POINTS.GET_LIKE_COUNT);
+        const response = await userRequestInstance.get(END_POINTS.GET_LIKE_COUNT(snapId));
+        console.log(response);
         return response.data;
     } catch (error) {
         console.error('좋아요 수 조회 요청 실패', error);
         throw error;
     }
 };
+
+/**paging loader */
+export const getMoreThumbnails = async (page) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.MORE_THUMBNAILS(page));
+        const jsonData = await response.data.json();
+        console.log(jsonData);
+        return jsonData;
+    } catch (error) {
+        console.error('좋아요 수 조회 요청 실패', error);
+        throw error;
+    }
+}

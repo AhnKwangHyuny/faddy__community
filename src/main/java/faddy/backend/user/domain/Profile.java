@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static faddy.backend.global.Constants.DEFAULT_PROFILE_IMAGE_URL;
+import static faddy.backend.global.Constants.DEFAULT_PROFILE_MOTTO;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -19,12 +21,15 @@ public class Profile extends BaseEntity {
     @Column(name = "profile_id", nullable = false)
     private Long id;
 
-    @Column(name = "motto" , columnDefinition = "varchar(50) default '자신의 패션 좌우명 또는 짧은 자기소개를 써보세요!!'")
-    private String motto;
+    @Column(name = "motto")
+    private String motto = DEFAULT_PROFILE_MOTTO;
 
     @Column(name = "grade")
     @Enumerated(EnumType.STRING)
     private UserLevel userLevel = UserLevel.LEVEL_1;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl = DEFAULT_PROFILE_IMAGE_URL;
 
     public Profile(String motto) {
         this.motto = motto;

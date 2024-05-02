@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface LikeService {
-    Long getLikeCount(Long snapId);
+    String getLikeCount(Long snapId);
 
     void like(Long userId, Long snapId);
 

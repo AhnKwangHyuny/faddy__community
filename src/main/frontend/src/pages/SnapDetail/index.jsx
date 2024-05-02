@@ -8,6 +8,8 @@ import TextArea from "widgets/TextArea/TextArea";
 import CommentInputBox from "widgets/Comment/CommentInputBox/CommentInputBox";
 import { useNavigate } from "react-router-dom";
 import { getSnapData } from "api/get";
+import SnapIdContext from "shared/context/SnapIdContext";
+
 
 const SnapDetail = () => {
     const navigate = useNavigate();
@@ -33,7 +35,6 @@ const SnapDetail = () => {
                 if (!data) {
                     navigate(-1); // 전 페이지로 이동
                 }
-                console.log(data);
                 setSnapData(data);
 
             } catch (error) {
@@ -57,28 +58,31 @@ const SnapDetail = () => {
 
 
     return (
-        <div>
-            {snapData && (
-                <>
-                    <Header />
-                    <div className="main__body">
-                        <ProfileFollowAction user={snapData.user} />
-                        <ImageCarouselWithHTML
-                            setting={testSetting}
-                            imageListHtml={
-                                snapData.images.map((image, index) => (
-                                        <img key={index} src={image.imageUrl} alt={image.hashName || ''} />
-                                ))
-                            }
-                        />
-                    </div>
-                    <Interaction objectId = {encryptedSnapId} />
-                    <HashtagViewer hashtagList={snapData.hashTags} />
-                    <TextArea textData={snapData.description} />
-                    <CommentInputBox />
-                </>
-            )}
-        </div>
+        <SnapIdContext.Provider value={encryptedSnapId}>
+            <div>
+                {snapData && (
+                    <>
+                        <Header />
+                        <div className="main__body">
+                            <ProfileFollowAction user={snapData.user} />
+                            <ImageCarouselWithHTML
+                                setting={testSetting}
+                                imageListHtml={
+                                    snapData.images.map((image, index) => (
+                                            <img key={index} src={image.imageUrl} alt={image.hashName || ''} />
+                                    ))
+                                }
+                            />
+                        </div>
+                        <Interaction objectId = {encryptedSnapId} />
+                        <HashtagViewer hashtagList={snapData.hashTags} />
+                        <TextArea textData={snapData.description} />
+                        <CommentInputBox />
+                    </>
+                )}
+            </div>
+        </SnapIdContext.Provider>
+
     );
 };
 

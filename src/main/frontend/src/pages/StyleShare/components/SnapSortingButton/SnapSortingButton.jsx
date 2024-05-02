@@ -21,7 +21,7 @@ const SnapSortingButton = () => {
                         className={`recommend-sorting ${isCurrentClick ? 'isClicked' : ''}`}
                         onClick={handleRecommendClick}
                     >
-                        <span className="button-name">추천</span>
+                        <span className="button-name">최신</span>
                     </button>
                 </div>
                 <div className="button__wrapper">
@@ -29,7 +29,7 @@ const SnapSortingButton = () => {
                         className={`recent-sorting ${!isCurrentClick ? 'isClicked' : ''}`}
                         onClick={handleCurrentClick}
                     >
-                        <span className="button-name">최신</span>
+                        <span className="button-name">추천</span>
                     </button>
                 </div>
             </div>

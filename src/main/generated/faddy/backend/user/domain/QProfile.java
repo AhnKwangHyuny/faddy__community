@@ -28,6 +28,8 @@ public class QProfile extends EntityPathBase<Profile> {
 
     public final StringPath motto = createString("motto");
 
+    public final StringPath profileImageUrl = createString("profileImageUrl");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 

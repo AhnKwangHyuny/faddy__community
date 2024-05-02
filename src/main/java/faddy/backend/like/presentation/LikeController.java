@@ -61,12 +61,18 @@ public class LikeController {
     }
 
     @GetMapping("/{snapId}")
-    public ResponseEntity<Long> getLikeCount(@PathVariable("snapId") String snapId) throws Exception {
+    public ResponseEntity<ResponseDto> getLikeCount(@PathVariable("snapId") String snapId) throws Exception {
 
         Long decryptedSnapId = EncryptionUtils.decryptEntityId(snapId);
-        Long likeCount = likeService.getLikeCount(decryptedSnapId);
+        String likeCount = likeService.getLikeCount(decryptedSnapId);
 
-        return ResponseEntity.ok(likeCount);
+        return ResponseEntity.ok().body(
+                new ResponseDto(
+                        HttpStatus.OK.name(),
+                        "좋아요 수 가져오기 성공",
+                        likeCount
+                )
+        );
     }
 
     private Long getUserIdFromToken(String authorization) {

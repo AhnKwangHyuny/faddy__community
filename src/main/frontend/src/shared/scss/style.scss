@@ -51,6 +51,8 @@
 //styleShare (main page)
 @import "pages/StyleShare/styleShare";
 @import "pages/StyleShare/components/SnapSortingButton/snapSortingButton";
+@import "pages/SnapDetail/Components/MenuIcons/menuIcons";
+
 
 
 @import "pages/Snap/index";
@@ -62,7 +64,7 @@
 /**shared ui*/
 @import "shared/ui/MoreIcon/moreIcon";
 @import "shared/ui/Logo/logo";
-@import "../../pages/SnapDetail/Components/MenuIcons/menuIcons";
+@import "shared/ui/LoadingUI/loading.scss";
 
 /** feature */
 

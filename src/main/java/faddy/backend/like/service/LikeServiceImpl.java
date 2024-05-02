@@ -29,7 +29,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Long getLikeCount(Long snapId) {
+    public String getLikeCount(Long snapId) {
         // Read Through 전략
         String key = "snap:" + snapId;
         Object likeData = redisTemplate.opsForHash().get(key, "likeCount");
@@ -37,7 +37,7 @@ public class LikeServiceImpl implements LikeService {
         // 캐싱 실패 -> DB 조회
         if (likeData == null) {
             Snap snap = snapRepository.findById(snapId).orElseThrow();
-            Long likeCount = likeRepository.countBySnap(snap);
+            String likeCount = String.valueOf(likeRepository.countBySnap(snap));
 
             // Redis에 좋아요 수 캐싱
             redisTemplate.opsForHash().put(key, "likeCount", likeCount);
@@ -51,7 +51,7 @@ public class LikeServiceImpl implements LikeService {
 
             return likeCount;
         }
-        return Long.parseLong(likeData.toString());
+        return likeData.toString();
     }
 
 
