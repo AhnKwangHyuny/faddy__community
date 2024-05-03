@@ -59,8 +59,7 @@ export const getSnapData = async (snapId) => {
 export const getLikeCount = async (snapId) => {
     try {
         const response = await userRequestInstance.get(END_POINTS.GET_LIKE_COUNT(snapId));
-        console.log(response);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error('좋아요 수 조회 요청 실패', error);
         throw error;
@@ -71,11 +70,18 @@ export const getLikeCount = async (snapId) => {
 export const getMoreThumbnails = async (page) => {
     try {
         const response = await userRequestInstance.get(END_POINTS.MORE_THUMBNAILS(page));
-        const jsonData = await response.data.json();
-        console.log(jsonData);
-        return jsonData;
+        const data = await response.data.data;
+        console.log(data);
+
+        return data;
+
     } catch (error) {
-        console.error('좋아요 수 조회 요청 실패', error);
+        if (error.response) {
+          console.error(`Error ${error.response.status}: ${error.response.data.message}`);
+          console.error(`Error Code: ${error.response.data.code}`);
+        } else {
+          console.error('Error: ', error.message);
+        }
         throw error;
-    }
+      }
 }

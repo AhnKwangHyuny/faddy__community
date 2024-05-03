@@ -1,17 +1,24 @@
 package faddy.backend.snap.service;
 
 import faddy.backend.global.Utils.EncryptionUtils;
+import faddy.backend.global.exception.ExceptionCode;
+import faddy.backend.global.exception.InternalServerException;
 import faddy.backend.global.exception.SnapException;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.domain.dto.response.SnapResponseDto;
+import faddy.backend.snap.domain.dto.response.ThumbnailResponseDto;
 import faddy.backend.snap.infrastructure.mapper.SnapMapper;
 import faddy.backend.snap.repository.SnapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -78,6 +85,32 @@ public class SnapService {
             );
         }
     }
+
+
+    /**
+     * 페이징을 통해 썸네일 목록을 반환
+     *
+     * @param page 페이지 번호
+     * @return 썸네일 목록 (페이지당 4개)
+     */
+    @Transactional(readOnly = true)
+    public Page<Snap> getThumbnails(int page) {
+
+        try {
+            Pageable pageable = PageRequest.of(page, 4);
+
+            return snapRepository.findAllSnapsByPage(pageable);
+
+        } catch (Exception e ) {
+            log.error(e.toString());
+
+            throw new InternalServerException(ExceptionCode.FAIL_PAGING_ERROR);
+
+        }
+
+    }
+
+
 
 }
 

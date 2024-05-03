@@ -106,7 +106,13 @@ public enum ExceptionCode {
     /**
      *  snap 예외 처리
      * */
-    FAIL_CREATE_SNAP(500 , "서버 오류로 인해 snap 포스팅에 실패했습니다.");
+    FAIL_CREATE_SNAP(500 , "서버 오류로 인해 snap 포스팅에 실패했습니다."),
+    FAIL_PAGING_ERROR(500 , "썹네일 데이터 페이징에 실패했습니다. "),
+
+    /**
+     * common
+     * */
+    MAPPING_ERROR_SNAP_TO_THUMBNAIL(500 , "Snap을 ThumbnailResponseDto로 변환하는데 실패했습니다.");
 
 
     private final int code;

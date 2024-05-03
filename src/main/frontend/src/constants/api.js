@@ -80,6 +80,7 @@ export const END_POINTS = {
 
   //location
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
+
 };
 
 

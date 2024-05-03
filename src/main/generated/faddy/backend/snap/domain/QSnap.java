@@ -46,8 +46,6 @@ public class QSnap extends EntityPathBase<Snap> {
 
     public final faddy.backend.user.domain.QUser user;
 
-    public final NumberPath<Integer> viewCount = createNumber("viewCount", Integer.class);
-
     public QSnap(String variable) {
         this(Snap.class, forVariable(variable), INITS);
     }

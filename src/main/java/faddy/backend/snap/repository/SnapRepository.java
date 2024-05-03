@@ -1,6 +1,9 @@
 package faddy.backend.snap.repository;
 
 import faddy.backend.snap.domain.Snap;
+import faddy.backend.snap.domain.dto.response.ThumbnailResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +32,9 @@ public interface SnapRepository extends JpaRepository<Snap, Long> {
 
     @Query("SELECT s FROM Snap s WHERE s.updated_at > :lastSyncTime ORDER BY s.updated_at ASC")
     List<Snap> findByUpdatedAtGreaterThanOrderByUpdatedAtAsc(@Param("lastSyncTime") Date lastSyncTime);
+
+
+    @Query("SELECT s FROM Snap s WHERE s.deletedAt IS NULL")
+    Page<Snap> findAllSnapsByPage(Pageable pageable);
+
 }

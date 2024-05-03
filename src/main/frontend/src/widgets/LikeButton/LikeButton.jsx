@@ -25,7 +25,7 @@ const LikeButton = ({onLikeChange, showLikeCount = true }) => {
            if(showLikeCount && snapId != null) {
                try {
                    const count = await getLikeCount(snapId); // api/get에서 가져온 함수를 호출합니다.
-                   setLikeCount(count);
+                   setLikeCount( Number(count));
                } catch (error) {
                    console.error("Like count를 불러오는 데 실패했습니다.", error);
                }

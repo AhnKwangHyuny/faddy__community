@@ -40,11 +40,9 @@ public class Snap extends BaseEntity  {
     @OneToMany(mappedBy = "snap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> snapImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "snap", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "snap", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HashTag> hashTags = new ArrayList<>();
 
-    @Column(name = "view_count", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private int viewCount = 0;
 
     @Column(name = "share_count", nullable = false, columnDefinition = "INT DEFAULT 0")
     private int shareCount = 0;
@@ -61,7 +59,6 @@ public class Snap extends BaseEntity  {
     public void recoverSnap() {
         if (this.deletedAt != null) {
             this.deletedAt = null;
-            this.viewCount = 0;
             this.shareCount = 0;
         }
     }
@@ -111,7 +108,6 @@ public class Snap extends BaseEntity  {
                 .append(", user=").append(user) // User 엔티티의 toString() 호출
                 .append(", snapImages=").append(snapImages.stream().map(Image::toString).collect(Collectors.joining(", ", "[", "]"))) // Image 리스트의 각 엔티티의 toString() 호출
                 .append(", hashTags=").append(hashTags.stream().map(HashTag::toString).collect(Collectors.joining(", ", "[", "]"))) // HashTag 리스트의 각 엔티티의 toString() 호출
-                .append(", viewCount=").append(viewCount)
                 .append(", shareCount=").append(shareCount)
                 .append(", description='").append(description).append('\'')
                 .append(", deletedAt=").append(deletedAt)

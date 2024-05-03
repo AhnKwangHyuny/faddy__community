@@ -3,6 +3,7 @@ package faddy.backend.image.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ImageException;
@@ -20,6 +21,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,13 +62,11 @@ public class S3ImageUploader implements ImageUploader{
         String uuid = UUID.randomUUID().toString();
         String uniqueFileName = uuid + "_" + originalFileName.replaceAll("\\s", "_");
 
-        String fileName = this.directory +DIRECTORY_DELIMITER + uniqueFileName;
+        String fileName = this.directory + DIRECTORY_DELIMITER + uniqueFileName;
 
         File uploadFile = convert(multipartFile);
 
-        String uploadImageUrl = putS3(uploadFile, fileName);
-
-        String objUrl = getObjectUrl(bucket , fileName).toString();
+        String objUrl = putS3(uploadFile, fileName);
 
         log.info("objUrl : " + objUrl);
 
@@ -72,6 +74,7 @@ public class S3ImageUploader implements ImageUploader{
 
         return objUrl;
     }
+
 
     private File convert(MultipartFile file) throws IOException {
         String originalFileName = file.getOriginalFilename();
@@ -91,9 +94,22 @@ public class S3ImageUploader implements ImageUploader{
     }
 
     private String putS3(File uploadFile, String fileName) {
-        amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3.getUrl(bucket, fileName).toString();
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setHttpExpiresDate(new Date(System.currentTimeMillis() + 5 * 24 * 60 * 60 * 1000));
+
+        PutObjectRequest request = new PutObjectRequest(bucket, fileName, uploadFile);
+        request.setMetadata(metadata);
+        request.setCannedAcl(CannedAccessControlList.PublicRead);
+
+        amazonS3.putObject(request);
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName);
+        long expirationTime = System.currentTimeMillis() + ( 6 * 24 * 60 * 60 * 1000L);
+        Date expiration = new Date(expirationTime);
+        generatePresignedUrlRequest.setExpiration(expiration);
+        URL objUrl = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+
+        return objUrl.toString();
     }
 
     private void removeNewFile(File targetFile) {
