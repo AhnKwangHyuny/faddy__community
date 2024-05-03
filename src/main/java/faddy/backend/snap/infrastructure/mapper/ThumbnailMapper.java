@@ -2,7 +2,6 @@ package faddy.backend.snap.infrastructure.mapper;
 
 import faddy.backend.global.Utils.EncryptionUtils;
 import faddy.backend.hashTags.domain.HashTag;
-import faddy.backend.hashTags.service.HashTagServiceImpl;
 import faddy.backend.image.domain.Image;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.domain.dto.response.ThumbnailResponseDto;
