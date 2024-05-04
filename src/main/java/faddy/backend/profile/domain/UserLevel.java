@@ -34,4 +34,15 @@ public enum UserLevel {
     public int getRequiredFollowerCount() {
         return requiredFollowerCount;
     }
+
+    public UserLevel getNextLevel() {
+        // Find the next level based on the current level
+        int nextOrdinal = this.ordinal() + 1;
+        if (nextOrdinal >= UserLevel.values().length) {
+
+            return null;
+        } else {
+            return UserLevel.values()[nextOrdinal];
+        }
+    }
 }

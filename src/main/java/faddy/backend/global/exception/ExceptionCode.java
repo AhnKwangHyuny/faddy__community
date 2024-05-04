@@ -1,7 +1,6 @@
 package faddy.backend.global.exception;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public enum ExceptionCode {
@@ -110,9 +109,17 @@ public enum ExceptionCode {
     FAIL_PAGING_ERROR(500 , "썹네일 데이터 페이징에 실패했습니다. "),
 
     /**
+     * Follow 에러
+     * */
+    FAIL_SELF_FOLLOW_ERROR(400 , "자기 자신을 팔로우 할 수 없습니다."),
+    FAIL_FOLLOW_ERROR(400 , "팔로우에 실패했습니다."),
+    ALREADY_FOLLOW_ERROR(400 , "이미 팔로우된 유저입니다."),
+
+    /**
      * common
      * */
     MAPPING_ERROR_SNAP_TO_THUMBNAIL(500 , "Snap을 ThumbnailResponseDto로 변환하는데 실패했습니다.");
+
 
 
     private final int code;

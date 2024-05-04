@@ -5,12 +5,15 @@ import faddy.backend.global.Utils.RedisUtil;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.InternalServerException;
+import faddy.backend.profile.domain.UserLevel;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +109,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Long findUserIdByUsername(String username) {
+        return userRepository.findUserIdByUsername(username);
+    }
+    @Transactional(readOnly = true)
     public User getUserById(Long userId) {
 
         return userRepository.findById(userId)
@@ -123,19 +130,28 @@ public class UserService {
         return userRepository.existsById(userId);
     }
 
+    @Transactional
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new BadRequestException(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "해당 유저 아이디가 존재하지 않습니다.")
+                );
+    }
+
+    public Long decryptUserId(String encryptedUserId) {
+        return userIdEncryptionUtil.decryptUserId(encryptedUserId);
+    }
 
     /**
      * 일정 스냅 , talk 포스팅 , 유저 팔로우 , 좋아요 획득 시 레벨 업
      * @param  User : 해당 유저
      * */
+    @Transactional
     public void updateUserLevel(User user) {
         int postCount = user.getSnaps().size();
 
-//        for (UserLevel level : UserLevel.values()) {
-//            if (postCount >= level.getRequiredPostCount() && followerCount >= level.getRequiredFollowerCount()) {
-//                user.setUserLevel(level);
-//                break;
-//            }
-//        }
+        // level up 조건(추후 개발)
+        user.getProfile().levelUp();
     }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProfileFollowAction from "./Components/ProfileFollowAction/ProfileFollowAction";
-import Header from "pages/SnapDetail/Components/Header/header";
+import Header from "pages/SnapDetail/Components/Header/Header";
 import { ImageCarouselWithHTML } from "widgets/Carousel/Carousel";
 import Interaction from "features/interaction";
 import HashtagViewer from "widgets/HashtagViewer/HashtagViewer";

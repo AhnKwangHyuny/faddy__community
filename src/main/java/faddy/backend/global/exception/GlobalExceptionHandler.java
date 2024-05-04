@@ -108,5 +108,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
+    @ExceptionHandler(FollowException.class)
+    public ResponseEntity<ExceptionResponse> handleFollowException(final SnapException e) {
+        log.error("FollowException occurred", e); // 스택 트레이스를 로그에 출력
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    }
+
+
 }
 

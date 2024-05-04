@@ -19,6 +19,7 @@ public class ResponseDto<T> {
         this.data = null;
     }
 
+
     public static <T> ResponseDto<T> response(final String responseCode, final String responseMessage){
         return response(responseCode, responseMessage, null);
     }

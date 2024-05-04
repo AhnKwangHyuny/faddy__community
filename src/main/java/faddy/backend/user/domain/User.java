@@ -45,11 +45,6 @@ public class User extends BaseEntity  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , fetch = FetchType.LAZY , orphanRemoval = true)
     private List<Snap> snaps = new ArrayList<>();
 
-//    @OneToOne(mappedBy = "user")
-//    private EmailVerifications emailVerifications; (보류)
-
-//    @OneToOne(mappedBy = "user")
-//    private SocialLogin socialLogin;
 
     @Column(name = "username", length = 128, unique = true, nullable = false)
     private String username;
@@ -71,14 +66,20 @@ public class User extends BaseEntity  {
     private Authority authority;
 
     // User.java
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Follow> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Follow> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
+
+    //    @OneToOne(mappedBy = "user")
+//    private EmailVerifications emailVerifications; (보류)
+
+//    @OneToOne(mappedBy = "user")
+//    private SocialLogin socialLogin;
 
     /**
      * @Param entity method

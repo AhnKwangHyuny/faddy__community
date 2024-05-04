@@ -43,4 +43,13 @@ public class Profile extends BaseEntity {
                 ", userLevel=" + userLevel +
                 '}';
     }
+
+    public void levelUp() {
+        UserLevel nextLevel = this.userLevel.getNextLevel();
+
+        if (nextLevel != null) {
+            this.userLevel = nextLevel;
+        }
+    }
+
 }
