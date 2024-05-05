@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface FollowJpaRepository extends JpaRepository<Follow, Long> {
 
@@ -15,5 +17,8 @@ public interface FollowJpaRepository extends JpaRepository<Follow, Long> {
             "FROM Follow f " +
             "WHERE f.follower = :follower AND f.followee = :followee")
     boolean existsByFollowerAndFollowee(@Param("follower") User follower, @Param("followee") User followee);
+
+    // 언팔
+    Optional<Follow> deleteByFromUserAndToUser(User fromUser, User toUser);
 
 }

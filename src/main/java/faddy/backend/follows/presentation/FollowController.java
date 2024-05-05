@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,16 +28,10 @@ public class FollowController {
     @PostMapping("/follow")
     public ResponseEntity follow(HttpServletRequest request, @RequestBody FollowRequestDto requestDto) {
 
-        String token = request.getHeader("Authorization");
-
-        // Authorization 헤더가 없는 경우
-        if (token == null || token.isEmpty()) {
-            // 401 Unauthorized 에러 반환
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied: No Authorization token provided.");
-        }
+        String token = jwtUtil.getTokenFromRequest(request);
 
         try {
-            // 토큰으로 부터 username 얻기 (follower)
+            // 토큰으로 부터 username 얻기 (follower) , 암호화된 follwee id 디코딩
             String username = jwtUtil.getUsername(token);
 
             //username을 통해 user 조회
@@ -67,30 +58,58 @@ public class FollowController {
     }
 
     /**
+     * 언팔하기
+     */
+    @DeleteMapping("/follow")
+    public ResponseEntity<ResponseDto<String>> deleteFollow(HttpServletRequest request , @RequestBody FollowRequestDto requestDto){
+
+        // authorization token 가져오기
+        String token = jwtUtil.getTokenFromRequest(request);
+
+        // 본인과 언팔할 유저 아이디 찾기
+        try {
+            User follower = userService.findUserByToken(token);
+            User followee = userService.findByUsername(requestDto.getUsername());
+
+            // 언팔로우
+            followService.cancelFollow(follower , followee);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new ResponseDto (
+                            String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                            e.getMessage()
+                    )
+            );
+        }
+
+        return ResponseEntity.ok().body(
+                new ResponseDto<String>(
+                        String.valueOf(HttpStatus.OK.value()),
+                        requestDto.getUsername() + "과의 언팔에 성공했습니다."
+                )
+        );
+    }
+
+    /**
      * 팔로잉 조회
      */
-    @GetMapping("/users/{userName}/following")
-    public ResponseEntity<List<FollowDTO>> getFollowingList(@PathVariable("userName") String userName, Authentication auth) {
-        User from_user = userService.findUser(userName);
-        User requestUser=userService.findUser(auth.getName());
-        return ResponseEntity.ok().body(followService.followingList(from_user, requestUser));
-    }
+//    @GetMapping("/users/{userName}/following")
+//    public ResponseEntity<List<FollowDTO>> getFollowingList(@PathVariable("userName") String userName, Authentication auth) {
+//        User from_user = userService.findUser(userName);
+//        User requestUser=userService.findUser(auth.getName());
+//        return ResponseEntity.ok().body(followService.followingList(from_user, requestUser));
+//    }
+//
+//    /**
+//     * 팔로워 조회
+//     */
+//    @GetMapping("/users/{userName}/follower")
+//    public ResponseEntity<List<FollowDTO>> getFollowerList(@PathVariable("userName") String userName, Authentication auth) {
+//        User to_user = userService.findUser(userName);
+//        User requestUser=userService.findUser(auth.getName());
+//        return ResponseEntity.ok().body(followService.followerList(to_user, requestUser));
+//    }
+//
 
-    /**
-     * 팔로워 조회
-     */
-    @GetMapping("/users/{userName}/follower")
-    public ResponseEntity<List<FollowDTO>> getFollowerList(@PathVariable("userName") String userName, Authentication auth) {
-        User to_user = userService.findUser(userName);
-        User requestUser=userService.findUser(auth.getName());
-        return ResponseEntity.ok().body(followService.followerList(to_user, requestUser));
-    }
-
-    /**
-     * 친구 끊기
-     */
-    @DeleteMapping("/users/follow/{friendName}")
-    public ResponseEntity<String> deleteFollow(Authentication authentication){
-        return ResponseEntity.ok().body(followService.cancelFollow(userService.findUser(authentication.getName())));
-    }
 }

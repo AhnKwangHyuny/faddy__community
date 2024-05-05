@@ -15,4 +15,10 @@ public class AuthorizationException extends RuntimeException {
 
     }
 
+    public AuthorizationException(final int code , final String message) {
+
+        this.code = code;
+        this.message = message;
+    }
+
 }

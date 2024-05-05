@@ -5,6 +5,7 @@ import faddy.backend.auth.jwt.infrastruture.CustomSerializer;
 import faddy.backend.auth.repository.TokenBlackListRepository;
 import faddy.backend.authToken.domain.RefreshToken;
 import faddy.backend.authToken.repository.RefreshTokenRepository;
+import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.JwtValidationException;
 import io.jsonwebtoken.*;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -172,5 +174,12 @@ public class JwtUtil {
         return null;
     }
 
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || token.isEmpty()) {
+            throw new AuthorizationException(HttpStatus.UNAUTHORIZED.value(), "Access Denied: No Authorization token provided.");
+        }
+        return token;
+    }
 }
 

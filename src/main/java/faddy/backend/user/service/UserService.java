@@ -2,14 +2,13 @@ package faddy.backend.user.service;
 
 import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.global.Utils.RedisUtil;
+import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.InternalServerException;
-import faddy.backend.profile.domain.UserLevel;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,8 @@ public class UserService {
     private final JwtUtil jwtUtil;
 
     private final UserIdEncryptionUtil userIdEncryptionUtil;
+
+
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil, JwtUtil jwtUtil, UserIdEncryptionUtil userIdEncryptionUtil) {
@@ -119,6 +120,17 @@ public class UserService {
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
     }
 
+    @Transactional(readOnly = true)
+    public User findUserByToken(String token) {
+
+        String encryptedUserId = findEncryptedUserId(token);
+        Long userId = decryptUserId(encryptedUserId);
+
+        return userRepository.findById(userId).orElseThrow(()-> {
+            throw new BadRequestException(ExceptionCode.INVALID_USER_ID);
+        });
+    };
+
     public Boolean checkEncrptedUserIdExists(String encrptedUserId) {
 
         Long userId = userIdEncryptionUtil.decryptUserId(encrptedUserId);
@@ -140,7 +152,26 @@ public class UserService {
     }
 
     public Long decryptUserId(String encryptedUserId) {
-        return userIdEncryptionUtil.decryptUserId(encryptedUserId);
+
+        try {
+
+            return userIdEncryptionUtil.decryptUserId(encryptedUserId);
+
+        } catch (Exception e) {
+
+            StackTraceElement[] stackTrace = e.getStackTrace();
+            StackTraceElement currentMethod = stackTrace[0]; // 현재 메소드 정보
+
+            String errorMessage = currentMethod.getClassName() + "."
+                    + currentMethod.getMethodName()
+                    + " userId decoding 중 에러가 발생했습니다.  "
+                    + e.getMessage();
+
+            throw new AuthorizationException(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    ""
+            );
+        }
     }
 
     /**
