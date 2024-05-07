@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -29,16 +31,13 @@ public class FollowController {
     public ResponseEntity follow(HttpServletRequest request, @RequestBody FollowRequestDto requestDto) {
 
         String token = jwtUtil.getTokenFromRequest(request);
-
         try {
-            // 토큰으로 부터 username 얻기 (follower) , 암호화된 follwee id 디코딩
-            String username = jwtUtil.getUsername(token);
 
             //username을 통해 user 조회
-            User follower = userService.findByUsername(username);
-            User followee = userService.findByUsername(requestDto.getUsername());
+            User following = userService.findUserByToken(token);
+            User follower = userService.findByUsername(requestDto.getToUsername());
 
-            String message = followService.follow(follower, followee);
+            String message = followService.follow(following, follower);
 
             return ResponseEntity.ok().body(
                     new ResponseDto(
@@ -60,19 +59,19 @@ public class FollowController {
     /**
      * 언팔하기
      */
-    @DeleteMapping("/follow")
-    public ResponseEntity<ResponseDto<String>> deleteFollow(HttpServletRequest request , @RequestBody FollowRequestDto requestDto){
+    @DeleteMapping("/follow/{toUsername}")
+    public ResponseEntity<ResponseDto<String>> deleteFollow(HttpServletRequest request , @PathVariable("toUsername") String toUsername){
 
         // authorization token 가져오기
         String token = jwtUtil.getTokenFromRequest(request);
 
         // 본인과 언팔할 유저 아이디 찾기
         try {
-            User follower = userService.findUserByToken(token);
-            User followee = userService.findByUsername(requestDto.getUsername());
+            User following = userService.findUserByToken(token);
+            User follower = userService.findByUsername(toUsername);
 
             // 언팔로우
-            followService.cancelFollow(follower , followee);
+            followService.cancelFollow(following , follower);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -86,9 +85,41 @@ public class FollowController {
         return ResponseEntity.ok().body(
                 new ResponseDto<String>(
                         String.valueOf(HttpStatus.OK.value()),
-                        requestDto.getUsername() + "과의 언팔에 성공했습니다."
+                        toUsername + "과의 언팔에 성공했습니다."
                 )
         );
+    }
+
+    /**
+     *  특정 팔로워 조회
+     * */
+    @GetMapping("/follow/{toUsername}")
+    public ResponseEntity<ResponseDto> CheckFollowStatus(HttpServletRequest request ,@PathVariable("toUsername") String toUsername ) {
+        // authorization token 가져오기
+        String token = jwtUtil.getTokenFromRequest(request);
+
+        // 본인과 언팔할 유저 아이디 찾기
+        try {
+            User following = userService.findUserByToken(token);
+            User follower = userService.findByUsername(toUsername);
+
+            // follow status 확인
+            return ResponseEntity.ok().body(
+                    new ResponseDto<Map<String, Boolean>>(
+                            String.valueOf(HttpStatus.OK.value()),
+                            "success",
+                            Map.of("isFollowed", followService.isFollowed(following, follower))
+                    )
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    new ResponseDto (
+                            String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                            e.getMessage()
+                    )
+            );
+        }
     }
 
     /**

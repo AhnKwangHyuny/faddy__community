@@ -5,8 +5,8 @@ import MoreIcon from "shared/ui/MoreIcon/MoreIcon";
 const ProfileFollowAction = ({user}) => {
     return (
         <section className="profile-follow__section">
-            <UserProfile level={"Lv4"}/>
-            <FollowButton userId={"dwqdwq"} friendId={"dwqdwqdqw"}/>
+            <UserProfile nickname = {user.nickname} profile = {user.profile}/>
+            <FollowButton writerName ={user.username}/>
             <MoreIcon/>
         </section>
     );

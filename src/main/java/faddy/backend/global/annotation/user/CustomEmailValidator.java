@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 public class CustomEmailValidator implements ConstraintValidator<CustomEmail, String> {
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@(naver\\.com|google\\.com)$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@(naver\\.com|gmail\\.com)$");
 
     @Override
     public void initialize(CustomEmail constraintAnnotation) {
@@ -15,6 +15,7 @@ public class CustomEmailValidator implements ConstraintValidator<CustomEmail, St
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+
         return value != null && EMAIL_PATTERN.matcher(value).matches();
     }
 }

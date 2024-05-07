@@ -7,9 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -24,39 +22,39 @@ public class Follow extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "from_user")
-    private User fromUser;
+    @JoinColumn(name = "follower_id")
+    private User follower;
 
     @ManyToOne
-    @JoinColumn(name = "to_user")
-    private User toUser;
+    @JoinColumn(name = "folowing_id")
+    private User following;
 
 
     @Enumerated(EnumType.STRING)
     private FollowStatus status;
 
-    public Follow(User fromUser, User toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public Follow(User follower, User following) {
+        this.follower = follower;
+        this.following = following;
     }
 
     // 연관관계 메서드
-    public void addToUser(User toUser) {
-        this.toUser = toUser;
-        toUser.getFollowings().add(this);
+    public void addToUser(User following) {
+        this.following = following;
+        following.getFollowings().add(this);
     }
 
-    public void addFromUser(User fromUser) {
-        this.fromUser = fromUser;
-        fromUser.getFollowers().add(this);
+    public void addFromUser(User follower) {
+        this.follower = follower;
+        follower.getFollowers().add(this);
     }
 
     @Builder
-    public Follow(User fromUser, User toUser, FollowStatus status) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public Follow(User follower, User following, FollowStatus status) {
+        this.follower = follower;
+        this.following = following;
         this.status = (status == null) ? FollowStatus.REQUESTED : status;
-        addFromUser(fromUser);
-        addToUser(toUser);
+        addFromUser(follower);
+        addToUser(following);
     }
 }

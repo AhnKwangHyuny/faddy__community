@@ -28,7 +28,6 @@ import java.util.Collections;
 @Configuration
 public class WebSecurityConfig {
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -116,7 +115,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers("/snaps/**").authenticated()
+                                .requestMatchers("/snaps").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil ,tokenBlackListService ) , LoginFilter.class)

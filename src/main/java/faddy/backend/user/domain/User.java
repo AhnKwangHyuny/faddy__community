@@ -66,10 +66,10 @@ public class User extends BaseEntity  {
     private Authority authority;
 
     // User.java
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "following" , cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Follow> followings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "follower" ,  cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<Follow> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)

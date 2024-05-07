@@ -64,6 +64,7 @@ public class LikeController {
     public ResponseEntity<ResponseDto> getLikeCount(@PathVariable("snapId") String snapId) throws Exception {
 
         Long decryptedSnapId = EncryptionUtils.decryptEntityId(snapId);
+
         String likeCount = likeService.getLikeCount(decryptedSnapId);
 
         return ResponseEntity.ok().body(

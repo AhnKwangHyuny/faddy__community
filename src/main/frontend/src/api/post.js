@@ -48,10 +48,27 @@ export const reissueToken = (refreshToken) => {
 export const postLike = async (snapId) => {
     try {
         const response = await userRequestInstance.post(END_POINTS.LIKE_CLICK(snapId));
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error('좋아요 요청 실패', error);
         throw error;
     }
 };
+
+/** 팔로우 요청 */
+export const follow = async(toUsername) => {
+    try {
+        const data = {
+            toUsername,
+        }
+
+        const response = await userRequestInstance.post(END_POINTS.FOLLOW , data );
+
+        return response.status === 200;
+
+    } catch (error) {
+        console.error(error.data.message);
+        return false;
+    }
+}
+

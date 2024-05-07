@@ -46,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
         // Bear 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
 
-
         if (token == null) {
             log.warn(" token not exists");
 
@@ -68,7 +67,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(token);
-
 
         //userEntity를 생성하여 값 set
         User userEntity = new User.Builder()

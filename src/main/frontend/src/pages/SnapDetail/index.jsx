@@ -30,7 +30,7 @@ const SnapDetail = () => {
             try {
                 const response = await getSnapData(encryptedSnapId);
                 const data = response.data.data;
-
+                console.log(data);
                 // snap data 유효성 검증 (추후 개발)
                 if (!data) {
                     navigate(-1); // 전 페이지로 이동

@@ -30,13 +30,18 @@ public class EncryptionUtils {
     }
 
     public static Long decryptEntityId(String encryptedEntityId) throws Exception {
+        // base64 encoding인지 확인
+        if (!Base64Util.isBase64(encryptedEntityId)) {
+            throw new IllegalArgumentException("Invalid Base64 input string");
+        }
 
         SecretKeySpec secretKey = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
 
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedEntityId));
+        byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedEntityId));
 
         return Long.parseLong(new String(decryptedBytes));
     }

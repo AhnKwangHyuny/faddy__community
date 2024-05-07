@@ -116,17 +116,22 @@ public class JwtUtil {
     }
 
     public String getUsername(String accessToken) {
-        System.out.println("this.validateToken(accessToken) = " + this.validateToken(accessToken));
+
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
+            String subject = claims.getSubject();
 
-            return claims.getSubject();
+            if (subject == null || subject.isEmpty()) {
+                throw new JwtException("Subject claim is missing or empty");
+            }
+            return subject;
         } catch (JwtException e) {
-            return null;
+            log.error("Error while getting username from token", e);
+            throw e;
         }
     }
 
@@ -176,6 +181,7 @@ public class JwtUtil {
 
     public String getTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
+
         if (token == null || token.isEmpty()) {
             throw new AuthorizationException(HttpStatus.UNAUTHORIZED.value(), "Access Denied: No Authorization token provided.");
         }

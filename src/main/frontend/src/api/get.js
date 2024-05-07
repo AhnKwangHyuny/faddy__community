@@ -85,3 +85,15 @@ export const getMoreThumbnails = async (page) => {
         throw error;
       }
 }
+
+/** follow 상태 확인*/
+export const checkFollowStatus = async (toUsername) => {
+  try {
+    const response = await userRequestInstance.get(END_POINTS.CHECK_FOLLOW(toUsername));
+    return response.status === 200 && response.data.data.isFollowed === true;
+
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};

@@ -24,25 +24,26 @@ public class FollowService {
      * @Return 요청 결과 message
      * */
     @Transactional
-    public String follow(User follower , User followee) {
+    public String follow(User following , User follower) {
+
         // 자기 자신 follow 안됨
-        if (follower == followee)
+        if (follower == following)
             throw new FollowException(ExceptionCode.FAIL_SELF_FOLLOW_ERROR);
 
         // 중복 follow x
-        if (followRepository.existsByFollowerAndFollowee(follower , followee)){
+        if (followRepository.existsByFollowingAndFollower(following , follower)){
             throw new FollowException(ExceptionCode.ALREADY_FOLLOW_ERROR);
         }
 
         // Follow 엔티티 생성
         Follow follow = Follow.builder()
-                .toUser(followee)
-                .fromUser(follower)
+                .following(following)
+                .follower(follower)
                 .build();
 
         // follower , followee follow List 업데이트
-        follower.getFollowers().add(follow);
-        followee.getFollowings().add(follow);
+        follower.getFollowings().add(follow);
+        following.getFollowers().add(follow);
 
         followRepository.save(follow);
 
@@ -55,8 +56,9 @@ public class FollowService {
      * @Return void
      * */
     @Transactional
-    public void cancelFollow(User follower , User followee) {
-        Optional<Follow> follow = followRepository.deleteByFromUserAndToUser(follower, followee);
+    public void cancelFollow(User following , User follower) {
+        Optional<Follow> follow = followRepository.deleteByFollowingAndFollower(following, follower);
+
         if (!follow.isPresent()) {
             throw new FollowException(
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -65,8 +67,14 @@ public class FollowService {
         }
 
         // 언팔 성공 시 follower , followee followList 갱신
-        follower.getFollowers().remove(follow);
-        followee.getFollowings().remove(follow);
+        following.getFollowers().remove(follow.get());
+        follower.getFollowings().remove(follow.get());
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean isFollowed(User following , User follower) {
+
+        return followRepository.existsByFollowingAndFollower(following, follower);
     }
 
 }

@@ -42,3 +42,17 @@ export const deleteLike = async (snapId) => {
         throw error;
     }
 };
+
+/**언팔로우 요청*/
+export const unFollow = async(toUsername) => {
+     try {
+
+            const response = await userRequestInstance.delete(END_POINTS.UNFOLLOW(toUsername));
+
+            return response.status === 200;
+
+        } catch (error) {
+            console.error(error.data.message);
+            return false;
+        }
+}

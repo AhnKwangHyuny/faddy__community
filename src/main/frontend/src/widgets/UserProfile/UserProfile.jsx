@@ -1,9 +1,9 @@
 import React from 'react';
 import getLevelData from "utils/user/getLevelData";
 
-const UserProfile = ({level}) => {
+const UserProfile = ({ nickname , profile}) => {
 
-    const { name, color } = getLevelData(level);
+    const { showLevel ,name, color } = getLevelData(profile.level);
     const levelColor = color ? `#${color}` : '#000000'; // 기본 색상은 검정색
 
     return (
@@ -21,7 +21,7 @@ const UserProfile = ({level}) => {
                     <div className="nickname">
                         <div className="nickname__wrapper">
                             <div className="upn-1">
-                                밍밍이
+                                {nickname}
                             </div>
                         </div>
                     </div>
@@ -29,7 +29,7 @@ const UserProfile = ({level}) => {
                     <div className="user_level">
                         <div className="user_level__wrapper">
                             <div className="level " style={{ color: levelColor }}>
-                                {level} {name}
+                                {showLevel} {name}
                             </div>
                         </div>
                     </div>

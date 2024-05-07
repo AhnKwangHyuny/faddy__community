@@ -73,13 +73,19 @@ export const END_POINTS = {
   //Category
   UPLOAD_CATEGORY : `${API_CATEGORY}`,
 
-  //lie request
+  //like request
   LIKE_CLICK: (snapId) => `${API_LIKE}/${snapId}`,
   UNLIKE_CLICK: (snapId) => `${API_LIKE}/${snapId}`,
   GET_LIKE_COUNT: (snapId) => `${API_LIKE}/${snapId}`,
 
+  //follow
+  FOLLOW : `${API_USER}/follow`,
+  UNFOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
+  CHECK_FOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
+
   //location
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
+
 
 };
 

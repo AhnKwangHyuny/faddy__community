@@ -6,9 +6,11 @@ import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.InternalServerException;
+import faddy.backend.profile.domain.UserLevel;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,12 +125,15 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findUserByToken(String token) {
 
-        String encryptedUserId = findEncryptedUserId(token);
-        Long userId = decryptUserId(encryptedUserId);
+        String rawToken = jwtUtil.extractRawToken(token);
 
-        return userRepository.findById(userId).orElseThrow(()-> {
-            throw new BadRequestException(ExceptionCode.INVALID_USER_ID);
-        });
+        String username = jwtUtil.getUsername(rawToken);
+
+        return userRepository.findByUsername(username)
+                .orElseThrow(()-> {
+                    log.warn("[UserService] [findUserByToken] username이 존재하지 않습니다.");
+                    throw new BadRequestException(ExceptionCode.INVALID_USER_ID);
+                });
     };
 
     public Boolean checkEncrptedUserIdExists(String encrptedUserId) {

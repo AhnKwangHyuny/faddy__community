@@ -1,7 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState , useEffect} from 'react';
 import * as Style from "Common/SignUpStyle";
 
-
+import {initiateLocalStorage} from 'utils/auth/authUtils';
 import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom';
 import {ValidatePassword, ValidateUsername} from 'utils/Validate';
@@ -10,6 +10,14 @@ import {getUserId} from 'api/get';
 import { useAuth } from 'shared/context/AuthContext'; // AuthContext 경로에 맞게 조정하세요
 
 function LoginForm() {
+  // 컴포넌트 렌더링 시 인증관련 localstorage 초기화
+    useEffect(() => {
+
+    // 인증 관련 세션 초기화
+    initiateLocalStorage("ACCESS_TOKEN", "REFRESH_TOKEN" , "userId" , "GRANT_TYPE", "username");
+
+  }, []);
+
   const navigate = useNavigate();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -58,6 +66,9 @@ function LoginForm() {
 
       // 암호화된 유저 아이디 세션에 저장
       localStorage.setItem("userId" , userId);
+
+      // username (user id)저장
+      localStorage.setItem("username" , username);
       login(userId);
 
       navigate("/styleShare");

@@ -27,9 +27,9 @@ public class QFollow extends EntityPathBase<Follow> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created_at = _super.created_at;
 
-    public final faddy.backend.user.domain.QUser followed;
-
     public final faddy.backend.user.domain.QUser follower;
+
+    public final faddy.backend.user.domain.QUser following;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -56,8 +56,8 @@ public class QFollow extends EntityPathBase<Follow> {
 
     public QFollow(Class<? extends Follow> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.followed = inits.isInitialized("followed") ? new faddy.backend.user.domain.QUser(forProperty("followed"), inits.get("followed")) : null;
         this.follower = inits.isInitialized("follower") ? new faddy.backend.user.domain.QUser(forProperty("follower"), inits.get("follower")) : null;
+        this.following = inits.isInitialized("following") ? new faddy.backend.user.domain.QUser(forProperty("following"), inits.get("following")) : null;
     }
 
 }

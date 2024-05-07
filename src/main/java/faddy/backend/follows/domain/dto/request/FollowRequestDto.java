@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class FollowRequestDto {
 
     @NotNull
-    String username;
+    String toUsername;
 
 }
