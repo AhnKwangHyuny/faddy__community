@@ -8,6 +8,7 @@ import StyleShare from "pages/StyleShare/StyleShare";
 import SnapCreation from "pages/Snap/Index";
 import { useHideAddressBar } from 'shared/hooks/useHideAddressBar';
 import ProtectedRoute from "routes/ProtectedRoute";
+import StyleTalk from "pages/StyleTalk/index.jsx";
 
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/signup/*" element={<Signup />} />
                     <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
                     <Route path="/snaps/detail" element={<SnapDetail userid={"123123"}/>} />
+                    <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
                 </Routes>
             </Router>
         </AuthProvider>

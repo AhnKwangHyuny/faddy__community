@@ -1,25 +1,29 @@
 import React from 'react'
 
-import {searchKeyword } from '../../data/header'
+import menuData from 'data/header/menuData'
 import { Link, useLocation } from 'react-router-dom'
 
 const Menu = () => {
-    const location = useLocation();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
-    return (
-        <nav className='header__menu'>
+  const renderMenuItems = (items) => {
+    return items.map((item, key) => (
+      <li key={key} className={currentPath === item.src ? 'active' : ''}>
+        <Link to={item.src}>
+          {item.title}
+        </Link>
+      </li>
+    ));
+  }
 
-            <ul className='keyword'>
-                {searchKeyword.map((keyword, key) => (
-                    <li key={key} className={location.pathname === keyword.src ? 'active' : ''}>
-                        <Link to={keyword.src}>
-                            {keyword.title}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </nav>
-    )
+  return (
+    <nav className='header__menu'>
+      <ul className='keyword'>
+        {renderMenuItems(menuData[currentPath] || [])}
+      </ul>
+    </nav>
+  )
 }
 
 export default Menu

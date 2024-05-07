@@ -21,8 +21,28 @@ export const searchKeyword = [
         title: "팔로워",
         src: "/search/react.js"
     },
+]
 
+export const styleShareMenuNames = [
+    {
+        title: "검색",
+        src: "/"
+    },
 
+    {
+        title: "지금 뜨는",
+        src: "/"
+    },
+
+    {
+        title: "친구와 채팅",
+        src: "/"
+    },
+
+     {
+        title: "#댄디캐롯",
+        src: "/"
+    }
 ];
 
 export const snsLink = [

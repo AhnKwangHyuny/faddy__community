@@ -42,6 +42,11 @@
 @import "../../pages/SnapDetail/Components/ProfileFollowAction/profileFollowAction";
 @import "pages/snapDetail/Components/Header/header";
 
+// StyleTalk
+@import "pages/StyleTalk/index";
+@import "pages/StyleTalk/components/ChatTypeSelector/chatTypeSelector";
+
+
 /**features components*/
 //thumbnail-card
 @import "features/Thumbnail/ThumbnailList/thumbnailList";
@@ -60,6 +65,12 @@
 
 // StyleShare (main page)
 @import "pages/StyleShare/components/TrendSnapList/trendSnapList";
+
+/**StyleTalk*/
+@import "pages/StyleTalk/components/ChatList/chatList";
+@import "pages/StyleTalk/components/ChatListItem/chatListItem";
+@import "pages/StyleTalk/components/ChatRoom/chatRoom";
+
 
 /**shared ui*/
 @import "shared/ui/MoreIcon/moreIcon";
