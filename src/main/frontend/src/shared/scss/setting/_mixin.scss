@@ -22,3 +22,11 @@
     -webkit-line-clamp: $num;
     -webkit-box-orient: vertical;
 }
+
+//text truncate
+@mixin text-truncate($width) {
+    width: $width; /* 파라미터로 받은 너비 설정 */
+    white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+    overflow: hidden; /* 초과 내용 숨김 */
+    text-overflow: ellipsis; /* 텍스트가 넘치면 ...으로 표시 */
+}
