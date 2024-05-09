@@ -12,6 +12,7 @@ import StyleTalk from "pages/StyleTalk/index.jsx";
 
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
+import Chat from "pages/Chat/index";
 
 function App() {
     useHideAddressBar();
@@ -25,8 +26,9 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup/*" element={<Signup />} />
                     <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
-                    <Route path="/snaps/detail" element={<SnapDetail userid={"123123"}/>} />
+                    <Route path="/snaps/detail" element={<SnapDetail/>} />
                     <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
+                    <Route path="/talks/test" element={<ProtectedRoute><Chat/></ProtectedRoute>}/>
                 </Routes>
             </Router>
         </AuthProvider>
