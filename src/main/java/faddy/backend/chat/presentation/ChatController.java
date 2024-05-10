@@ -1,6 +1,5 @@
 package faddy.backend.chat.presentation;
 
-import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.dto.command.ChatMessageCreateCommand;
 import faddy.backend.chat.dto.request.ChatMessageRequest;
@@ -54,6 +53,7 @@ public class ChatController {
                     .id(chatId)
                     .content(chatMessage.content())
                     .sender(sender) // 보안 이슈
+                    .type(command.type())
                     .build();
 
             return chatMessageResponse;

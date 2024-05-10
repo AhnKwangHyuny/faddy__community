@@ -6,6 +6,7 @@ import faddy.backend.chat.dto.command.ChatMessageCreateCommand;
 import faddy.backend.chat.dto.response.ChatMessageResponse;
 import faddy.backend.chat.repository.ChatJpaRepository;
 import faddy.backend.chat.service.useCase.ChatMessageCreateUseCase;
+import faddy.backend.chat.type.ContentType;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.InternalServerException;
 import faddy.backend.user.service.UserService;
@@ -48,6 +49,7 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
                 .id(-1L) // 에러 시 음수 값 할당
                 .content(ERROR_MESSAGE)
                 .sender(-1L) // 에러 시 음수 값 할당
+                .type(ContentType.TEXT)
                 .build();
     }
 }

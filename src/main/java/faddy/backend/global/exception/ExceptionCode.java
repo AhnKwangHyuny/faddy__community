@@ -123,7 +123,8 @@ public enum ExceptionCode {
     /**
      * chat
      * */
-    CHAT_NOT_FOUND_ERROR(400 , "해당 채팅방이 존재하지 않습니다."),
+    CHATROOM_NOT_FOUND_ERROR(400 , "해당 채팅방이 존재하지 않습니다."),
+    CHAT_FOUND_ERROR(400 , "채팅을 불러오는 중 오류가 발생했습니다."),
     CHAT_SAVE_ERROR(500 , "메세지 전송에 실패했습니다. [생성 오류]");
 
     private final int code;
