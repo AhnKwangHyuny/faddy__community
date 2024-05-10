@@ -118,9 +118,13 @@ public enum ExceptionCode {
     /**
      * common
      * */
-    MAPPING_ERROR_SNAP_TO_THUMBNAIL(500 , "Snap을 ThumbnailResponseDto로 변환하는데 실패했습니다.");
+    MAPPING_ERROR_SNAP_TO_THUMBNAIL(500 , "Snap을 ThumbnailResponseDto로 변환하는데 실패했습니다."),
 
-
+    /**
+     * chat
+     * */
+    CHAT_NOT_FOUND_ERROR(400 , "해당 채팅방이 존재하지 않습니다."),
+    CHAT_SAVE_ERROR(500 , "메세지 전송에 실패했습니다. [생성 오류]");
 
     private final int code;
     private final String message;

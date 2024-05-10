@@ -147,6 +147,21 @@ public class UserService {
         return userRepository.existsById(userId);
     }
 
+    public Long getUserIdByEncrptedUserId(String encrptedUserId) {
+        Long userId = userIdEncryptionUtil.decryptUserId(encrptedUserId);
+
+        if(userId == null) {
+            throw new BadRequestException(ExceptionCode.DECRYPT_USER_ID_ERROR);
+        }
+
+        if(userRepository.existsById(userId)) {
+            return userId;
+        }
+
+        return null;
+    }
+
+
     @Transactional
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
@@ -190,4 +205,25 @@ public class UserService {
         // level up 조건(추후 개발)
         user.getProfile().levelUp();
     }
+
+    /**
+     *  authorization token을 통해 userId 가져오기
+     * @Param String authorization Token
+     * @Return Long userId
+     * */
+    @Transactional(readOnly = true)
+    public Long getUserIdByAuthorization(String token) {
+        // token에서 username 추출
+        String username = jwtUtil.getUsername(token);
+
+        User user = findByUsername(username);
+
+        if(user == null) {
+            throw new AuthorizationException(HttpStatus.UNAUTHORIZED.value() ,
+                    "[User Service.getUserIdByAuthrization 유저를 찾을 수 없습니다.]");
+        }
+
+        return user.getId();
+    }
 }
+

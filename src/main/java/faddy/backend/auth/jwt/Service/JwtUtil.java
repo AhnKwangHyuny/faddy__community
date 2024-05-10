@@ -8,6 +8,7 @@ import faddy.backend.authToken.repository.RefreshTokenRepository;
 import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.JwtValidationException;
+import faddy.backend.user.domain.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -187,5 +188,6 @@ public class JwtUtil {
         }
         return token;
     }
+
 }
 

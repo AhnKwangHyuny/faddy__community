@@ -19,19 +19,25 @@ public class ChatRoom extends BaseEntity {
 
     private Long masterId;
 
-    private String name;
+    private String title;
 
     // category , hashTag 추후 업데이트
 
     @Builder
-    public ChatRoom(Long masterId, String name) {
+    public ChatRoom(Long masterId, String title) {
         this.masterId = masterId;
-        this.name = name;
+        this.title = title;
     }
 
-    public void updateChatRoom(Long masterId, String name) {
+    public void updateChatRoom(Long masterId, String title) {
         this.masterId = masterId;
-        this.name = name;
+        this.title = title;
     }
 
+    public static ChatRoom createChatRoom(String title,  Long master) {
+        return ChatRoom.builder()
+                .title(title)
+                .masterId(master)
+                .build();
+    }
 }

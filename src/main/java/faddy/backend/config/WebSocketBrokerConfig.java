@@ -10,14 +10,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // stomp protocol 지원 x -> SockJs로 소켓동신 지원
         // stomp 접속 url : /ws
-        registry.addEndpoint("/ws")
+        registry.addEndpoint("/chat")
                 .setAllowedOriginPatterns("*")
                 .withSockJS(); // SocketJS 를 연결한다는 설정
 
@@ -25,10 +25,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 메시지를 구독하는 요청 url => 즉 메시지 받을 때
-        registry.enableSimpleBroker("/chat/*");
+        // 바로 broker 호출
+        registry.enableSimpleBroker("/queue" , "/topic" , "/chat"); // queue : message 1:1 , topic : message: 1:n
 
-        // 메시지를 발행하는 요청 url => 즉 메시지 보낼 때
+        // broker 호출 전 message 가공을 위한 url
         registry.setApplicationDestinationPrefixes("/app");
     }
 
