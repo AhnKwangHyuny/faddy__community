@@ -37,9 +37,8 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
-            // Log the error
+
             log.error("Error retrieving chats for chat room {}", chatRoom, e);
-            // Throw a custom exception or return an error response
             throw new ChatServiceException(ExceptionCode.CHAT_FOUND_ERROR);
         }
     }
