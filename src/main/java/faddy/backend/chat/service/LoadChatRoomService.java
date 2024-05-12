@@ -21,6 +21,6 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
     @Override
     public ChatRoom getChatRoomById(Long roomId) {
         return chatRoomRepository.findById(roomId)
-                .orElseThrow(() -> new BadRequestException(ExceptionCode.CHAT_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.CHATROOM_NOT_FOUND_ERROR));
     }
 }

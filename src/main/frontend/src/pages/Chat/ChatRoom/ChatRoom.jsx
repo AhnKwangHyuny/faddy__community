@@ -13,7 +13,7 @@ import {
 
 const AVATAR_IMAGE = "https://img1.daumcdn.net/thumb/C428x428/?scode=mtistory2&fname=https%3A%2F%2Ftistory3.daumcdn.net%2Ftistory%2F4431109%2Fattach%2F3af65be1d8b64ece859b8f6d07fafadc";
 
-const ChatRoom = () => {
+const ChatUI = () => {
   return (
     <div>
       <div style={{ position: "relative", height: "500px" }}>
@@ -90,4 +90,4 @@ const ChatRoom = () => {
   );
 };
 
-export default ChatRoom;
+export default ChatUI;

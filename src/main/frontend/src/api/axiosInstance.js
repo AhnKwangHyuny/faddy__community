@@ -15,13 +15,10 @@ export const userRequestInstance = axios.create({
 
 // 클라이언트가 서버로 요청 시 토큰 담아서 요청
 userRequestInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('ACCESS_TOKEN');
 
-  if(token) {
 
-    setAccessToken(token); // 토큰 설정
+  setAccessToken(config); // 토큰 설정
 
-  }
 
   return config;
 
@@ -61,8 +58,12 @@ userRequestInstance.interceptors.response.use((response) => {
 });
 
 // 유저 헤더에 쿠키 추가
-export const setAccessToken = (token) => {
-  userRequestInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+export const setAccessToken = (config) => {
+    const token = localStorage.getItem('ACCESS_TOKEN');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
 };
 
 // 토큰 갱신

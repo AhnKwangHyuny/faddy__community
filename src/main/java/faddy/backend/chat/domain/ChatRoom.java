@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name ="chat_rooms")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRoom extends BaseEntity {
 
