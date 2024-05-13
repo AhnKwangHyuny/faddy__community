@@ -29,6 +29,7 @@
 @import "widgets/Comment/ReplyCommentCard/reflyCommentCard";
 @import "../../widgets/Comment/CommentCard/commentCard";
 @import "widgets/TaggingImage/taggingImage";
+@import "widgets/Avatar/avatar";
 
 //Snap Components
 @import "widgets/Snap/Thumbnail/thumbnail";
@@ -50,6 +51,7 @@
 /**features components*/
 //thumbnail-card
 @import "features/Thumbnail/ThumbnailList/thumbnailList";
+@import "features/AboutHeader/aboutHeader";
 
 
 /**pages style*/
@@ -62,7 +64,7 @@
 
 @import "pages/Snap/index";
 @import "pages/SnapDetail/index";
-
+@import "pages/StyleTalkRoom/index";
 // StyleShare (main page)
 @import "pages/StyleShare/components/TrendSnapList/trendSnapList";
 

@@ -17,7 +17,7 @@ export const userRequestInstance = axios.create({
 userRequestInstance.interceptors.request.use((config) => {
 
 
-  setAccessToken(config); // 토큰 설정
+  setAccessToken(config); // header에 authorization 담기
 
 
   return config;
