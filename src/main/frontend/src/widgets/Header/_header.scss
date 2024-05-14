@@ -1,8 +1,8 @@
 .header__logo {
     flex:1;
     display: flex;
-    justify-content: space-between; /* 자식 요소들 사이에 공간을 균등하게 배분 */
-    align-items: center; /* 자식 요소들을 세로 방향으로 가운데 정렬 */
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding-top : 15px;
 
@@ -83,7 +83,7 @@
         li {
 
             display: inline-block;
-            a {
+            a , button {
                 display: inline-block;
                 padding: 5px 15px;
                 border: 1px solid var(--black200);
@@ -94,9 +94,21 @@
 
            }
 
+           button {
+            background-color: transparent;
+             outline: none;
+             cursor: pointer;
+             color : #000;
+           }
+
            &.active a {
                background-color: var(--black100);
                color: var(--white);
+           }
+
+           button:hover, button:focus, button:active {
+             background-color: transparent;
+             box-shadow: none;
            }
         }
     }

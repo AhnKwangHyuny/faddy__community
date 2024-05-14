@@ -13,7 +13,6 @@ import ReadCount from 'pages/StyleTalkRoom/components/ReadCount';
 import TimeStampLine from "pages/StyleTalkRoom/components/TimeStampLine";
 import DividerLine from "pages/StyleTalkRoom/components/DividerLine";
 import MessageContent from "pages/StyleTalkRoom/components/MessageContent";
-
 const defaultMessage = [
    {
        model: {
@@ -81,6 +80,10 @@ const ChatUI = () => {
            </span>
        )
    }
+   // request save chat data to server db
+
+
+
 
    const handleSend = (input) => {
        let newMessage = {

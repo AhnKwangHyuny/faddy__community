@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @Slf4j
@@ -22,5 +24,11 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
     public ChatRoom getChatRoomById(Long roomId) {
         return chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.CHATROOM_NOT_FOUND_ERROR));
+    }
+
+    @Override
+    public List<ChatRoom> loadAllChatRooms() {
+        return chatRoomRepository.findAll();
+
     }
 }

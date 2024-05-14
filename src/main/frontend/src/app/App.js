@@ -29,6 +29,7 @@ function App() {
                     <Route path="/snaps/detail" element={<SnapDetail/>} />
                     <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
                     <Route path="/talks/test" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
+                    <Route path="/talk/rooms/new" element={<ProtectedRoute><SnapCreation/></ProtectedRoute>}/>
                 </Routes>
             </Router>
         </AuthProvider>
