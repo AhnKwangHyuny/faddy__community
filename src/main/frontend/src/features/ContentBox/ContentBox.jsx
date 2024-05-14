@@ -8,7 +8,7 @@ const ContentBox = ({icon,placeholder = "자유롭게 글 작성해주세요.",o
     };
 
     const handleOnSubmit = () => {
-        onSubmit();
+        onSubmit(comment);
 
         // input box 초기화
         setComment("");

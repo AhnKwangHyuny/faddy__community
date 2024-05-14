@@ -1,23 +1,27 @@
-//message content components
 import React from 'react';
 
-const MessageContent = (message) => {
-
-    // url 형태인 경우
-    if(url.match(/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi)){
-        return <div className="message-content"><a
-        href={url}
-        target="_blank"
-        rel="noreferrer"
-        className="message-content-url"
-        >
-            {url}
-        </a></div>;
+const MessageContent = ({ message }) => {
+    // URL 형태인 경우
+    if(message.match(/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi)){
+        return (
+            <div className="message-content">
+                <a href={message} target="_blank" rel="noreferrer" className="message-content-url">
+                    {message}
+                </a>
+            </div>
+        );
     }
 
-    // url 형태가 아닌 경우
-    const message = data.message;
+    // 이미지 URL인 경우
+    if(message.match(/\.(jpeg|jpg|gif|png)$/)){
+        return (
+            <div className="message-content">
+                <img src={message} alt="이미지" className="message-content-image" />
+            </div>
+        );
+    }
 
+    // URL 형태가 아닌 텍스트인 경우
     return <div className="message-content">{message}</div>;
 }
 

@@ -1,89 +1,156 @@
 #Style-talk {
-    margin:0 !important;
-    padding:0 !important;
+   margin: 0 !important;
+   padding: 0 !important;
 
-    .cr-main-container {
-        margin-top: 80px;
+   .cr-main-container {
+       margin-top: 80px;
+       overflow-y: hidden; // 스크롤바 생성 방지
 
        .chat-container {
-            .timeStamp-line {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+           height: calc(100vh - 53px);
+           overflow-y: auto;
+           display: flex;
+           flex-direction: column;
+           justify-content: flex-end;
 
-                .timeStamp {
-                    font-size: 12px;
-                    font-weight: 600;
-                }
-            }
+           //100vh-80px이하라면 맨 위가 보이도록 세팅
 
-            .message-list {
-                padding: 10px;
+           &.scroll {
+               justify-content: flex-start;
+           }
 
-                .message-group {
-                    margin-bottom: 10px;
+           .timeStamp-line {
+               display: flex;
+               align-items: center;
+               justify-content: center;
 
-                    .message {
-                        display: flex;
-                        align-items: center;
-                        margin-bottom: 10px;
+               .timeStamp {
+                   font-size: 12px;
+                   font-weight: 600;
+               }
+           }
 
-                        .user-profile {
-                            display: flex;
-                            height : 40px;
+           .message-list {
+               padding: 10px;
 
-                            &__avatar {
-                                $avatar-size: 40px;
-                                width: $avatar-size;
-                                height: $avatar-size;
-                                border-radius: 50%;
-                                overflow: hidden;
-                                margin-right: 10px;
-                                line-height: 40px; // 부모 요소의 높이와 동일하게 설정;
-                            }
+               .message-group {
+                   margin-bottom: 20px;
+                   position: relative;
+                   display: flex;
+                   flex-direction: column;
 
-                            &__avatar-img {
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                vertical-align: middle;
-                            }
+                   .user-profile {
+                       display: flex;
+                       align-items: center;
+                       position: relative;
 
-                            &__name {
-                                font-weight: bold;
-                                font-size: 12px;
-                                line-height: 40px;
-                            }
-                        }
+                       &__avatar {
+                           $avatar-size: 30px;
+                           width: $avatar-size;
+                           height: $avatar-size;
+                           margin-right: 10px;
+                           line-height: 40px;
+                       }
 
-                        .message-content {
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            padding: 10px;
-                            border-radius: 10px;
-                            background-color: #f1f1f1;
-                            font-size: 14px;
-                            line-height: 20px;
-                        }
+                       &__avatar-img {
+                           width: 100%;
+                           height: 100%;
+                           border-radius: 40%;
+                           object-fit: cover;
+                           vertical-align: middle;
+                       }
 
+                       &__name {
+                           font-weight: bold;
+                           font-size: 10px;
+                       }
+                   }
 
-                    }
+                   .message {
+                       display: flex;
+                       flex-direction: row;
+                       align-items: flex-start;
 
-                    .sentTime {
+                       &.message-incoming {
+                           justify-content: flex-end;
 
-                        font-size: 12px;
-                        font-weight: 600;
-                        color: #9e9e9e;
-                    }
+                           .message-content {
+                               margin-left: 0;
+                               margin-right: 0;
+                               border-top-right-radius: 3px;
+                           }
 
-                    .readCount {
-                        font-size: 12px;
-                        font-weight: 600;
-                        color: #9e9e9e;
-                    }
-                }
-            }
+                           .message-meta-info {
+                               order: -1;
+                               margin-right: 3px;
+
+                               .readCount {
+                                   flex: 0;
+                                   display: flex;
+                                   justify-content: flex-end;
+                               }
+                           }
+                       }
+
+                       &.message-outgoing {
+                           justify-content: flex-start;
+
+                           .message-content {
+                               margin-left: 40px;
+                               border-top-left-radius: 3px;
+                           }
+
+                           .readCount {
+                               flex: 0;
+                               display: flex;
+                               justify-content: flex-start;
+                           }
+                       }
+
+                       .message-content {
+                           flex: 1;
+                           background-color: #f1f1f1;
+                           padding: 10px;
+                           border-radius: 12px;
+                           font-size: 12px;
+                           line-height: 20px;
+                           width: auto;
+                           max-width: 60%;
+                           word-break: break-all;
+                           position: relative;
+                       }
+
+                       .message-meta-info {
+                           align-self: flex-end;
+                           display: flex;
+                           flex-direction: column-reverse;
+                           margin-left: 3px;
+
+                           .sentTime {
+                               flex: 0;
+
+                               .time {
+                                   white-space: nowrap;
+                                   font-size: 10px;
+                                   font-weight: 600;
+                                   color: #9e9e9e;
+                               }
+                           }
+
+                           .readCount {
+                               flex: 0;
+                               display: flex;
+
+                               .count {
+                                   font-size: 10px;
+                                   font-weight: 600;
+                                   color: #9e9e9e;
+                               }
+                           }
+                       }
+                   }
+               }
+           }
        }
-    }
+   }
 }
