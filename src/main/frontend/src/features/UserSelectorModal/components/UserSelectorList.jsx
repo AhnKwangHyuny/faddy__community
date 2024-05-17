@@ -110,7 +110,6 @@ const UserSelectorList = () => {
                     </li>
                 ))}
             </ul>
-            <p>선택된 사용자: {selectedUsers.map((user) => user.nickname).join(', ')}</p>
         </div>
     );
 };

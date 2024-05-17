@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +22,11 @@ public interface FollowJpaRepository extends JpaRepository<Follow, Long> {
     // 언팔
     Optional<Follow> deleteByFollowingAndFollower( User following, User follower);
 
+    //following조회
+    @Query("SELECT f FROM Follow f JOIN FETCH f.following JOIN FETCH f.follower.profile WHERE f.follower.id = :userId")
+    List<Follow> findAllByFollowerId(@Param("userId") Long userId);
+
+    //follower조회
+    @Query("SELECT f FROM Follow f JOIN FETCH f.following JOIN FETCH f.follower.profile WHERE f.following.id = :userId")
+    List<Follow> findAllByFollowingId(@Param("userId") Long userId);
 }

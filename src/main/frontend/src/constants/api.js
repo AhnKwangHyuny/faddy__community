@@ -82,7 +82,11 @@ export const END_POINTS = {
   FOLLOW : `${API_USER}/follow`,
   UNFOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
   CHECK_FOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
+  GET_FOLLOWING : (userId) => `${API_USER}/${userId}/following`,
+  GET_FOLLOWERS : (userId) => `${API_USER}/${userId}/followers`,
 
+  // Following and Followers (test용)
+  GET_RELATIONSHIPS : (userId) => `${API_USER}/${userId}/relationships`,
   //location
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
 

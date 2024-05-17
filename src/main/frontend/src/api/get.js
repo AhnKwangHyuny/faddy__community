@@ -97,3 +97,25 @@ export const checkFollowStatus = async (toUsername) => {
     return false;
   }
 };
+
+/** follow한 유저와 follow준 유저 모두 가져오기*/
+export const getFollowList = async () => {
+  try {
+    const userId = localStorage.getItem('userId');
+    // userId is null 이면 error 발생 시키기
+    if (!userId) {
+      // error code 403
+      throw new Error('userId is null');
+    }
+
+    const response = await userRequestInstance.get(END_POINTS.GET_RELATIONSHIPS(userId));
+
+    return response.data.data;
+  } catch (error) {
+
+    console.error('팔로우 리스트 조회 실패', error);
+    // return error response
+    throw error;
+  }
+};
+

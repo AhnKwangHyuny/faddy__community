@@ -3,8 +3,10 @@ package faddy.backend.follows.presentation;
 import faddy.backend.api.Dto.ResponseDto;
 import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.follows.domain.dto.request.FollowRequestDto;
+import faddy.backend.follows.domain.dto.response.FollowResponseDto;
 import faddy.backend.follows.service.FollowService;
 import faddy.backend.user.domain.User;
+import faddy.backend.user.dto.request.UserIdRequestDto;
 import faddy.backend.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -123,24 +126,45 @@ public class FollowController {
     }
 
     /**
+     * 팔로워 조회
+     */
+    @GetMapping("/{userId}/follower")
+    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowerList(@PathVariable("userId") String encryptedUserId) {
+        try {
+            List<FollowResponseDto> followers = followService.getFollowers(encryptedUserId);
+            return ResponseEntity.ok().body(new ResponseDto<>(
+                    String.valueOf(HttpStatus.OK.value()),
+                    "success",
+                    followers
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto<>(
+                    String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                    e.getMessage(),
+                    null
+            ));
+        }
+    }
+
+    /**
      * 팔로잉 조회
      */
-//    @GetMapping("/users/{userName}/following")
-//    public ResponseEntity<List<FollowDTO>> getFollowingList(@PathVariable("userName") String userName, Authentication auth) {
-//        User from_user = userService.findUser(userName);
-//        User requestUser=userService.findUser(auth.getName());
-//        return ResponseEntity.ok().body(followService.followingList(from_user, requestUser));
-//    }
-//
-//    /**
-//     * 팔로워 조회
-//     */
-//    @GetMapping("/users/{userName}/follower")
-//    public ResponseEntity<List<FollowDTO>> getFollowerList(@PathVariable("userName") String userName, Authentication auth) {
-//        User to_user = userService.findUser(userName);
-//        User requestUser=userService.findUser(auth.getName());
-//        return ResponseEntity.ok().body(followService.followerList(to_user, requestUser));
-//    }
-//
+    @GetMapping("/{userId}/following")
+    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowingList(@PathVariable("userId") String encryptedUserId) {
+        try {
+            List<FollowResponseDto> followings = followService.getFollowings(encryptedUserId);
+            return ResponseEntity.ok().body(new ResponseDto<>(
+                    String.valueOf(HttpStatus.OK.value()),
+                    "success",
+                    followings
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto<>(
+                    String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                    e.getMessage(),
+                    null
+            ));
+        }
+    }
 
 }

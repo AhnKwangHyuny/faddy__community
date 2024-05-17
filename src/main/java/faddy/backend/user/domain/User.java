@@ -37,7 +37,7 @@ public class User extends BaseEntity  {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(fetch= FetchType.LAZY , cascade = CascadeType.REMOVE)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 

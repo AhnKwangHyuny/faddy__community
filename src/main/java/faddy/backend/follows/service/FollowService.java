@@ -1,23 +1,29 @@
 package faddy.backend.follows.service;
 
 import faddy.backend.follows.domain.Follow;
+import faddy.backend.follows.domain.dto.response.FollowResponseDto;
 import faddy.backend.follows.repository.FollowJpaRepository;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.FollowException;
 import faddy.backend.user.domain.User;
+import faddy.backend.user.repository.UserRepository;
+import faddy.backend.user.service.UserIdEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FollowService {
 
     private final FollowJpaRepository followRepository;
-
+    private final UserIdEncryptionUtil userIdEncryptionUtil;
+    private final UserRepository userRepository;
     /**
      * follow 요청
      * @Param User 팔로우 요청 유저 , User 팔로우 받은 유저
@@ -77,4 +83,47 @@ public class FollowService {
         return followRepository.existsByFollowingAndFollower(following, follower);
     }
 
+    /**
+     *  follow , follower list 조회
+     * */
+    @Transactional(readOnly = true)
+    public List<FollowResponseDto> getFollowings(String userId) {
+
+        Long decryptUserId = userIdEncryptionUtil.decryptUserId(userId);
+
+        // if decryptUserId is null, throw exception
+        if (decryptUserId == null) {
+            throw new FollowException(ExceptionCode.DECRYPT_USER_ID_ERROR);
+        }
+
+        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        return followRepository.findAllByFollowingId(decryptUserId).stream()
+                .map(follow -> new FollowResponseDto.Builder()
+                        .userId(userIdEncryptionUtil.encryptUserId(follow.getFollowing().getId()))
+                        .nickname(follow.getFollowing().getNickname())
+                        .profileImageUrl(follow.getFollowing().getProfile().getProfileImageUrl())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<FollowResponseDto> getFollowers(String userId) {
+
+        Long decryptUserId = userIdEncryptionUtil.decryptUserId(userId);
+
+        // if decryptUserId is null, throw exception
+        if (decryptUserId == null) {
+            throw new FollowException(ExceptionCode.DECRYPT_USER_ID_ERROR);
+        }
+
+        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return followRepository.findAllByFollowerId(decryptUserId).stream()
+                .map(follow -> new FollowResponseDto.Builder()
+                        .userId(userIdEncryptionUtil.encryptUserId(follow.getFollower().getId()))
+                        .nickname(follow.getFollower().getNickname())
+                        .profileImageUrl(follow.getFollower().getProfile().getProfileImageUrl())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
