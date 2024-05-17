@@ -27,7 +27,7 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
     }
 
     @Override
-    public List<ChatRoom> loadAllChatRooms() {
+    public List<ChatRoom> getChatRooms() {
         return chatRoomRepository.findAll();
 
     }

@@ -20,11 +20,11 @@ export const API_CATEGORY  = 'api/v1/categories';
 export const API_LIKE = 'api/v1/likes';
 
 export const BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.38:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.14:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 export const AXIOS_BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.38:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.14:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 

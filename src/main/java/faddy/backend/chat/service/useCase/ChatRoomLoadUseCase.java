@@ -7,6 +7,6 @@ import java.util.List;
 public interface ChatRoomLoadUseCase {
     ChatRoom getChatRoomById(Long roomId);
 
-    List<ChatRoom> loadAllChatRooms();
+    List<ChatRoom> getChatRooms();
 
 }

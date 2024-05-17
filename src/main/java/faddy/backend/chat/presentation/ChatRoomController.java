@@ -22,9 +22,7 @@ public class ChatRoomController {
     @GetMapping
     public ResponseEntity<ResponseEntity<List<ChatRoom>>> getRoomList() {
 
-        List<ChatRoom> rooms = loadChatRoomService.getChatRoomList();
-
-
+        List<ChatRoom> rooms = loadChatRoomService.getChatRooms();
 
         return null;
 

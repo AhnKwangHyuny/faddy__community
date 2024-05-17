@@ -53,6 +53,8 @@
 @import "features/Thumbnail/ThumbnailList/thumbnailList";
 @import "features/AboutHeader/aboutHeader";
 
+//searchBar
+@import "features/SearchBar/searchBar";
 
 /**pages style*/
 //styleShare (main page)
@@ -84,6 +86,10 @@
 //sorting menu
 @import "features/Sorting/SortingMenu/sortingMenu";
 @import "features/Sorting/SortingMenu/sortingMenu";
+
+//user selector modal
+@import "features/UserSelectorModal/userSelectorModal";
+
 
 //interaction
 @import "features/Interaction/index";
