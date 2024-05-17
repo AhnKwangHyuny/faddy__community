@@ -32,12 +32,12 @@ public class UserIdEncryptionUtil {
     public void init() {
         try {
             // 공개키 초기화
-            X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyString.getBytes()));
+            X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyString));
             KeyFactory keyFactoryPublic = KeyFactory.getInstance("RSA");
             publicKey = keyFactoryPublic.generatePublic(keySpecPublic);
 
             // 개인키 초기화
-            PKCS8EncodedKeySpec keySpecPrivate = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyString.getBytes()));
+            PKCS8EncodedKeySpec keySpecPrivate = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyString));
             KeyFactory keyFactoryPrivate = KeyFactory.getInstance("RSA");
             privateKey = keyFactoryPrivate.generatePrivate(keySpecPrivate);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class UserIdEncryptionUtil {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptedBytes = cipher.doFinal(userId.toString().getBytes());
-            return Base64.getEncoder().encodeToString(encryptedBytes);
+            return Base64.getUrlEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
             throw new ServerProcessingException(ExceptionCode.ENCRYPT_USER_ID_ERROR);
         }
@@ -62,7 +62,7 @@ public class UserIdEncryptionUtil {
             // 암호화된 userId 복호화
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedUserId));
+            byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedUserId));
             return Long.parseLong(new String(decryptedBytes));
         } catch (Exception e) {
             log.warn(e.getMessage());
@@ -70,5 +70,3 @@ public class UserIdEncryptionUtil {
         }
     }
 }
-
-

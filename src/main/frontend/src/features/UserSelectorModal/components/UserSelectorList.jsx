@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import UserSelector from 'features/UserSelectorModal/components/UserSelector';
 
-const UserSelectorList = () => {
+const UserSelectorList = ({followedUsers}) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
 
     const handleUserSelect = (user) => {
@@ -18,84 +18,6 @@ const UserSelectorList = () => {
         });
     };
 
-    // following user data set 15개 nickname , profileImageUrl
-    const followedUsers = [
-        {
-            id: 1,
-            nickname: 'Chris Kim',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 2,
-            nickname: 'Younghee Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 3,
-            nickname: 'Minsu Park',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 4,
-            nickname: 'Youngsoo Choi',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 5,
-            nickname: 'Chulsoo Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 6,
-            nickname: 'Jinwoo Kim',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 7,
-            nickname: 'Hana Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 8,
-            nickname: 'Sungmin Park',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 9,
-            nickname: 'Jiyoung Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 10,
-            nickname: 'Hyejin Kim',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 11,
-            nickname: 'Joonoh Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 12,
-            nickname: 'Soojin Kim',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 13,
-            nickname: 'Hyeonju Lee',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 14,
-            nickname: 'Jihoon Park',
-            profileImageUrl: '/default_profile.jpg'
-        },
-        {
-            id: 15,
-            nickname: 'Yuna Kim',
-            profileImageUrl: '/default_profile.jpg'
-        },
-    ];
 
     return (
         <div className="user-selector-list">

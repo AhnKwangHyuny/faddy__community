@@ -129,9 +129,9 @@ public class FollowController {
      * 팔로워 조회
      */
     @GetMapping("/{userId}/follower")
-    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowerList(@PathVariable("userId") String encryptedUserId) {
+    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowerList(@PathVariable("userId") String userId) {
         try {
-            List<FollowResponseDto> followers = followService.getFollowers(encryptedUserId);
+            List<FollowResponseDto> followers = followService.getFollowers(userId);
             return ResponseEntity.ok().body(new ResponseDto<>(
                     String.valueOf(HttpStatus.OK.value()),
                     "success",
@@ -150,9 +150,9 @@ public class FollowController {
      * 팔로잉 조회
      */
     @GetMapping("/{userId}/following")
-    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowingList(@PathVariable("userId") String encryptedUserId) {
+    public ResponseEntity<ResponseDto<List<FollowResponseDto>>> getFollowingList(@PathVariable("userId") String userId) {
         try {
-            List<FollowResponseDto> followings = followService.getFollowings(encryptedUserId);
+            List<FollowResponseDto> followings = followService.getFollowings(userId);
             return ResponseEntity.ok().body(new ResponseDto<>(
                     String.valueOf(HttpStatus.OK.value()),
                     "success",
