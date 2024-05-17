@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import UserSelector from 'features/UserSelectorModal/components/UserSelector';
 
-const UserSelectorList = ({followedUsers}) => {
-    const [selectedUsers, setSelectedUsers] = useState([]);
+const UserSelectorList = ({ followedUsers, onUserSelectionChange }) => {
+    const [selectedUserIds, setSelectedUserIds] = useState([]);
 
-    const handleUserSelect = (user) => {
-        setSelectedUsers((prevSelectedUsers) => {
-            if (prevSelectedUsers.includes(user)) {
-                // 체크박스 선택 취소 시 해당 사용자를 제거
-                return prevSelectedUsers.filter((selectedUser) => selectedUser !== user);
-            } else if (prevSelectedUsers.length < 100) {
-                return [...prevSelectedUsers, user];
-            } else {
-                return prevSelectedUsers;
-            }
+    const handleUserSelect = (userId) => {
+
+        setSelectedUserIds((prevSelectedUserIds) => {
+            const newSelectedUserIds = prevSelectedUserIds.includes(userId)
+                ? prevSelectedUserIds.filter((id) => id !== userId)
+                : [...prevSelectedUserIds, userId];
+
+            onUserSelectionChange(newSelectedUserIds);
+            return newSelectedUserIds;
         });
-    };
 
+    };
 
     return (
         <div className="user-selector-list">
             <ul className="selectors">
                 {followedUsers.map((user) => (
-                    <li key={user.id}>
+                    <li key={user.userId}>
                         <UserSelector
                             user={user}
-                            isSelected={selectedUsers.includes(user)}
-                            onSelectUser={handleUserSelect}
+                            isSelected={selectedUserIds.includes(user.userId)}
+                            onSelectUser={() => handleUserSelect(user.userId)}
                         />
                     </li>
                 ))}

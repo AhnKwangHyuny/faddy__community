@@ -44,7 +44,7 @@ public class Chat extends BaseEntity {
 
     /**
      * 채팅 생성
-     * @param chatRoom 채팅 방
+     * @param room 채팅 방
      * @param sender 보낸이
      * @param content 내용
      * @Param type 타입
