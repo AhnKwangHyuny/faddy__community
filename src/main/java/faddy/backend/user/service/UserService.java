@@ -2,10 +2,7 @@ package faddy.backend.user.service;
 
 import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.global.Utils.RedisUtil;
-import faddy.backend.global.exception.AuthorizationException;
-import faddy.backend.global.exception.BadRequestException;
-import faddy.backend.global.exception.ExceptionCode;
-import faddy.backend.global.exception.InternalServerException;
+import faddy.backend.global.exception.*;
 import faddy.backend.profile.domain.UserLevel;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
@@ -174,7 +171,6 @@ public class UserService {
     public Long decryptUserId(String encryptedUserId) {
 
         try {
-
             return userIdEncryptionUtil.decryptUserId(encryptedUserId);
 
         } catch (Exception e) {
@@ -224,6 +220,11 @@ public class UserService {
         }
 
         return user.getId();
+    }
+
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new AuthenticationException(ExceptionCode.INVALID_USER_ID));
     }
 }
 

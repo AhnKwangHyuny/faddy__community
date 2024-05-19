@@ -1,5 +1,6 @@
 package faddy.backend.chat.domain;
 
+import faddy.backend.chat.type.ChatRoomType;
 import faddy.backend.global.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,12 +23,17 @@ public class ChatRoom extends BaseEntity {
 
     private String title;
 
+    @Enumerated(EnumType.STRING)
+    private ChatRoomType type;
+
     // category , hashTag 추후 업데이트
 
     @Builder
-    public ChatRoom(Long masterId, String title) {
+    public ChatRoom(Long masterId, ChatRoomType type) {
         this.masterId = masterId;
-        this.title = title;
+        this.type = type;
+
+        this.title = null;
     }
 
     public void updateChatRoom(Long masterId, String title) {
@@ -35,10 +41,12 @@ public class ChatRoom extends BaseEntity {
         this.title = title;
     }
 
-    public static ChatRoom createChatRoom(String title,  Long master) {
+    // create builder using type and masterId except title
+    public static ChatRoom createChatRoom(Long masterId, ChatRoomType type) {
         return ChatRoom.builder()
-                .title(title)
-                .masterId(master)
+                .masterId(masterId)
+                .type(type)
                 .build();
     }
+
 }

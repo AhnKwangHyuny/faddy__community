@@ -116,6 +116,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
+    //ChatRoomException
+    @ExceptionHandler(ChatRoomException.class)
+    public ResponseEntity<ExceptionResponse> handleChatRoomException(final ChatRoomException e) {
+        log.error("ChatRoomException occurred", e); // 스택 트레이스를 로그에 출력
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    }
+
 
 }
 
