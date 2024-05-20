@@ -2,6 +2,7 @@ package faddy.backend.chat.service;
 
 import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.dto.request.CreateChatRoomRequest;
+import faddy.backend.chat.dto.response.CreateChatRoomResponse;
 import faddy.backend.chat.repository.ChatRoomJpaRepository;
 import faddy.backend.chat.service.adapter.useCase.CreateChatRoomUseCase;
 import faddy.backend.global.exception.ChatRoomException;

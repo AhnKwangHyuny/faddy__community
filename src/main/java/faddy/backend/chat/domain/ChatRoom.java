@@ -49,4 +49,7 @@ public class ChatRoom extends BaseEntity {
                 .build();
     }
 
+    public void updateChatRoom(String title) {
+        this.title = title;
+    }
 }

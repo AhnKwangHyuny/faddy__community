@@ -24,8 +24,8 @@ public class ChatController {
     private final ChatMessageCreateService chatMessageCreateService;
     private final UserService userService;
 
-    @MessageMapping("/chat/rooms/{roomId}/send") // config destination prefix에 더할 url
-    @SendTo("/chat/rooms/{roomId}") // simpleBroker 전달
+    @MessageMapping("/rooms/{roomId}/send") // config destination prefix에 더할 url
+    @SendTo("/topic/rooms/{roomId}") // simpleBroker 전달
     public ChatMessageResponse chat(@DestinationVariable Long roomId ,
                                     @RequestHeader("Authorization") String token,
                                     ChatMessageRequest chatMessage) {

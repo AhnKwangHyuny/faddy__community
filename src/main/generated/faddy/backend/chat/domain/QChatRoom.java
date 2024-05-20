@@ -30,6 +30,8 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final StringPath title = createString("title");
 
+    public final EnumPath<faddy.backend.chat.type.ChatRoomType> type = createEnum("type", faddy.backend.chat.type.ChatRoomType.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 

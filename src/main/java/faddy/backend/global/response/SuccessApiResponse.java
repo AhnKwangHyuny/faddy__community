@@ -21,6 +21,7 @@ public class SuccessApiResponse<T> extends ApiResponse {
         super(HttpStatus.OK.value(), "성공");
     }
 
+
     public static <T> ResponseEntity<SuccessApiResponse<T>> of(T data) {
         return ResponseEntity.ok(new SuccessApiResponse<>(data));
     }
@@ -28,4 +29,5 @@ public class SuccessApiResponse<T> extends ApiResponse {
     public static <T> ResponseEntity<SuccessApiResponse<T>> of() {
         return ResponseEntity.ok(new SuccessApiResponse<>());
     }
+
 }

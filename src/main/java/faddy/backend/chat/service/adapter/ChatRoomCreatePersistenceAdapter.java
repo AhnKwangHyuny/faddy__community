@@ -4,8 +4,7 @@ import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.dto.request.CreateChatRoomRequest;
 import faddy.backend.chat.dto.response.CreateChatRoomResponse;
 import faddy.backend.chat.service.ChatRoomCreateService;
-import faddy.backend.chat.service.ChatRoomUserService;
-import faddy.backend.chat.service.adapter.useCase.CreateChatRoomUseCase;
+import faddy.backend.chat.service.chatRoomUserService.ChatRoomUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ChatRoomCreatePersistenceAdapter implements CreateChatRoomUseCase {
+public class ChatRoomCreatePersistenceAdapter {
 
     private final ChatRoomCreateService chatRoomCreateService;
     private final ChatRoomUserService chatRoomUserService;
 
-    @Override
     public CreateChatRoomResponse createChatRoom(CreateChatRoomRequest request) {
         ChatRoom room = chatRoomCreateService.createChatRoom(request);
         chatRoomUserService.addUsersToChatRoom(room, request.getMemberIds());
