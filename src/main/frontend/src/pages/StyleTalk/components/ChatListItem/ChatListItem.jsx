@@ -1,11 +1,24 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation , useNavigate } from 'react-router-dom'
 
+const ChatListItem = ({chatItem})=> {
+    const navigate = useNavigate();
 
-const ChatListItem = ()=> {
+    const {
+        id,
+        title,
+        created_at,
+        type,
+        updated_at
+    } = chatItem;
+
+    const handleChatItemClick = () => {
+
+        navigate(`/talks/detail/${type}/${id}`);
+    };
 
     return (
         <div className="chatListItem">
-            <Link to = "/chats/detail/test">
+            <Link to={`/talks/detail/${type}/${id}`}>
                 <div className="chatListItem-container">
                     <div className="chat-thumbnail">
                         <div className="chat-thumbnail-container">

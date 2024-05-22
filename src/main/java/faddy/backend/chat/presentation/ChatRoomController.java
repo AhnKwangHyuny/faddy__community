@@ -30,7 +30,8 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatRoomUserService chatRoomUserService;
     @GetMapping
-    public ResponseEntity<? extends ApiResponse> getRoomList() {
+    public ResponseEntity<? extends ApiResponse> getRoomList(@RequestParam(value = "type", required = false) String type) {
+
         try {
             List<ChatRoom> rooms = loadChatRoomService.getChatRooms();
             return SuccessApiResponse.of(rooms);

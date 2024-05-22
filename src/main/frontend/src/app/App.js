@@ -29,7 +29,7 @@ function App() {
                     <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
                     <Route path="/snaps/detail" element={<SnapDetail/>} />
                     <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
-                    <Route path="/talks/test" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
+                    <Route path="/talks/detail/:type/:id" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
                 </Routes>
             </Router>
         </AuthProvider>

@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChatRoomJpaRepository extends JpaRepository<ChatRoom , Long> {
 
-    @Query("delete from ChatRoomUser cu where cu.chatRoomId = :roomId")
-    void deleteChatRoomUsersByChatRoomId(Long roomId);
 
 }

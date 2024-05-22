@@ -24,6 +24,7 @@ public class ChatRoom extends BaseEntity {
     private String title;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
     private ChatRoomType type;
 
     // category , hashTag 추후 업데이트
@@ -32,7 +33,6 @@ public class ChatRoom extends BaseEntity {
     public ChatRoom(Long masterId, ChatRoomType type) {
         this.masterId = masterId;
         this.type = type;
-
         this.title = null;
     }
 

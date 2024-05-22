@@ -19,7 +19,7 @@ public class ChatRoomCreatePersistenceAdapter {
 
     public CreateChatRoomResponse createChatRoom(CreateChatRoomRequest request) {
         ChatRoom room = chatRoomCreateService.createChatRoom(request);
-        chatRoomUserService.addUsersToChatRoom(room, request.getMemberIds());
+        chatRoomUserService.addUserToChatRoom(room, request.getMemberIds());
 
         return CreateChatRoomResponse.builder().roomId(room.getId()).build();
     }

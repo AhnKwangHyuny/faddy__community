@@ -119,3 +119,15 @@ export const getFollowList = async () => {
   }
 };
 
+export const getTalkList = async (type) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.GET_ALL_TALKS(type));
+        console.log(response.data.data);
+        return response.data.data;
+    } catch (error) {
+        console.error('채팅 리스트를 조회하는데 실패했습니다.', error);
+        throw error;
+    }
+
+}
+

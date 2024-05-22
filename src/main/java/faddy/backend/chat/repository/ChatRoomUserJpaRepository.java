@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomUserJpaRepository extends JpaRepository<ChatRoomUser, Long> {
-    List<ChatRoomUser> findByUserId(Long userId);
-    List<ChatRoomUser> findByChatRoomId(Long chatRoomId);
+    List<ChatRoomUser> findByUser_Id(Long userId);
+    List<ChatRoomUser> findByChatRoom_Id(Long chatRoomId);
 
-    @Query("delete from ChatRoomUser cu where cu.userId = :userId and cu.chatRoomId = :chatRoomId")
+    @Query("delete from ChatRoomUser cu where cu.user.id = :userId and cu.chatRoom.id = :chatRoomId")
     void deleteByUserIdAndChatRoomId(Long userId, Long chatRoomId);
+
+    @Query("delete from ChatRoomUser cu where cu.chatRoom.id = :roomId")
+    void deleteChatRoomUsersByChatRoomId(Long roomId);
 
     Optional<ChatRoomUser> findByUserIdAndChatRoomId(Long userId, Long chatRoomId);
 }

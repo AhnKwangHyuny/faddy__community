@@ -6,15 +6,16 @@ import CreateRoomModal from 'pages/StyleTalk/components/CreateRoomModal/CreateRo
 const Menu = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const [showModal, setShowModal] = useState(false);
 
-  const handleShowModal = () => {
-      setShowModal(true);
+  const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
+
+  const handleShowCreateRoomModal = () => {
+    setShowCreateRoomModal(true);
   };
 
-  const handleCloseModal = () => {
-        setShowModal(false);
-    }
+  const handleCloseCreateRoomModal = () => {
+    setShowCreateRoomModal(false);
+  };
 
   const renderMenuItems = useCallback((items) => {
     return items.map((item, key) => (
@@ -22,20 +23,25 @@ const Menu = () => {
         {item.type === 'link' ? (
           <Link to={item.src}>{item.title}</Link>
         ) : item.type === 'modal' ? (
-          <button onClick={handleShowModal}>{item.title}</button>
+          <button onClick={handleShowCreateRoomModal}>{item.title}</button>
         ) : null}
       </li>
     ));
-  }, [currentPath, handleShowModal]);
+  }, [currentPath]);
 
   return (
     <div>
-      <nav className='header__menu'>
-        <ul className='keyword'>
+      <nav className="header__menu">
+        <ul className="keyword">
           {renderMenuItems(menuData[currentPath] || [])}
         </ul>
       </nav>
-      {showModal && <CreateRoomModal isShowModal = {showModal} onClose = {handleCloseModal} />}
+      {showCreateRoomModal && (
+        <CreateRoomModal
+          isShowModal={showCreateRoomModal}
+          onClose={handleCloseCreateRoomModal}
+        />
+      )}
     </div>
   );
 };

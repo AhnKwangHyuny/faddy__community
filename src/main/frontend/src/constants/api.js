@@ -19,6 +19,8 @@ export const API_CATEGORY  = 'api/v1/categories';
 
 export const API_LIKE = 'api/v1/likes';
 
+export const API_TALK = 'api/v1/rooms';
+
 export const BASE_URL = DEV
   ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.14:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
@@ -90,7 +92,9 @@ export const END_POINTS = {
   //location
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
 
-
+  //styleTalks
+  GET_ALL_TALKS : (type) => `${API_TALK}?type = ${type}`,
+  CREATE_CHAT_ROOM : `${API_TALK}`,
 };
 
 

@@ -17,6 +17,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Transactional
 @RequiredArgsConstructor
 public class ChatRoomServiceImpl implements ChatRoomService {
+
     private final ChatRoomJpaRepository chatRoomRepository;
     private final ChatRoomUserJpaRepository chatRoomUserRepository;
     @Override
@@ -39,7 +40,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             chatRoomRepository.delete(chatRoom);
 
             // ChatRoom과 관련된 ChatRoomUser 모두 삭제
-            chatRoomRepository.deleteChatRoomUsersByChatRoomId(roomId);
+            chatRoomUserRepository.deleteChatRoomUsersByChatRoomId(roomId);
 
 
         } catch (Exception e) {

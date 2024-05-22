@@ -72,3 +72,17 @@ export const follow = async(toUsername) => {
     }
 }
 
+/** 채팅방 생성 api*/
+export const createFriendChatRoom = async (request) => {
+    try {
+
+        const response = await userRequestInstance.post(END_POINTS.CREATE_CHAT_ROOM , request);
+
+        return response.data;
+
+    } catch (error) {
+        console.error(error);
+        return error;
+    }
+}
+

@@ -1,20 +1,17 @@
+import React from 'react';
 
-const ChatTypeSelector = () => {
-
+const ChatTypeSelector = ({ onChatTypeChange }) => {
     // 오픈채팅을 클릭했을 때 호출될 함수
     const handleOpenChatClick = () => {
-        console.log("오픈채팅 선택됨");
-        // 여기에 오픈채팅 관련 로직을 추가할 수 있습니다.
+        onChatTypeChange('open');
     };
 
     // 친구채팅을 클릭했을 때 호출될 함수
     const handleFriendChatClick = () => {
-        console.log("친구채팅 선택됨");
-        // 여기에 친구채팅 관련 로직을 추가할 수 있습니다.
+        onChatTypeChange('friend');
     };
 
     return (
-        // React 컴포넌트
         <section id="ChatTypeSelector">
             <div className="chatTypeSelector__container">
                 <div className="chat-name__container">
@@ -44,6 +41,5 @@ const ChatTypeSelector = () => {
         </section>
     );
 };
-
 
 export default ChatTypeSelector;
