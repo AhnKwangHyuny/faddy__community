@@ -99,6 +99,8 @@ tasks.named('test') {
 
 processResources.dependsOn build
 
+
+
 ///// Querydsl 빌드 옵션 (옵셔널)
 def generated = 'src/main/generated'
 

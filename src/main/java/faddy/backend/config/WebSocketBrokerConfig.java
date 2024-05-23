@@ -25,10 +25,10 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 바로 broker 호출
-        registry.enableSimpleBroker("/queue" , "/topic"); // queue : message 1:1 , topic : message: 1:n
+        registry.enableSimpleBroker("/sub"); // queue : message 1:1 , topic : message: 1:n
 
         // broker 호출 전 message 가공을 위한 url
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 
 

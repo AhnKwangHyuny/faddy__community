@@ -11,14 +11,9 @@ const ChatListItem = ({chatItem})=> {
         updated_at
     } = chatItem;
 
-    const handleChatItemClick = () => {
-
-        navigate(`/talks/detail/${type}/${id}`);
-    };
-
     return (
         <div className="chatListItem">
-            <Link to={`/talks/detail/${type}/${id}`}>
+            <Link to={`/talks/detail/${type.toLowerCase()}/${id}`}>
                 <div className="chatListItem-container">
                     <div className="chat-thumbnail">
                         <div className="chat-thumbnail-container">

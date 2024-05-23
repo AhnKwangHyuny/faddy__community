@@ -25,8 +25,7 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
     private final LoadChatRoomService loadChatRoomService;
     private final ChatJpaRepository chatRepository;
     @Override
-    public Long createChatMessage(ChatMessageCreateCommand command) {
-
+    public Chat createChatMessage(ChatMessageCreateCommand command) {
 
         //Chat entity 생성
         Chat chat = Chat.createChat(command.room() , command.content(), command.sender() , command.type());
@@ -35,7 +34,7 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
         try {
             Chat savedChat = chatRepository.save(chat);
 
-            return savedChat.getId();
+            return savedChat;
 
         } catch (Exception e) {
             throw new InternalServerException(ExceptionCode.CHAT_SAVE_ERROR);

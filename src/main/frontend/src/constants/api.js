@@ -20,6 +20,7 @@ export const API_CATEGORY  = 'api/v1/categories';
 export const API_LIKE = 'api/v1/likes';
 
 export const API_TALK = 'api/v1/rooms';
+export const API_CHAT = 'api/v1/chats';
 
 export const BASE_URL = DEV
   ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.14:9000'
@@ -95,6 +96,10 @@ export const END_POINTS = {
   //styleTalks
   GET_ALL_TALKS : (type) => `${API_TALK}?type = ${type}`,
   CREATE_CHAT_ROOM : `${API_TALK}`,
+
+  //chats
+  GET_CHATS : (roomId) => `${API_CHAT}/${roomId}/messages`,
+  POST_CHAT : (roomId) => `${API_CHAT}/${roomId}`,
 };
 
 

@@ -131,3 +131,13 @@ export const getTalkList = async (type) => {
 
 }
 
+export const fetchChatMessages = async (chatId) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.GET_CHATS(chatId));
+        return response.data.data;
+    } catch (error) {
+        console.error('채팅 메시지를 조회하는데 실패했습니다.', error);
+        throw error;
+    }
+}
+

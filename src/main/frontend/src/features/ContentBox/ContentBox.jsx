@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
 
 const ContentBox = ({icon,placeholder = "자유롭게 글 작성해주세요.",onSubmit}) => {
-    const [comment, setComment] = useState('');
+    const [content, setContent] = useState('');
 
     const handleCommentChange = (e) => {
-        setComment(e.target.value);
+        setContent(e.target.value);
     };
 
     const handleOnSubmit = () => {
-        onSubmit(comment);
+        onSubmit(content);
 
         // input box 초기화
-        setComment("");
+        setContent("");
     }
 
     return (
-        <div className="comment-inputBox">
-            <div className="comment-inputBox__wrapper">
+        <div className="content-inputBox">
+            <div className="content-inputBox__wrapper">
                 <div className="emoticon-box">
                     <div className="emoticon-icon">
                         {icon}
@@ -27,11 +27,11 @@ const ContentBox = ({icon,placeholder = "자유롭게 글 작성해주세요.",o
                         type="text"
                         className="textForm"
                         placeholder={placeholder}
-                        value={comment}
+                        value={content}
                         onChange={handleCommentChange}
                     />
                 </div>
-                <div className="submit-comment">
+                <div className="submit-content">
                     <div className="submit-button" onClick={handleOnSubmit}>
                         <span className="material-icons">send</span>
                     </div>

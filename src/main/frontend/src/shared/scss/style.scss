@@ -73,7 +73,6 @@
 /**StyleTalk*/
 @import "pages/StyleTalk/components/ChatList/chatList";
 @import "pages/StyleTalk/components/ChatListItem/chatListItem";
-@import "pages/StyleTalk/components/ChatRoom/chatRoom";
 @import "pages/StyleTalk/components/CreateRoomModal/createRoomModal";
 
 /**shared ui*/
@@ -85,7 +84,7 @@
 
 //sorting menu
 @import "features/Sorting/SortingMenu/sortingMenu";
-@import "features/Sorting/SortingMenu/sortingMenu";
+@import "features/ContentBox/contentBox";
 
 //user selector modal
 @import "features/UserSelectorModal/userSelectorModal";

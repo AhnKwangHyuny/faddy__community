@@ -45,6 +45,7 @@
     "sass": "^1.72.0",
     "shared": "^0.2.0",
     "slick-carousel": "^1.8.1",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.1.8",
     "swiper": "^11.1.0",
     "tagify": "^0.1.1",

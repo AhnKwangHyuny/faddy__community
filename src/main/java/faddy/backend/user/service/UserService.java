@@ -226,5 +226,11 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new AuthenticationException(ExceptionCode.INVALID_USER_ID));
     }
+
+    // id로 사용자 닉네임 가져오기
+    public String getNicknameById(Long userId) {
+        return userRepository.findNicknameByUserId(userId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+    }
 }
 

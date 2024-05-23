@@ -24,22 +24,23 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
     private final ChatJpaRepository chatRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ChatMessageResponse> loadChatsByChatRoom(ChatRoom chatRoom) {
         try {
             List<Chat> chats = chatRepository.findByChatRoom(chatRoom);
+
             return chats.stream()
-                    .map(chat -> new ChatMessageResponse(
-                            chat.getId(),
-                            chat.getContent(),
-                            chat.getSenderId(),
-                            chat.getType()
-                    ))
+                    .map(chat -> ChatMessageResponse.builder()
+                            .id(chat.getId())
+                            .content(chat.getContent())
+                            .sender(chat.getSenderId())
+                            .type(chat.getType())
+                            .createdAt(chat.getCreated_at())
+                            .build())
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
-
-            log.error("Error retrieving chats for chat room {}", chatRoom, e);
-            throw new ChatServiceException(ExceptionCode.CHAT_FOUND_ERROR);
+            throw new RuntimeException("Failed to load chat messages", e);
         }
     }
 }
