@@ -32,9 +32,8 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
 
         //chat 저장 및 chat id 반환
         try {
-            Chat savedChat = chatRepository.save(chat);
 
-            return savedChat;
+            return chatRepository.save(chat);
 
         } catch (Exception e) {
             throw new InternalServerException(ExceptionCode.CHAT_SAVE_ERROR);
@@ -47,8 +46,10 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
         return ChatMessageResponse.builder()
                 .id(-1L) // 에러 시 음수 값 할당
                 .content(ERROR_MESSAGE)
-                .sender(-1L) // 에러 시 음수 값 할당
+                .sender("error") // 에러 시 음수 값 할당
                 .type(ContentType.TEXT)
                 .build();
     }
+
+
 }

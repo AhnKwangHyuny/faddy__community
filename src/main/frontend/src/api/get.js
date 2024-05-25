@@ -141,3 +141,15 @@ export const fetchChatMessages = async (chatId) => {
     }
 }
 
+// 채팅방 사용자 접근권한 확인 요청 API
+export const checkChatRoomAccess = async (roomId) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.CHECK_CHAT_ROOM_ACCESS(roomId));
+        return response.status === 200;
+
+    } catch (error) {
+        console.error('채팅방 접근 권한을 확인하는데 실패했습니다.', error);
+        throw error;
+    }
+}
+

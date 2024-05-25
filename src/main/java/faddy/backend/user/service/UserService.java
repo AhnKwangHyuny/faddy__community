@@ -209,6 +209,9 @@ public class UserService {
      * */
     @Transactional(readOnly = true)
     public Long getUserIdByAuthorization(String token) {
+        // 만약 token에 bearer가 있다면 제외
+        token = jwtUtil.extractRawToken(token);
+
         // token에서 username 추출
         String username = jwtUtil.getUsername(token);
 
@@ -232,5 +235,18 @@ public class UserService {
         return userRepository.findNicknameByUserId(userId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
     }
+
+    //토큰을 이용해서 사용자 아이디 조회 (username)
+    public String getUsernameByToken(String token) {
+        String rawToken = jwtUtil.extractRawToken(token);
+        return jwtUtil.getUsername(rawToken);
+    }
+
+    // 사용자 아이디로 사용자 계정 조회
+    public String getUsernameByUserId(Long userId) {
+        return userRepository.findUsernameByUserId(userId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+    }
+
 }
 

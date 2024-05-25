@@ -52,7 +52,7 @@ userRequestInstance.interceptors.response.use((response) => {
 
   } catch (error) {
 
-    console.error('An error occurred during the request retry logic', error);
+    console.error('요청 response 검증 중 에러가 발생했습니다.', error);
     return Promise.reject(error);
   }
 });

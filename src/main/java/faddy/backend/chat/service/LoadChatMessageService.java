@@ -7,6 +7,8 @@ import faddy.backend.chat.repository.ChatJpaRepository;
 import faddy.backend.chat.service.useCase.ChatMessageLoadUseCase;
 import faddy.backend.global.exception.ChatServiceException;
 import faddy.backend.global.exception.ExceptionCode;
+import faddy.backend.user.service.UserIdEncryptionUtil;
+import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,8 @@ import java.util.stream.Collectors;
 public class LoadChatMessageService implements ChatMessageLoadUseCase {
 
     private final ChatJpaRepository chatRepository;
-
+    private final UserIdEncryptionUtil userIdEncryptionUtil;
+    private final UserService userService;
     @Override
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> loadChatsByChatRoom(ChatRoom chatRoom) {
@@ -33,7 +36,7 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
                     .map(chat -> ChatMessageResponse.builder()
                             .id(chat.getId())
                             .content(chat.getContent())
-                            .sender(chat.getSenderId())
+                            .sender(userService.getUsernameByUserId(chat.getSenderId()))
                             .type(chat.getType())
                             .createdAt(chat.getCreated_at())
                             .build())

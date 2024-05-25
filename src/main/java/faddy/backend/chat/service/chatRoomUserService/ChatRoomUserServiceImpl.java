@@ -94,4 +94,5 @@ public class ChatRoomUserServiceImpl implements ChatRoomUserService {
             throw e;
         }
     }
+
 }

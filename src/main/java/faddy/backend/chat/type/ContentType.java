@@ -5,5 +5,8 @@ public enum ContentType {
     IMAGE,      // 이미지 파일
     VIDEO,      // 비디오 파일
 
-    GIF         // GIF 이미지
+    GIF,         // GIF 이미지
+    SYSTEM,
+
+    TIMESTAMP,
 }

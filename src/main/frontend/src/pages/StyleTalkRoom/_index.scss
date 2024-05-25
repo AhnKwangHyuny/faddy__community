@@ -1,156 +1,166 @@
 #Style-talk {
-   margin: 0 !important;
-   padding: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
-   .cr-main-container {
-       margin-top: 80px;
-       overflow-y: hidden; // 스크롤바 생성 방지
+    .cr-main-container {
+        margin-top: 80px;
+        overflow-y: hidden; // 스크롤바 생성 방지
 
-       .chat-container {
-           height: calc(100vh - 53px);
-           overflow-y: auto;
-           display: flex;
-           flex-direction: column;
-           justify-content: flex-end;
+        .chat-container {
+            height: calc(100vh - 53px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
 
-           //100vh-80px이하라면 맨 위가 보이도록 세팅
+            //100vh-80px 이하라면 맨 위가 보이도록 세팅
+            &.scroll {
+                justify-content: flex-start;
+            }
 
-           &.scroll {
-               justify-content: flex-start;
-           }
+            .timeStamp-line {
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-           .timeStamp-line {
-               display: flex;
-               align-items: center;
-               justify-content: center;
+                .timeStamp {
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+            }
 
-               .timeStamp {
-                   font-size: 12px;
-                   font-weight: 600;
-               }
-           }
+            .message-list {
+                padding: 10px;
 
-           .message-list {
-               padding: 10px;
+                .message-group {
+                    margin-bottom: 20px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
 
-               .message-group {
-                   margin-bottom: 20px;
-                   position: relative;
-                   display: flex;
-                   flex-direction: column;
+                    .user-profile {
+                        display: flex;
+                        align-items: center;
+                        position: relative;
 
-                   .user-profile {
-                       display: flex;
-                       align-items: center;
-                       position: relative;
+                        &__avatar {
+                            $avatar-size: 30px;
+                            width: $avatar-size;
+                            height: $avatar-size;
+                            margin-right: 10px;
+                            line-height: 40px;
+                        }
 
-                       &__avatar {
-                           $avatar-size: 30px;
-                           width: $avatar-size;
-                           height: $avatar-size;
-                           margin-right: 10px;
-                           line-height: 40px;
-                       }
+                        &__avatar-img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 40%;
+                            object-fit: cover;
+                            vertical-align: middle;
+                        }
 
-                       &__avatar-img {
-                           width: 100%;
-                           height: 100%;
-                           border-radius: 40%;
-                           object-fit: cover;
-                           vertical-align: middle;
-                       }
+                        &__name {
+                            font-weight: bold;
+                            font-size: 10px;
+                        }
+                    }
 
-                       &__name {
-                           font-weight: bold;
-                           font-size: 10px;
-                       }
-                   }
+                    .message {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: flex-start;
 
-                   .message {
-                       display: flex;
-                       flex-direction: row;
-                       align-items: flex-start;
+                        @mixin message-style($justify, $margin-left, $margin-right, $border-radius) {
+                            justify-content: $justify;
 
-                       &.message-incoming {
-                           justify-content: flex-end;
+                            .message-content {
+                                margin-left: $margin-left;
+                                margin-right: $margin-right;
+                                border-radius: $border-radius;
+                            }
 
-                           .message-content {
-                               margin-left: 0;
-                               margin-right: 0;
-                               border-top-right-radius: 3px;
-                           }
+                            .message-meta-info {
+                                order: -1;
+                                margin-right: 3px;
 
-                           .message-meta-info {
-                               order: -1;
-                               margin-right: 3px;
+                                .readCount {
+                                    flex: 0;
+                                    display: flex;
+                                    justify-content: $justify;
+                                }
+                            }
+                        }
 
-                               .readCount {
-                                   flex: 0;
-                                   display: flex;
-                                   justify-content: flex-end;
-                               }
-                           }
-                       }
+                        &.message-system {
+                            justify-content: center;
+                            width: 100%;
+                            text-align: center;
+                            padding: 5px;
+                            border-radius: 5px;
 
-                       &.message-outgoing {
-                           justify-content: flex-start;
+                            .message-content {
+                                background: none;
+                                font-weight: bold;
+                                color: #555;
+                            }
 
-                           .message-content {
-                               margin-left: 40px;
-                               border-top-left-radius: 3px;
-                           }
+                            .message-meta-info {
+                                display: none; // 시스템 메시지에서는 메타 정보 숨김
+                            }
+                        }
 
-                           .readCount {
-                               flex: 0;
-                               display: flex;
-                               justify-content: flex-start;
-                           }
-                       }
+                        &.message-incoming {
+                            @include message-style(flex-end, 0, 0, 3px 3px 3px 0);
+                        }
 
-                       .message-content {
-                           flex: 1;
-                           background-color: #f1f1f1;
-                           padding: 10px;
-                           border-radius: 12px;
-                           font-size: 12px;
-                           line-height: 20px;
-                           width: auto;
-                           max-width: 60%;
-                           word-break: break-all;
-                           position: relative;
-                       }
+                        &.message-outgoing {
+                            @include message-style(flex-start, 40px, 0, 3px 0 0 3px);
+                        }
 
-                       .message-meta-info {
-                           align-self: flex-end;
-                           display: flex;
-                           flex-direction: column-reverse;
-                           margin-left: 3px;
+                        .message-content {
+                            flex: 1;
+                            background-color: #f1f1f1;
+                            padding: 10px;
+                            border-radius: 12px;
+                            font-size: 12px;
+                            line-height: 20px;
+                            width: auto;
+                            max-width: 60%;
+                            word-break: break-all;
+                            position: relative;
+                        }
 
-                           .sentTime {
-                               flex: 0;
+                        .message-meta-info {
+                            align-self: flex-end;
+                            display: flex;
+                            flex-direction: column-reverse;
+                            margin-left: 3px;
 
-                               .time {
-                                   white-space: nowrap;
-                                   font-size: 10px;
-                                   font-weight: 600;
-                                   color: #9e9e9e;
-                               }
-                           }
+                            .sentTime {
+                                flex: 0;
 
-                           .readCount {
-                               flex: 0;
-                               display: flex;
+                                .time {
+                                    white-space: nowrap;
+                                    font-size: 10px;
+                                    font-weight: 600;
+                                    color: #9e9e9e;
+                                }
+                            }
 
-                               .count {
-                                   font-size: 10px;
-                                   font-weight: 600;
-                                   color: #9e9e9e;
-                               }
-                           }
-                       }
-                   }
-               }
-           }
-       }
-   }
+                            .readCount {
+                                flex: 0;
+                                display: flex;
+
+                                .count {
+                                    font-size: 10px;
+                                    font-weight: 600;
+                                    color: #9e9e9e;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -16,62 +16,41 @@ import ReadCount from 'pages/StyleTalkRoom/components/ReadCount';
 import TimeStampLine from "pages/StyleTalkRoom/components/TimeStampLine";
 import DividerLine from "pages/StyleTalkRoom/components/DividerLine";
 import MessageContent from "pages/StyleTalkRoom/components/MessageContent";
-import { fetchChatMessages } from "api/get";
+import { fetchChatMessages, checkChatRoomAccess } from "api/get";
 
-const defaultMessage = [
-    {
-        model: {
-            content: "How are you dwdqwdwqdwdqwdqwdwqdqwdwqdqwdqwdqwqwdqwdqwdwq?",
-            direction: "outgoing",
-            type: "text",
-        },
-        avatar: {
-            src: "/default_profile.jpg",
-            nickname: "영식이",
-        },
-    },
-    {
-        model: {
-            content: "I'm fine, thank you, and you?",
-            direction: "incoming",
-            type: "text",
-        },
-    },
-    {
-        model: {
-            content: "I'm fine, too. thank you, and you?",
-            direction: "outgoing",
-            type: "text",
-        },
-        avatar: {
-            src: "/default_profile.jpg",
-            nickname: "영식이",
-        },
-    },
-];
+const getCurrentUsername = () => {
+    return localStorage.getItem("username");
+};
 
 const convertResponseToChat = (messageData) => {
+    const currentUsername = getCurrentUsername();
+    let direction;
+
+    if (messageData.type.toLowerCase() === "system") {
+        direction = "system";
+    } else {
+        direction = messageData.sender === currentUsername ? "incoming" : "outgoing";
+    }
+
     return {
         model: {
             content: messageData.content,
-            direction: messageData.sender === 1 ? "outgoing" : "incoming",
+            direction: direction,
             type: messageData.type.toLowerCase(),
         },
-        avatar: {
+        avatar: direction === "outgoing" ? {
             src: "/default_profile.jpg",
             nickname: "영식이",
-        },
+        } : null,
     };
 };
 
-
-const getMessageComponent = (data) => {
-    return Array.isArray(data) ? data.map((item, index) => (
+// 메시지 컴포넌트 생성 함수
+const getMessageComponent = (data) => (
+    Array.isArray(data) ? data.map((item, index) => (
         <MessageGroup key={index}>
-            {item.avatar ? (
-                <Avatar userInfo={item.avatar} />
-            ) : null}
-            <Message key={index} model={item.model}>
+            {item.avatar && <Avatar userInfo={item.avatar} />}
+            <Message model={item.model}>
                 <MessageContent message={item.model.content} />
                 <MessageMetaInfo>
                     <SentTime />
@@ -79,29 +58,54 @@ const getMessageComponent = (data) => {
                 </MessageMetaInfo>
             </Message>
         </MessageGroup>
-    )) : null;
-};
+    )) : null
+);
 
 const ChatRoom = () => {
     const { type, id } = useParams();
     const navigate = useNavigate();
-    const [messages, setMessages] = useState(defaultMessage);
+    const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [stompClient, setStompClient] = useState(null);
+
     const userInfo = {
         userProfileImageUrl: "/default_profile.jpg",
         nickname: "nickon",
     };
 
+    // 이전 채팅 불러오기
     const loadChats = async () => {
         try {
             const response = await fetchChatMessages(id);
-            setMessages(response.data);
+            const chatMessages = response.map(convertResponseToChat);
+            setMessages(chatMessages);
         } catch (error) {
             console.error('채팅 리스트를 조회하는데 실패했습니다.', error);
         }
     };
 
+    // 채팅방 사용자 접근 권한 확인
+    const checkUserPermission = async (roomId) => {
+        try {
+            const result = await checkChatRoomAccess(roomId);
+            if (!result) {
+                alert('채팅방 접근 권한이 없습니다.');
+                navigate(-1);
+            }
+        } catch (error) {
+            console.error('채팅방 접근 권한을 확인하는데 실패했습니다.', error);
+            alert('채팅방 접근 권한을 확인하는데 실패했습니다.');
+            navigate(-1);
+        }
+    };
+
+    // 사용자 입장 메시지 전송
+    const handleEnter = (client, headers) => {
+        const token = `${localStorage.getItem('GRANT_TYPE')} ${localStorage.getItem('ACCESS_TOKEN')}`;
+        client.send(`/pub/talks/${id}/enter`, headers, JSON.stringify({ token }));
+    };
+
+    //사용자 채팅방 구독 요청
     useEffect(() => {
         const socket = new SockJS("/ws/chat");
         const client = Stomp.over(socket);
@@ -117,23 +121,20 @@ const ChatRoom = () => {
             return;
         }
 
-        console.log(`Token: ${token}`);
-        console.log(`Bearer: ${bearer}`);
-
         const headers = {
             Authorization: `${bearer} ${token}`,
         };
 
-        client.connect(headers, (frame) => {
-            console.log('Connected: ' + frame);
-            loadChats();
+        client.connect(headers, async (frame) => {
+            await checkUserPermission(id);
+            await loadChats();
+            handleEnter(client, headers);
 
+            // 해당 url로 구독
             client.subscribe(`/sub/talks/${id}`, (message) => {
                 const response = JSON.parse(message.body);
-
                 const newChat = convertResponseToChat(response);
-
-                setMessages(prevMessages => [...(prevMessages || []), newChat]);
+                setMessages((prevMessages) => [...prevMessages, newChat]);
             });
         }, (error) => {
             console.error('Connection error: ', error);
@@ -148,35 +149,23 @@ const ChatRoom = () => {
         };
     }, [id]);
 
-   const handleSend = (input) => {
-       if (!input.trim()) return;
+    const handleSend = (input) => {
+        if (!input.trim()) return;
 
-       const token = localStorage.getItem('ACCESS_TOKEN');
-       const bearer = localStorage.getItem('GRANT_TYPE');
+        const token = `${localStorage.getItem('GRANT_TYPE')} ${localStorage.getItem('ACCESS_TOKEN')}`;
 
-       if (!token || !bearer) {
-           console.error('토큰 또는 권한 유형이 누락되었습니다.');
-           alert('인증 정보가 누락되었습니다. 다시 로그인해 주세요.');
-           navigate('/login');
-           return;
-       }
+        const newMessage = {
+            contentType: "TEXT",
+            content: input,
+            token,
+        };
 
-       const newMessage = {
-           contentType: "TEXT",
-           content: input,
-           token: `${bearer} ${token}`
-       };
+        if (stompClient) {
+            stompClient.send(`/pub/talks/${id}/send`, {}, JSON.stringify(newMessage));
+        }
 
-       if (stompClient) {
-           stompClient.send(`/pub/talks/${id}/send`, {}, JSON.stringify(newMessage));
-       }
-
-       setInputValue("");
-   };
-
-
-
-
+        setInputValue("");
+    };
 
     return (
         <section id="Style-talk">
@@ -187,7 +176,10 @@ const ChatRoom = () => {
                     <TimeStampLine />
                     <MessageList>{getMessageComponent(messages)}</MessageList>
                 </ChatContainer>
-                <ContentBox icon={<span className="material-icons button-icon">sentiment_satisfied_alt</span>} onSubmit={handleSend} />
+                <ContentBox
+                    icon={<span className="material-icons button-icon">sentiment_satisfied_alt</span>}
+                    onSubmit={handleSend}
+                />
             </MainContainer>
         </section>
     );
