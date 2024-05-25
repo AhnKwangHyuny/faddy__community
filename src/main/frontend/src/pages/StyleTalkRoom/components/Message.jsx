@@ -2,7 +2,7 @@ import React from 'react';
 
 const Message = ({ children, model }) => {
 
-    if (model.type === 'system') {
+    if (model.type === 'system' || model.type === 'timestamp') {
         return (
             <div className="message message-system">
                 {children}

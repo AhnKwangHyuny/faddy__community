@@ -12,23 +12,19 @@ import faddy.backend.chat.service.ChatRoomSystemMessageService;
 import faddy.backend.chat.service.ChatRoomValidationService;
 import faddy.backend.chat.service.LoadChatRoomService;
 import faddy.backend.chat.type.ContentType;
-import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.user.service.UserIdEncryptionUtil;
 import faddy.backend.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +47,6 @@ public class ChatWebSocketController {
     public void chat(@DestinationVariable("roomId") Long roomId,
                      @RequestBody @Valid ChatMessageRequest chatMessage) {
         try {
-            // 토큰에서 "Bearer " 부분을 제거하고 실제 토큰만 추출
             String token = jwtUtil.extractRawToken(chatMessage.token());
             Long sender = userService.getUserIdByAuthorization(token);
             String username = userService.getUsernameByToken(token);
@@ -65,17 +60,23 @@ public class ChatWebSocketController {
                     .type(chatMessage.contentType())
                     .build();
 
-            Chat chat = chatMessageCreateService.createChatMessage(command);
+            List<Chat> chats = chatMessageCreateService.createChatMessagesWithTimestamp(command);
 
-            ChatMessageResponse response = ChatMessageResponse.builder()
-                    .id(chat.getId())
-                    .content(chatMessage.content())
-                    .sender(username) // 유저 계정
-                    .type(command.type())
-                    .createdAt(chat.getCreated_at())
-                    .build();
+            for (Chat chat : chats) {
+                String senderName = chat.getType() == ContentType.TIMESTAMP || chat.getType() == ContentType.SYSTEM
+                        ? "system"
+                        : username;
 
-            messagingTemplate.convertAndSend("/sub/talks/" + roomId, response);
+                ChatMessageResponse response = ChatMessageResponse.builder()
+                        .id(chat.getId())
+                        .content(chat.getContent())
+                        .sender(senderName)
+                        .type(chat.getType())
+                        .createdAt(chat.getCreated_at())
+                        .build();
+
+                messagingTemplate.convertAndSend("/sub/talks/" + roomId, response);
+            }
 
         } catch (Exception e) {
             log.error(e.getMessage());

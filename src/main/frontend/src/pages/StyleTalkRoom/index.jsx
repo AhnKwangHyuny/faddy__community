@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -26,8 +26,10 @@ const convertResponseToChat = (messageData) => {
     const currentUsername = getCurrentUsername();
     let direction;
 
-    if (messageData.type.toLowerCase() === "system") {
-        direction = "system";
+    const messageType = messageData.type.toLowerCase();
+
+    if (messageType === "system" || messageType === "timestamp") {
+        direction = "center";
     } else {
         direction = messageData.sender === currentUsername ? "incoming" : "outgoing";
     }
@@ -36,7 +38,7 @@ const convertResponseToChat = (messageData) => {
         model: {
             content: messageData.content,
             direction: direction,
-            type: messageData.type.toLowerCase(),
+            type: messageType,
         },
         avatar: direction === "outgoing" ? {
             src: "/default_profile.jpg",
@@ -45,7 +47,6 @@ const convertResponseToChat = (messageData) => {
     };
 };
 
-// 메시지 컴포넌트 생성 함수
 const getMessageComponent = (data) => (
     Array.isArray(data) ? data.map((item, index) => (
         <MessageGroup key={index}>
@@ -67,13 +68,21 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [stompClient, setStompClient] = useState(null);
+    const messageEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const userInfo = {
         userProfileImageUrl: "/default_profile.jpg",
         nickname: "nickon",
     };
 
-    // 이전 채팅 불러오기
     const loadChats = async () => {
         try {
             const response = await fetchChatMessages(id);
@@ -84,7 +93,6 @@ const ChatRoom = () => {
         }
     };
 
-    // 채팅방 사용자 접근 권한 확인
     const checkUserPermission = async (roomId) => {
         try {
             const result = await checkChatRoomAccess(roomId);
@@ -99,13 +107,11 @@ const ChatRoom = () => {
         }
     };
 
-    // 사용자 입장 메시지 전송
     const handleEnter = (client, headers) => {
         const token = `${localStorage.getItem('GRANT_TYPE')} ${localStorage.getItem('ACCESS_TOKEN')}`;
         client.send(`/pub/talks/${id}/enter`, headers, JSON.stringify({ token }));
     };
 
-    //사용자 채팅방 구독 요청
     useEffect(() => {
         const socket = new SockJS("/ws/chat");
         const client = Stomp.over(socket);
@@ -130,16 +136,17 @@ const ChatRoom = () => {
             await loadChats();
             handleEnter(client, headers);
 
-            // 해당 url로 구독
             client.subscribe(`/sub/talks/${id}`, (message) => {
                 const response = JSON.parse(message.body);
-                const newChat = convertResponseToChat(response);
-                setMessages((prevMessages) => [...prevMessages, newChat]);
+
+                if (Array.isArray(response)) {
+                    const newChats = response.map(convertResponseToChat);
+                    setMessages((prevMessages) => [...prevMessages, ...newChats]);
+                } else {
+                    const newChat = convertResponseToChat(response);
+                    setMessages((prevMessages) => [...prevMessages, newChat]);
+                }
             });
-        }, (error) => {
-            console.error('Connection error: ', error);
-            alert('채팅방 연결에 실패했습니다. 다시 시도해주세요 [ERROR]');
-            navigate(-1);
         });
 
         return () => {
@@ -174,11 +181,16 @@ const ChatRoom = () => {
             <MainContainer>
                 <ChatContainer>
                     <TimeStampLine />
-                    <MessageList>{getMessageComponent(messages)}</MessageList>
+                    <MessageList>
+                        {getMessageComponent(messages)}
+                        <div ref={messageEndRef} />
+                    </MessageList>
                 </ChatContainer>
                 <ContentBox
                     icon={<span className="material-icons button-icon">sentiment_satisfied_alt</span>}
                     onSubmit={handleSend}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
                 />
             </MainContainer>
         </section>

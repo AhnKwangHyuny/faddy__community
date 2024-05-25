@@ -245,8 +245,7 @@ public class UserService {
     // 사용자 아이디로 사용자 계정 조회
     public String getUsernameByUserId(Long userId) {
         return userRepository.findUsernameByUserId(userId)
-                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+                .orElse(null);
     }
-
 }
 

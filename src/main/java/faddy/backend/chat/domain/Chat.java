@@ -58,4 +58,14 @@ public class Chat extends BaseEntity {
                 .type(type)
                 .build();
     }
+
+    public static Chat createTimeStamp(ChatRoom room , String dateStamp) {
+
+        return Chat.builder()
+            .chatRoom(room)
+            .senderId(0L)  // 시스템 메시지
+            .content(dateStamp)
+            .type(ContentType.TIMESTAMP)
+            .build();
+    }
 }
