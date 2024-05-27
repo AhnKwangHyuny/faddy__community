@@ -5,6 +5,7 @@ import faddy.backend.global.exception.ImageException;
 import faddy.backend.image.dto.ImageResponseDto;
 import faddy.backend.image.dto.UploadedImageResponse;
 import faddy.backend.image.service.ImageService;
+import faddy.backend.image.type.ImageCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,17 +19,21 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/v1/images")
 public class ImageUploadController {
 
     private final ImageService imageService;
 
-    @PostMapping("/images")
-    public ResponseEntity<ImageResponseDto> handleImageUpload(@RequestParam("image") MultipartFile file) throws IOException {
+    @PostMapping
+    public ResponseEntity<ImageResponseDto> handleImageUpload(@RequestParam("category") String category,
+             @RequestParam("image") MultipartFile file) throws IOException {
         // 파일 크기 검증 (10MB)
         if (file.getSize() > 10_000_000) { // 10MB
             throw new ImageException(ExceptionCode.FILE_SIZE_TOO_LARGE);
         }
+
+        //이미지 카테고리 존재 유무 확인
+        if (category.isEmpty()) throw new ImageException(ExceptionCode.NOT_FOUND_IMAGE_CATEGORY);
 
         // 파일 형식 검증 (JPEG, PNG)
         String contentType = file.getContentType();
@@ -37,7 +42,9 @@ public class ImageUploadController {
             throw new ImageException(ExceptionCode.INVALID_AUTH_CODE);
         }
 
-        ImageResponseDto imageResponseDto = imageService.uploadImage(file);
+        // 소문자 -> 대문자로 변경 (snap -> SNAP)
+        ImageCategory imageCategory = ImageCategory.valueOf(category.toUpperCase());
+        ImageResponseDto imageResponseDto = imageService.uploadImage(file , imageCategory);
 
         UploadedImageResponse.of(imageResponseDto.getHashedName(), imageResponseDto.getUrl() );
 

@@ -4,7 +4,7 @@ const Message = ({ children, model }) => {
 
     if (model.type === 'system' || model.type === 'timestamp') {
         return (
-            <div className="message message-system">
+            <div className={`message message-${model.type}`}>
                 {children}
             </div>
         );

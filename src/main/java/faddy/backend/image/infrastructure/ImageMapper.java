@@ -11,6 +11,7 @@ public class ImageMapper {
                 response.getHashedName(),
                 response.getOriginalName(),
                 response.getSize(),
-                response.getFormat());
+                response.getFormat(),
+                response.getCategory());
     }
 }

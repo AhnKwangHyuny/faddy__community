@@ -1,6 +1,7 @@
 package faddy.backend.image.dto;
 
 import faddy.backend.global.exception.ImageException;
+import faddy.backend.image.type.ImageCategory;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +28,9 @@ public class ImageFile {
     private Long size; // 파일 크기
     private String format; // 파일 형식
     private String url;
+    private ImageCategory category;
 
-    public ImageFile(final MultipartFile file , String url) {
+    public ImageFile(final MultipartFile file , final String url , final ImageCategory category) {
 
         this.file = file;
         this.hashedName = hashName(file);
@@ -36,6 +38,7 @@ public class ImageFile {
         this.size = file.getSize();
         this.format = getFilenameExtension(file.getOriginalFilename());
         this.url = url;
+        this.category = category;
     }
 
 

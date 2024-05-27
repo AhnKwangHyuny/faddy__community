@@ -1,28 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { isValidURL, isImageURL } from "utils/utils";
 
-const MessageContent = ({ message }) => {
-    // URL 형태인 경우
-    if(message.match(/(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/gi)){
-        return (
-            <div className="message-content">
-                <a href={message} target="_blank" rel="noreferrer" className="message-content-url">
-                    {message}
-                </a>
-            </div>
-        );
-    }
+const MessageContent = ({ message, type }) => {
+    const renderContent = () => {
+        switch(type) {
+            case 'image':
+                if (isImageURL(message)) {
+                    return <img src={message} alt="이미지" className="message-content-image" />;
+                }
+                return <img src={message} alt="이미지" className="message-content-image" />;
+            case 'url':
+                if (isValidURL(message)) {
+                    return (
+                        <a href={message} target="_blank" rel="noopener noreferrer" className="message-content-url">
+                            {message}
+                        </a>
+                    );
+                }
+                return <span>Invalid URL</span>;
+            case 'text':
+            case 'error':
+            case 'etc':
+            case 'system':
+            case 'timestamp':
+                if (isValidURL(message)) {
+                    return (
+                        <a href={message} target="_blank" rel="noopener noreferrer" className="message-content-url">
+                            {message}
+                        </a>
+                    );
+                } else if (isImageURL(message)) {
+                    return <img src={message} alt="이미지" className="message-content-image" />;
+                }
+                return <div className="message-container-text">{message}</div>;
+            default:
+                return <div className="message-container-text" >Unsupported message type</div>;
+        }
+    };
 
-    // 이미지 URL인 경우
-    if(message.match(/\.(jpeg|jpg|gif|png)$/)){
-        return (
-            <div className="message-content">
-                <img src={message} alt="이미지" className="message-content-image" />
-            </div>
-        );
-    }
+    return (
+        <div className="message-content">
+            {renderContent()}
+        </div>
+    );
+};
 
-    // URL 형태가 아닌 텍스트인 경우
-    return <div className="message-content">{message}</div>;
-}
+MessageContent.propTypes = {
+    message: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['image', 'url', 'text', 'error', 'etc', 'system', 'timestamp']).isRequired,
+};
 
 export default MessageContent;

@@ -16,7 +16,7 @@ $ratio: 1.15; // 가로 대비 세로의 비율
         img {
           width: $width;
           height: auto;
-          aspect-ratio: 1 / $ratio;
+          aspect-ratio: calc(1 / $ratio);
         }
       }
     }
@@ -37,13 +37,13 @@ $ratio: 1.15; // 가로 대비 세로의 비율
     display: inline-block;
 
     button {
+
       &:before {
         content: '';
         display: block;
         width: 13px;
         height: 2.5px;
         background: white;
-
       }
     }
   }

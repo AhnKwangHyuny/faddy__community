@@ -94,6 +94,7 @@ public enum ExceptionCode {
     IMAGE_NOT_FOUND(9009 , "해당 이미지를 찾을 수 없습니다."),
     FAIL_DELETE_IMAGE_FILE(9010 , "s3에서 이미지 삭제에 실패했습니다."),
     FAIL_DELETE_IMAGE_INFO(9011 , "DB에서 이미지 삭제에 실패했습니다."),
+    NOT_FOUND_IMAGE_CATEGORY(400 , "지원하지 않는 없는 이미지 카테고리 입니다."),
 
     /**
      *  대칭키 암호화 에러

@@ -26,13 +26,14 @@ public class Chat extends BaseEntity {
     // join issue 방지 (entity 직접 매핑 x)
     private Long senderId;
 
+    @Lob
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private ContentType type;
 
-    //image url 추후 추가
 
     @Builder
     public Chat(ChatRoom chatRoom, Long senderId, String content , ContentType type) {

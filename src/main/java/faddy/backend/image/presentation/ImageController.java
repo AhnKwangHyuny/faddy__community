@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/v1/images")
 public class ImageController {
     private final ImageService imageService;
 
-    @DeleteMapping("/images")
+    @DeleteMapping
     public ResponseEntity<Void> handleImageDelete(@RequestBody ImageRequestDto imageRequestDto) {
         imageService.deleteImage(imageRequestDto.getHashedName());
 
@@ -24,7 +24,7 @@ public class ImageController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/images/multiple")
+    @DeleteMapping("/multiple")
     public ResponseEntity<Void> handleImageListDelete(@RequestBody List<ImageRequestDto> images) {
 
 

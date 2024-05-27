@@ -13,10 +13,9 @@ const ImageUploader = ({imageList , setImageList}) => {
 
     /**이미지 서버로 전송 api*/
     const handleUploadImage = async (event) => {
-        const config = await UploadImage(event);
+        const config = await UploadImage(event , "snap");
 
         const uploadedImageInfo = config.data;
-
 
         if (!uploadedImageInfo || typeof uploadedImageInfo !== 'object') {
             return alert("사진을 불러오는데 실패했습니다. ");

@@ -9,7 +9,7 @@ export const API_USER = '/api/v1/users';
 export const API_AUTH = '/api/v1/auths';
 export const API_AUTH_CODE = '/api/v1/auth-codes';
 
-export const API_IMAGE = '/api/images';
+export const API_IMAGE = '/api/v1/images';
 
 export const API_HASH_TAG = 'api/v1/hashTags';
 
@@ -59,7 +59,7 @@ export const END_POINTS = {
 
   //Images
   UPLOAD_IMAGES : `${API_IMAGE}/multiple`,
-  UPLOAD_IMAGE : `${API_IMAGE}`,
+  UPLOAD_IMAGE : (category) => `${API_IMAGE}?category=${category}`,
   DELETE_IMAGE : `${API_IMAGE}`,
   DELETE_IMAGES : `${API_IMAGE}/multiple`,
 

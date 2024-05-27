@@ -2,6 +2,7 @@ package faddy.backend.image.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
+import faddy.backend.image.type.ImageCategory;
 import faddy.backend.snap.domain.Snap;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -39,14 +40,26 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "snap_id")
     private Snap snap;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_id")
+    private Snap chat;
 
-    public Image(String imageUrl, String hashName, String originalName, Long size, String format) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
+    private ImageCategory category = ImageCategory.ETC;
+
+
+    public Image(String imageUrl, String hashName, String originalName, Long size, String format , ImageCategory category) {
         this.imageUrl = imageUrl;
         this.hashName = hashName;
         this.originalName = originalName;
         this.size = size;
         this.format = format;
+        this.category = category;
     }
+
+
 
     public void addSnap(Snap snap) {
         this.snap = snap;

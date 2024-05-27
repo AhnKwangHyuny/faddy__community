@@ -21,8 +21,8 @@ export const saveImages = async (files) => {
     });
 }
 
-export const saveImage = async (formData) => {
-    return await userRequestInstance.post(END_POINTS.UPLOAD_IMAGE , formData , {
+export const saveImage = async (formData , category) => {
+    return await userRequestInstance.post(END_POINTS.UPLOAD_IMAGE(category) , formData , {
         headers: {
             'content-Type': 'multipart/form-data',
         },

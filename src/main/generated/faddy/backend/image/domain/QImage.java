@@ -24,6 +24,10 @@ public class QImage extends EntityPathBase<Image> {
 
     public final faddy.backend.global.QBaseEntity _super = new faddy.backend.global.QBaseEntity(this);
 
+    public final EnumPath<faddy.backend.image.type.ImageCategory> category = createEnum("category", faddy.backend.image.type.ImageCategory.class);
+
+    public final faddy.backend.snap.domain.QSnap chat;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created_at = _super.created_at;
 
@@ -62,6 +66,7 @@ public class QImage extends EntityPathBase<Image> {
 
     public QImage(Class<? extends Image> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.chat = inits.isInitialized("chat") ? new faddy.backend.snap.domain.QSnap(forProperty("chat"), inits.get("chat")) : null;
         this.snap = inits.isInitialized("snap") ? new faddy.backend.snap.domain.QSnap(forProperty("snap"), inits.get("snap")) : null;
     }
 

@@ -3,6 +3,7 @@ package faddy.backend.chat.presentation;
 import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.chat.domain.Chat;
 import faddy.backend.chat.domain.ChatRoom;
+import faddy.backend.chat.dto.ErrorChatSenderDto;
 import faddy.backend.chat.dto.command.ChatMessageCreateCommand;
 import faddy.backend.chat.dto.request.AuthorizationTokenRequest;
 import faddy.backend.chat.dto.request.ChatMessageRequest;
@@ -79,8 +80,16 @@ public class ChatWebSocketController {
             }
 
         } catch (Exception e) {
+            String token = jwtUtil.extractRawToken(chatMessage.token());
+            Long sender = userService.getUserIdByAuthorization(token);
+            String username = userService.getUsernameByToken(token);
+
+            ErrorChatSenderDto senderDto = ErrorChatSenderDto.builder()
+                    .sender(username)
+                    .build();
+
             log.error(e.getMessage());
-            ChatMessageResponse errorResponse = chatMessageCreateService.createErrorResponse();
+            ChatMessageResponse errorResponse = chatMessageCreateService.createErrorResponse(senderDto);
             messagingTemplate.convertAndSend("/sub/talks/" + roomId, errorResponse);
         }
     }
@@ -97,7 +106,14 @@ public class ChatWebSocketController {
             messagingTemplate.convertAndSend("/sub/talks/" + roomId, response);
         } catch (Exception e) {
             log.error(e.getMessage());
-            ChatMessageResponse errorResponse = chatMessageCreateService.createErrorResponse();
+            String token = authorization.token();
+            String enteredUser = userService.getUsernameByToken(token);
+
+            ErrorChatSenderDto senderDto = ErrorChatSenderDto.builder()
+                    .sender(enteredUser)
+                    .build();
+
+            ChatMessageResponse errorResponse = chatMessageCreateService.createErrorResponse(senderDto);
             messagingTemplate.convertAndSend("/sub/talks/" + roomId, errorResponse);
         }
     }

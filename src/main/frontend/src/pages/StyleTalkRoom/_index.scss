@@ -18,17 +18,6 @@
                 justify-content: flex-start;
             }
 
-            .timeStamp-line {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .timeStamp {
-                    font-size: 12px;
-                    font-weight: 600;
-                }
-            }
-
             .message-list {
                 padding: 10px;
 
@@ -90,7 +79,23 @@
                                 }
                             }
                         }
+                        &.message-timestamp {
+                            justify-content: center;
+                            width: 100%;
+                            text-align: center;
+                            padding: 5px;
+                            border-radius: 5px;
 
+                            .message-content {
+                                background: none;
+                                font-weight: 600;
+                                color: #000000;
+                            }
+                            .message-meta-info {
+                                display: none; // 시스템 메시지에서는 메타 정보 숨김
+                            }
+
+                        }
                         &.message-system {
                             justify-content: center;
                             width: 100%;

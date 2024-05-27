@@ -75,10 +75,6 @@
 @import "pages/StyleTalk/components/ChatListItem/chatListItem";
 @import "pages/StyleTalk/components/CreateRoomModal/createRoomModal";
 
-/**shared ui*/
-@import "shared/ui/MoreIcon/moreIcon";
-@import "shared/ui/Logo/logo";
-@import "shared/ui/LoadingUI/loading.scss";
 
 /** feature */
 
@@ -94,3 +90,10 @@
 @import "features/Interaction/index";
 
 
+/**
+* shared ui
+*/
+@import "shared/ui/MoreIcon/moreIcon";
+@import "shared/ui/Logo/logo";
+@import "shared/ui/LoadingUI/loading.scss";
+@import "shared/ui/icons/ImageUploadIcon/imageUploadIcon";

@@ -1,13 +1,19 @@
 import {saveImage} from 'api/post';
-import {deleteImages} from "api/delete";
+import {deleteImages , deleteImage} from "api/delete";
 
-export const UploadImage = async (event) => {
+export const UploadImage = async (event , category) => {
 
     // 파일 하나만 가져오기
     const file = event.target.files[0];
 
     if (!file) {
-        return alert('파일이 업로드되지 않았습니다.');
+        alert('파일이 업로드되지 않았습니다.');
+        return;
+    }
+
+    if(!category) {
+        alert('이미지 카테고리가 선택되지 않았습니다.');
+        return;
     }
 
     const maxSize = 50 * 1024 * 1024;
@@ -22,7 +28,7 @@ export const UploadImage = async (event) => {
 
     try {
         // image 정보 반환 (이름 , url , hashName , size ... )
-        return await saveImage(formData);
+        return await saveImage(formData , category);
     } catch (error) {
         alert('파일 업로드에 실패했습니다. 다시 시도해 주세요.');
         return;
@@ -87,5 +93,31 @@ export const deleteImageList = async (imageList) => {
 };
 
 
+// 이미지 삭제 함수
+export const delImage = async (image) => {
+    // 이미지가 없으면 반환
+    if (!image) {
+        console.warn('삭제할 이미지가 없습니다.');
+        return;
+    }
 
+    // 이미지를 DTO로 변환
+    const requestBody = convert_imageList_to_dto(image);
+
+    // 변환된 DTO에 필수 요소가 없으면 반환
+    if (!requestBody) {
+        console.warn('이미지 변환에 실패했습니다.');
+        return;
+    }
+
+    // 이미지 삭제 API 호출
+    try {
+        const result = await deleteImage(requestBody);
+        console.log('이미지 삭제 성공:', result);
+        return result;
+    } catch (error) {
+        console.error('이미지 삭제 중 오류 발생:', error);
+        alert('이미지 삭제에 실패했습니다.');
+    }
+};
 

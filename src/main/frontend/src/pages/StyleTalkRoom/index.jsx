@@ -1,7 +1,11 @@
+import SockJS from "sockjs-client";
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Stomp } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
+import { fetchChatMessages, checkChatRoomAccess } from "api/get";
+import {isValidURL} from "utils/utils";
+
 import ContentBox from "features/ContentBox/ContentBox";
 import Avatar from "widgets/Avatar/Avatar";
 import AboutHeader from "features/AboutHeader/AboutHeader";
@@ -16,7 +20,7 @@ import ReadCount from 'pages/StyleTalkRoom/components/ReadCount';
 import TimeStampLine from "pages/StyleTalkRoom/components/TimeStampLine";
 import DividerLine from "pages/StyleTalkRoom/components/DividerLine";
 import MessageContent from "pages/StyleTalkRoom/components/MessageContent";
-import { fetchChatMessages, checkChatRoomAccess } from "api/get";
+
 
 const getCurrentUsername = () => {
     return localStorage.getItem("username");
@@ -31,6 +35,7 @@ const convertResponseToChat = (messageData) => {
     if (messageType === "system" || messageType === "timestamp") {
         direction = "center";
     } else {
+        console.log(messageData.sender, currentUsername);
         direction = messageData.sender === currentUsername ? "incoming" : "outgoing";
     }
 
@@ -52,7 +57,7 @@ const getMessageComponent = (data) => (
         <MessageGroup key={index}>
             {item.avatar && <Avatar userInfo={item.avatar} />}
             <Message model={item.model}>
-                <MessageContent message={item.model.content} />
+                <MessageContent message={item.model.content} type = {item.model.type} />
                 <MessageMetaInfo>
                     <SentTime />
                     <ReadCount />
@@ -159,10 +164,12 @@ const ChatRoom = () => {
     const handleSend = (input) => {
         if (!input.trim()) return;
 
+        const contentType = isValidURL(input) ? "IMAGE" : "TEXT";
+
         const token = `${localStorage.getItem('GRANT_TYPE')} ${localStorage.getItem('ACCESS_TOKEN')}`;
 
         const newMessage = {
-            contentType: "TEXT",
+            contentType: contentType,
             content: input,
             token,
         };

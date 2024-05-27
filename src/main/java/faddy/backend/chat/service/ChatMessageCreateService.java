@@ -3,6 +3,7 @@ package faddy.backend.chat.service;
 
 import faddy.backend.chat.domain.Chat;
 import faddy.backend.chat.domain.ChatRoom;
+import faddy.backend.chat.dto.ErrorChatSenderDto;
 import faddy.backend.chat.dto.command.ChatMessageCreateCommand;
 import faddy.backend.chat.dto.response.ChatMessageResponse;
 import faddy.backend.chat.repository.ChatJpaRepository;
@@ -87,12 +88,12 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
 
 
     @Override
-    public ChatMessageResponse createErrorResponse() {
+    public ChatMessageResponse createErrorResponse(ErrorChatSenderDto errorChatSenderDto){
         return ChatMessageResponse.builder()
                 .id(-1L) // 에러 시 음수 값 할당
                 .content(ERROR_MESSAGE)
-                .sender("error") // 에러 시 음수 값 할당
-                .type(ContentType.TEXT)
+                .sender(errorChatSenderDto.sender()) // 에러 시 음수 값 할당
+                .type(ContentType.ERROR)
                 .build();
     }
 

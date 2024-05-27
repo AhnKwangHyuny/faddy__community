@@ -12,19 +12,6 @@
         align-items: stretch;
         gap: 10px;
 
-        .emoticon-box {
-            @include centerFlex;
-            margin-right: 15px;
-
-            .emoticon-icon {
-                padding-left: 3px;
-
-                .material-icons.button-icon {
-                    // 스타일 정의
-                }
-            }
-        }
-
         .inputBox {
             @include centerFlex;
             padding-bottom: 5px;

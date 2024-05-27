@@ -9,4 +9,5 @@ public enum ContentType {
     SYSTEM,
 
     TIMESTAMP,
+    ERROR      // 에러 메시지
 }

@@ -9,6 +9,7 @@ import faddy.backend.image.dto.ImageRequestDto;
 import faddy.backend.image.dto.ImageResponseDto;
 import faddy.backend.image.infrastructure.ImageMapper;
 import faddy.backend.image.repository.ImageRepository;
+import faddy.backend.image.type.ImageCategory;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,16 +37,16 @@ public class ImageServiceImpl implements ImageService{
     private final ImageRepository imageRepository;
 
 
-    public ImageResponseDto uploadImage(final MultipartFile file) throws IOException {
+    public ImageResponseDto uploadImage(final MultipartFile file , ImageCategory category) throws IOException {
         // 이미지 유효성 검사
         validateNullImage(file);
 
         // image file s3 버킷에 업로드
-        String uploadImageUrl = s3ImageUploader.upload(file);
+        String uploadImageUrl = s3ImageUploader.upload(file , category);
 
         ImageResponseDto imageResponseDto;
         try {
-            imageResponseDto = ImageResponseDto.fromImageFile(new ImageFile(file, uploadImageUrl));
+            imageResponseDto = ImageResponseDto.fromImageFile(new ImageFile(file, uploadImageUrl , category));
         } catch (Exception e) {
             throw new ImageException(ExceptionCode.FAIL_IMAGE_UPLOADING);
         }
@@ -60,8 +61,6 @@ public class ImageServiceImpl implements ImageService{
             s3ImageUploader.deleteFile(filename);
 
         }
-
-
 
         return imageResponseDto;
     }
