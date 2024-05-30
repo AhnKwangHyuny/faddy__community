@@ -46,7 +46,6 @@ const Snap = () => {
     //s3 image 저장 후 리로딩 시 (리다이렉트) image삭제 요청
     useResourceCleanup(imageList , deleteImageList);
 
-
     return (
         <section className="main__body">
             <CreationMenuBar

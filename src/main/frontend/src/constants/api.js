@@ -23,11 +23,11 @@ export const API_TALK = 'api/v1/rooms';
 export const API_CHAT = 'api/v1/chats';
 
 export const BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.56.:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.55:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 export const AXIOS_BASE_URL = DEV
-  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.56:9000'
+  ? DEVICE ? 'http://localhost:9000' : 'http://172.30.1.55:9000'
   : `${window.location.protocol};//${process.env.AXIOS_PROD_BASE_URL}`
 
 
@@ -86,7 +86,7 @@ export const END_POINTS = {
   UNFOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
   CHECK_FOLLOW : (toUsername) => `${API_USER}/follow/${toUsername}`,
   GET_FOLLOWING : (userId) => `${API_USER}/${userId}/following`,
-  GET_FOLLOWERS : (userId) => `${API_USER}/${userId}/followers`,
+  GET_FOLLOWERS : (userId) => `${API_USER}/${userId}/follower`,
 
   // Following and Followers (test용)
   GET_RELATIONSHIPS : (userId) => `${API_USER}/${userId}/relationships`,
@@ -94,7 +94,8 @@ export const END_POINTS = {
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
 
   //styleTalks
-  GET_ALL_TALKS : (type) => `${API_TALK}?type = ${type}`,
+
+  GET_ALL_TALKS: (type, page) => `${API_TALK}?type=${type}&page=${page + 1}`,
   CREATE_CHAT_ROOM : `${API_TALK}`,
   CHECK_CHAT_ROOM_ACCESS : (roomId) => `${API_TALK}/${roomId}/validate-user`,
 
@@ -156,6 +157,3 @@ export const ERROR_MESSAGE = '오류가 발생했습니다. 잠시 후 다시 �
 
 export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN';
 
-//export const KAKAO_AUTH_API_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${BASE_URL}/${process.env.KAKAO_REDIRECT_URI}&response_type=code`;
-
-//export const GOOGLE_AUTH_API_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&response_type=code&redirect_uri=${BASE_URL}/${process.env.GOOGLE_REDIRECT_URI}&scope=https%3A//www.googleapis.com/auth/userinfo.profile`;

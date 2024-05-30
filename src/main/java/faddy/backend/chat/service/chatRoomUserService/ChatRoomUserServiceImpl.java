@@ -30,12 +30,10 @@ public class ChatRoomUserServiceImpl implements ChatRoomUserService {
     private final String ERROR_ROOT = ChatRoomUserServiceImpl.class.getName();
 
     @Override
-    public void addUserToChatRoom(ChatRoom room, List<String> memberIds) {
-        List<Long> decryptedMemberIds = memberIds.stream()
-                .map(userService::decryptUserId)
-                .toList();
+    public void addUserToChatRoom(ChatRoom room, List<Long> memberIds) {
+
         try {
-            for (Long memberId : decryptedMemberIds) {
+            for (Long memberId : memberIds) {
                 User user = userService.findUserById(memberId);
                 ChatRoomUser chatRoomUser = new ChatRoomUser(user, room);
                 chatRoomUserRepository.save(chatRoomUser);

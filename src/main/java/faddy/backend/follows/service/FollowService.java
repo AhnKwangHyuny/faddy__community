@@ -74,7 +74,10 @@ public class FollowService {
 
         // 언팔 성공 시 follower , followee followList 갱신
         following.getFollowers().remove(follow.get());
+        System.out.println("following = " + following.getFollowers());
         follower.getFollowings().remove(follow.get());
+
+
     }
 
     @Transactional(readOnly = true)
@@ -84,8 +87,10 @@ public class FollowService {
     }
 
     /**
-     *  follow , follower list 조회
-     * */
+     *  사용자가 팔로우한 팔로워 목록 조회
+     *  @Param String decrypted userId
+     *  @Return List<FollowResponseDto>
+     */
     @Transactional(readOnly = true)
     public List<FollowResponseDto> getFollowings(String userId) {
 
@@ -96,17 +101,22 @@ public class FollowService {
             throw new FollowException(ExceptionCode.DECRYPT_USER_ID_ERROR);
         }
 
-        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("존재하지 않은 유저입니다."));
 
-        return followRepository.findAllByFollowingId(decryptUserId).stream()
+        return followRepository.findAllByFollowerId(decryptUserId).stream()
                 .map(follow -> new FollowResponseDto.Builder()
-                        .userId(userIdEncryptionUtil.encryptUserId(follow.getFollowing().getId()))
-                        .nickname(follow.getFollowing().getNickname())
-                        .profileImageUrl(follow.getFollowing().getProfile().getProfileImageUrl())
+                        .userId(userIdEncryptionUtil.encryptUserId(follow.getFollower().getId()))
+                        .nickname(follow.getFollower().getNickname())
+                        .profileImageUrl(follow.getFollower().getProfile().getProfileImageUrl())
                         .build())
                 .collect(Collectors.toList());
     }
 
+    /**
+     *  나를 팔로우한 사용자 목록 조회
+     *  @Param String decrypted userId
+     *  @Return List<FollowResponseDto>
+     * */
     @Transactional(readOnly = true)
     public List<FollowResponseDto> getFollowers(String userId) {
 
@@ -117,13 +127,21 @@ public class FollowService {
             throw new FollowException(ExceptionCode.DECRYPT_USER_ID_ERROR);
         }
 
-        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return followRepository.findAllByFollowerId(decryptUserId).stream()
+        User user = userRepository.findById(decryptUserId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        List<FollowResponseDto> a =  followRepository.findAllByFollowingId(decryptUserId).stream()
                 .map(follow -> new FollowResponseDto.Builder()
                         .userId(userIdEncryptionUtil.encryptUserId(follow.getFollower().getId()))
                         .nickname(follow.getFollower().getNickname())
                         .profileImageUrl(follow.getFollower().getProfile().getProfileImageUrl())
                         .build())
                 .collect(Collectors.toList());
+
+        for (int c = 0 ; c < a.size() ; c++) {
+            System.out.println(a.get(c).getNickname());
+        }
+
+        return a;
     }
+
 }

@@ -29,7 +29,7 @@ import static faddy.backend.global.exception.ExceptionCode.NULL_IMAGE;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     private static final String EXTENSION_DELIMITER = ".";
     private static final String DIRECTORY_DELIMITER = "/";
 
@@ -37,16 +37,16 @@ public class ImageServiceImpl implements ImageService{
     private final ImageRepository imageRepository;
 
 
-    public ImageResponseDto uploadImage(final MultipartFile file , ImageCategory category) throws IOException {
+    public ImageResponseDto uploadImage(final MultipartFile file, ImageCategory category) throws IOException {
         // 이미지 유효성 검사
         validateNullImage(file);
 
         // image file s3 버킷에 업로드
-        String uploadImageUrl = s3ImageUploader.upload(file , category);
+        String uploadImageUrl = s3ImageUploader.upload(file, category);
 
         ImageResponseDto imageResponseDto;
         try {
-            imageResponseDto = ImageResponseDto.fromImageFile(new ImageFile(file, uploadImageUrl , category));
+            imageResponseDto = ImageResponseDto.fromImageFile(new ImageFile(file, uploadImageUrl, category));
         } catch (Exception e) {
             throw new ImageException(ExceptionCode.FAIL_IMAGE_UPLOADING);
         }
@@ -129,7 +129,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     @Transactional
-    public void deleteImages(@NotEmpty List<ImageRequestDto> images ) {
+    public void deleteImages(@NotEmpty List<ImageRequestDto> images) {
 
         List<String> hashedNames = getHashedNames(images);
         List<String> urls = getUrls(images);
@@ -163,22 +163,22 @@ public class ImageServiceImpl implements ImageService{
                 .map(url -> {
                     try {
                         return s3ImageUploader.extractObjectKeyFromObjUrl(url);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         log.warn("\"Invalid file URL: \" + hashedName, e");
-                        throw new ImageException(HttpStatus.INTERNAL_SERVER_ERROR , "Invalid file URL: " + url + e.getMessage());
+                        throw new ImageException(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid file URL: " + url + e.getMessage());
                     }
                 })
                 .collect(Collectors.toList());
 
     }
 
-    private List<String> getHashedNames(List<ImageRequestDto> images ) {
+    private List<String> getHashedNames(List<ImageRequestDto> images) {
         return images.stream()
                 .map(ImageRequestDto::getHashedName)
                 .collect(Collectors.toList());
     }
 
-    private List<String> getUrls(List<ImageRequestDto> images ) {
+    private List<String> getUrls(List<ImageRequestDto> images) {
         return images.stream()
                 .map(ImageRequestDto::getUrl)
                 .collect(Collectors.toList());
@@ -205,5 +205,7 @@ public class ImageServiceImpl implements ImageService{
         // 리스트의 해쉬 이름을 사용하여 이미지 찾기 로직 구현
         return imageRepository.findByHashedNameIn(hashedNames);
     }
-
 }
+
+
+

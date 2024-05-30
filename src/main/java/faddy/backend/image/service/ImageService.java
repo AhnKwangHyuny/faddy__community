@@ -25,4 +25,5 @@ public interface ImageService {
     Image findById(Long imageId);
 
     List<Image> findByHashedNames(List<String> hashedNames);
+
 }

@@ -3,11 +3,9 @@ package faddy.backend.user.service;
 import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.global.Utils.RedisUtil;
 import faddy.backend.global.exception.*;
-import faddy.backend.profile.domain.UserLevel;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -246,6 +245,12 @@ public class UserService {
     public String getUsernameByUserId(Long userId) {
         return userRepository.findUsernameByUserId(userId)
                 .orElse(null);
+    }
+
+    public List<Long> decryptUserIds(List<String> encryptedUserIds) {
+        return encryptedUserIds.stream()
+                .map(this::decryptUserId)
+                .toList();
     }
 }
 

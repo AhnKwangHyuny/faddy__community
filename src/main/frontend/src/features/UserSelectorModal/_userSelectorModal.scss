@@ -86,7 +86,7 @@
 
         .user-selector-list {
             overflow-y: auto; /* add this to make it scrollable */
-            max-height: 300px; /* adjust the max height to your liking */
+            max-height: auto; /* adjust the max height to your liking */
             display: flex;
             flex-direction: column;
 

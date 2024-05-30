@@ -4,6 +4,7 @@ import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.dto.request.CreateChatRoomRequest;
 import faddy.backend.chat.dto.request.UserChatRoomRequest;
+import faddy.backend.chat.dto.response.ChatRoomResponse;
 import faddy.backend.chat.dto.response.CreateChatRoomResponse;
 import faddy.backend.chat.service.ChatRoomValidationService;
 import faddy.backend.chat.service.LoadChatRoomService;
@@ -37,11 +38,13 @@ public class ChatRoomController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
     @GetMapping
-    public ResponseEntity<? extends ApiResponse> getRoomList(@RequestParam(value = "type", required = false) String type) {
+    public ResponseEntity<? extends ApiResponse> getRoomList(@RequestParam(value = "type", required = false) String type,
+                                                             @RequestParam(name = "page", defaultValue = "0") int page) {
 
         try {
-            List<ChatRoom> rooms = loadChatRoomService.getChatRooms();
+            List<ChatRoomResponse> rooms = loadChatRoomService.getChatRooms(page);
             return SuccessApiResponse.of(rooms);
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, "채팅방을 불러오는데 실패했습니다.");
@@ -63,7 +66,9 @@ public class ChatRoomController {
     public ResponseEntity<? extends ApiResponse> joinRoom(@RequestBody UserChatRoomRequest request,
                                                           @PathVariable Long roomId) {
         try {
-            chatRoomUserService.addUserToChatRoom(loadChatRoomService.getChatRoomById(roomId), request.userIds());
+            List<Long> userIds = userService.decryptUserIds(request.userIds());
+
+            chatRoomUserService.addUserToChatRoom(loadChatRoomService.getChatRoomById(roomId),userIds);
             return SuccessApiResponse.of();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -77,7 +82,9 @@ public class ChatRoomController {
         try {
             ChatRoom room = loadChatRoomService.getChatRoomById(roomId);
 
-            chatRoomUserService.addUserToChatRoom(room , request.userIds());
+            List<Long> userIds = userService.decryptUserIds(request.userIds());
+
+            chatRoomUserService.addUserToChatRoom(room , userIds);
 
             return SuccessApiResponse.of();
         } catch (Exception e) {
@@ -105,7 +112,7 @@ public class ChatRoomController {
         try {
             String token = jwtUtil.getTokenFromRequest(request);
             Long userId = userService.getUserIdByAuthorization(token);
-            
+
             boolean result = chatRoomValidationService.isUserInChatRoom(userId, roomId);
             if(result) {
                 return SuccessApiResponse.of();

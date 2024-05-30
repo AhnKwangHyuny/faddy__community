@@ -10,15 +10,21 @@ $chatListItem-background: #FDFDFD;
 }
 
 .chatListItem {
+
     display: flex;
     margin-bottom: 20px;
+
+
+
     a {
         display: inline-flex;
         align-items: center;
         text-decoration: none;
         color: inherit;
         width: 100%;
+
         .chatListItem-container {
+
             flex-grow: 1;
             display: inline-flex;
             align-items: center;
@@ -48,14 +54,22 @@ $chatListItem-background: #FDFDFD;
                 gap: 4px;
 
                 .chat-label__title {
-
+                    display:flex;
+                    gap: 5px;
                     .title {
-                        font-size: 14px;
+                        font-size: 13px;
                         font-weight: 700;
                         margin-right: 2px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1; /* 원하는 줄 수 */
+                        -webkit-box-orient: vertical;
                     }
                     .headCount {
                         @include sub-text-color;
+                        font-size: 13px;
+
                         font-weight: 500;
                     }
                 }

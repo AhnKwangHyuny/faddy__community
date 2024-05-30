@@ -20,15 +20,18 @@ public interface FollowJpaRepository extends JpaRepository<Follow, Long> {
     boolean existsByFollowingAndFollower(@Param("following") User following, @Param("follower") User follower);
 
     // 언팔
+
     Optional<Follow> deleteByFollowingAndFollower( User following, User follower);
 
-    //following조회
     //following 조회
+
+    // following을 기준으로 팔로워 목록 조회
     @Query("SELECT f FROM Follow f JOIN FETCH f.follower JOIN FETCH f.follower.profile WHERE f.following.id = :userId")
     List<Follow> findAllByFollowingId(@Param("userId") Long userId);
 
-    //follower 조회
+    // follower를 기준으로 팔로잉 목록 조회
     @Query("SELECT f FROM Follow f JOIN FETCH f.following JOIN FETCH f.following.profile WHERE f.follower.id = :userId")
     List<Follow> findAllByFollowerId(@Param("userId") Long userId);
+
 
 }

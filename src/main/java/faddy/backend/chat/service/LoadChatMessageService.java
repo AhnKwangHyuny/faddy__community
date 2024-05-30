@@ -2,12 +2,12 @@ package faddy.backend.chat.service;
 
 import faddy.backend.chat.domain.Chat;
 import faddy.backend.chat.domain.ChatRoom;
+import faddy.backend.chat.dto.LastChatContentDto;
 import faddy.backend.chat.dto.response.ChatMessageResponse;
 import faddy.backend.chat.repository.ChatJpaRepository;
+import faddy.backend.chat.repository.ChatRoomJpaRepository;
 import faddy.backend.chat.service.useCase.ChatMessageLoadUseCase;
 import faddy.backend.chat.type.ContentType;
-import faddy.backend.global.exception.ChatServiceException;
-import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.user.service.UserIdEncryptionUtil;
 import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 public class LoadChatMessageService implements ChatMessageLoadUseCase {
 
     private final ChatJpaRepository chatRepository;
+    private final ChatRoomJpaRepository chatRoomRepository;
     private final UserIdEncryptionUtil userIdEncryptionUtil;
     private final UserService userService;
-    private final LoadChatRoomService loadChatRoomService;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,21 +53,19 @@ public class LoadChatMessageService implements ChatMessageLoadUseCase {
     }
 
     /**
-     * 해당 room에서 가장 최신 chat message를 조회
-     *
-     * @param roomId      chatRoom id
-     * @param allowedTypes 조회할 chat message의 type
-     *                     (ex. TEXT, IMAGE, SYSTEM)
-     * @return Chat
+     * 채당에서 가장 최근 메시지의 content와 type을 조회
+     * @param roomId       chatRoom id)
+     * @return LastChatContentDto -> content , type을 포함
      */
     @Override
     @Transactional(readOnly = true)
-    public Chat loadLastChatMessage(Long roomId, List<ContentType> allowedTypes) {
-        // 해당 chatRoom 엔티티 조회
-        ChatRoom room = loadChatRoomService.getChatRoomById(roomId);
+    public LastChatContentDto loadLastChatMessage(Long roomId) {
 
-        // 해당 chatRoom의 마지막 chat message 조회
-        return chatRepository.findTopByChatRoomOrderByCreatedAtDesc(room, allowedTypes)
-                .orElse(null);
+        ChatRoom room = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("채팅방을 찾을 수 없습니다."));
+        List<LastChatContentDto> results = chatRepository.findAllByChatRoomOrderByCreatedAtDesc(room);
+        if (results.isEmpty()) {
+            return null;
+        }
+        return results.get(0);
     }
 }

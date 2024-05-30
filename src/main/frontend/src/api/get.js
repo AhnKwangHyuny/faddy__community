@@ -99,7 +99,7 @@ export const checkFollowStatus = async (toUsername) => {
 };
 
 /** follow한 유저와 follow준 유저 모두 가져오기*/
-export const getFollowList = async () => {
+export const getFollowerListByFollowingId = async () => {
   try {
     const userId = localStorage.getItem('userId');
     // userId is null 이면 error 발생 시키기
@@ -108,7 +108,7 @@ export const getFollowList = async () => {
       throw new Error('userId is null');
     }
 
-    const response = await userRequestInstance.get(END_POINTS.GET_FOLLOWING(userId));
+    const response = await userRequestInstance.get(END_POINTS.GET_FOLLOWERS(userId));
 
     return response.data.data;
   } catch (error) {
@@ -119,17 +119,17 @@ export const getFollowList = async () => {
   }
 };
 
-export const getTalkList = async (type) => {
+export const getTalkList = async (type, page) => {
     try {
-        const response = await userRequestInstance.get(END_POINTS.GET_ALL_TALKS(type));
-        console.log(response.data.data);
+        const response = await userRequestInstance.get(END_POINTS.GET_ALL_TALKS(type, page));
+        console.log(page);
         return response.data.data;
     } catch (error) {
         console.error('채팅 리스트를 조회하는데 실패했습니다.', error);
         throw error;
     }
+};
 
-}
 
 export const fetchChatMessages = async (chatId) => {
     try {

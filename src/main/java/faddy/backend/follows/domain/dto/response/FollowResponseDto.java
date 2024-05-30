@@ -42,4 +42,13 @@ public class FollowResponseDto {
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
+
+    @Override
+    public String toString() {
+        return "FollowResponseDto{" +
+                "userId='" + userId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                '}';
+    }
 }

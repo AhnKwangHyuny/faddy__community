@@ -187,7 +187,6 @@ const ChatRoom = () => {
             <DividerLine />
             <MainContainer>
                 <ChatContainer>
-                    <TimeStampLine />
                     <MessageList>
                         {getMessageComponent(messages)}
                         <div ref={messageEndRef} />

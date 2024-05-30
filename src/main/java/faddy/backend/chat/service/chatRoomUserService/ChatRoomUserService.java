@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChatRoomUserService {
 
-    void addUserToChatRoom(ChatRoom room, List<String> memberIds);
+    void addUserToChatRoom(ChatRoom room, List<Long> memberIds);
     void removeUserFromChatRoom(String userId, Long roomId);
     void inviteUserToChatRoom(List<String> users, Long roomId);
 

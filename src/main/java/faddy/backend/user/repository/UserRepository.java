@@ -1,5 +1,6 @@
 package faddy.backend.user.repository;
 
+import faddy.backend.user.domain.Profile;
 import faddy.backend.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -56,5 +57,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //find username by id
     @Query("SELECT u.username FROM User u WHERE u.id = :userId")
     Optional<String> findUsernameByUserId(@Param("userId") Long userId);
+
+    // userId 리스트로 nickname 리스트 조회
+    @Query("SELECT u.nickname FROM User u WHERE u.id IN (:userIds)")
+    List<String> findNicknamesByUserIds(@Param("userIds") List<Long> userIds);
+
+    @Query("SELECT u.profile FROM User u WHERE u.id = :userId")
+    Optional<Profile> findProfileById(@Param("userId") Long userId);
 }
 

@@ -63,4 +63,8 @@ public class ChatRoom extends BaseEntity {
     public void updateLastChatTime(LocalDateTime lastChatTime) {
         this.lastChatTime = lastChatTime;
     }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
 }

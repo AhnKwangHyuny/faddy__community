@@ -6,6 +6,7 @@ import faddy.backend.chat.dto.response.CreateChatRoomResponse;
 import faddy.backend.chat.repository.ChatRoomJpaRepository;
 import faddy.backend.chat.service.adapter.useCase.CreateChatRoomUseCase;
 import faddy.backend.global.exception.ChatRoomException;
+import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,11 @@ public class ChatRoomCreateService implements CreateChatRoomUseCase {
         ChatRoom room = ChatRoom.createChatRoom(masterId, request.getType());
 
         if (request.getMemberIds() == null || request.getMemberIds().isEmpty()) {
-            log.error("memberIds is empty");
+
+            Exception e = new ChatRoomException(HttpStatus.BAD_REQUEST.value(), "대화상대가 존재하지 않습니다");
+
+            ExceptionLogger.logException(e);
+
             throw new ChatRoomException(HttpStatus.BAD_REQUEST.value(), "대화상대가 존재하지 않습니다");
         }
 

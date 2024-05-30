@@ -24,4 +24,8 @@ public interface ChatRoomUserJpaRepository extends JpaRepository<ChatRoomUser, L
     // room에 user가 존재하는지 확인
     @Query("select count(cu) > 0 from ChatRoomUser cu where cu.user.id = :userId and cu.chatRoom.id = :chatRoomId")
     boolean existsByUserAndChatRoom(@Param("userId") Long userId, @Param("chatRoomId") Long chatRoomId);
+
+    // room에 참여한 유저 수 카운팅
+    @Query("select count(cu) from ChatRoomUser cu where cu.chatRoom.id = :chatRoomId")
+    int countByChatRoomId(@Param("chatRoomId") Long chatRoomId);
 }
