@@ -153,3 +153,57 @@ export const checkChatRoomAccess = async (roomId) => {
     }
 }
 
+/**
+ * 특정 채팅방에서 단일 유저 프로필을 조회
+ * @param {string} roomId 채팅방 ID
+ * @param {string} username 유저 이름
+ * @returns {Promise<object>} 유저 프로필
+ */
+export const fetchChatRoomUserProfile = async (roomId, username) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.GET_PROFILE_IN_CHATROOM(roomId, username));
+        const userProfile = response.data.data;
+
+        // {username : {userProfileInfo}} 형태로 변환
+        const transformedProfile = {
+                    [userProfile.username]: {
+                        nickname: userProfile.nickname,
+                        profileImageUrl: userProfile.profileImageUrl,
+                        level: userProfile.level,
+                    }
+                };
+
+        return transformedProfile;
+
+    } catch (error) {
+        console.error('사용자 프로필을 가져오는데 실패했습니다.', error);
+        throw error;
+    }
+};
+
+/**
+ * 특정 채팅방의 모든 유저 프로필을 조회
+ * @param {string} roomId 채팅방 ID
+ * @returns {Json<UserProfile>} 유저 프로필 목록
+ */
+export const fetchChatRoomUserProfiles = async (roomId) => {
+    try {
+        const response = await userRequestInstance.get(END_POINTS.GET_ALL_PROFILES_IN_CHATROOM(roomId));
+        const userProfiles = response.data.data;
+
+        const transformedProfiles = userProfiles.reduce((acc, { userProfileDTO }) => {
+            acc[userProfileDTO.username] = {
+                nickname: userProfileDTO.nickname,
+                profileImageUrl: userProfileDTO.profileImageUrl,
+                level: userProfileDTO.level,
+            };
+            return acc;
+        }, {});
+
+        return transformedProfiles;
+    } catch (error) {
+        console.error('사용자 프로필을 가져오는데 실패했습니다.', error);
+        throw error;
+    }
+};
+

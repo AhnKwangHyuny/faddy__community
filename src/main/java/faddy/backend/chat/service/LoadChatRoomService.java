@@ -3,10 +3,12 @@ package faddy.backend.chat.service;
 import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.dto.response.ChatRoomResponse;
 import faddy.backend.chat.repository.ChatRoomJpaRepository;
+import faddy.backend.chat.repository.ChatRoomUserJpaRepository;
 import faddy.backend.chat.service.chatRoomService.ChatRoomService;
 import faddy.backend.chat.service.useCase.ChatRoomLoadUseCase;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
+import faddy.backend.global.response.SuccessApiResponse;
 import faddy.backend.snap.domain.Snap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class LoadChatRoomService implements ChatRoomLoadUseCase {
 
     private final ChatRoomJpaRepository chatRoomRepository;
+    private final ChatRoomUserJpaRepository chatRoomUserRepository;
     private final ChatRoomService chatRoomService;
 
     @Override
@@ -51,4 +55,31 @@ public class LoadChatRoomService implements ChatRoomLoadUseCase {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ChatRoomResponse> getUserChatRooms(int page, Long userId) {
+
+        try {
+            Pageable pageable = PageRequest.of(page-1, 6);
+            System.out.println("page = " + page);
+            List<Long> chatRoomIds = chatRoomUserRepository.findChatRoomIdsByUserId(userId, pageable).getContent();
+
+            // 채팅 리스트가 업는 경우 빈 리스트 반영
+            if (chatRoomIds.isEmpty()) {
+                log.warn("No chat rooms found for userId: {}", userId);
+                return Collections.emptyList();
+            }
+
+            return chatRoomRepository.findChatRoomsByIds(chatRoomIds).stream()
+                    .map(chatRoomService::mapToChatRoomResponse)
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new BadRequestException(ExceptionCode.CHATROOM_NOT_FOUND_ERROR);
+        }
+
+    }
 }
+

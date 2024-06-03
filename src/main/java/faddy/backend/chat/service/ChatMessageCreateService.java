@@ -58,8 +58,9 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
         ChatRoom room = command.room();
 
         LocalDate currentChatDate = LocalDate.now();
-        LocalDate lastChatDate = room.getLastChatTime() != null ? room.getLastChatTime().toLocalDate() : currentChatDate;
+        LocalDate lastChatDate = room.getLastChatTime() != null ? room.getLastChatTime().toLocalDate() : null;
 
+        // lastChatDate가 null이거나, lastChatDate가 currentChatDate와 다른 경우 isNewDay를 true로 설정
         boolean isNewDay = lastChatDate == null || !lastChatDate.equals(currentChatDate);
 
         List<Chat> result = new ArrayList<>();
@@ -73,10 +74,10 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
 
         Chat newChat = createChatMessage(command);
 
-        //room의 lastChatTime 업데이트
+        // room의 lastChatTime 업데이트
         room.updateLastChatTime(newChat.getCreated_at());
 
-        //변경 사항 저장 (dirty checking 안되는 이슈 해결을 위한 임시방편)
+        // 변경 사항 저장 (dirty checking 안되는 이슈 해결을 위한 임시방편)
         chatRomanRepository.save(room);
 
         chatRepository.save(newChat);
@@ -84,6 +85,7 @@ public class ChatMessageCreateService implements ChatMessageCreateUseCase {
 
         return result;
     }
+
 
 
 

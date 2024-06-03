@@ -7,11 +7,13 @@ import faddy.backend.global.Utils.UserValidator;
 import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.ExceptionResponse;
+import faddy.backend.global.response.ApiResponse;
+import faddy.backend.global.response.ErrorApiResponse;
+import faddy.backend.global.response.SuccessApiResponse;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.dto.response.UserIdDto;
 import faddy.backend.user.repository.UserRepository;
 import faddy.backend.user.service.UserService;
-import io.micrometer.common.util.StringUtils;
 import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -154,4 +156,5 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("User ID does not exist.");
     }
+
 }

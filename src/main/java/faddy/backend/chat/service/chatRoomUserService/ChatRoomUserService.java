@@ -10,4 +10,11 @@ public interface ChatRoomUserService {
     void removeUserFromChatRoom(String userId, Long roomId);
     void inviteUserToChatRoom(List<String> users, Long roomId);
 
+    /**
+     *  해당 채팅방에 존재하는 모든 유저 id 조화
+     *  @param chatRoomId 채팅방 id
+     *  @return 채팅방에 존재하는 모든 유저 id
+     * */
+    List<Long> getUserIdsByChatRoomId(Long chatRoomId);
+
 }

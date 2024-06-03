@@ -22,9 +22,17 @@ public class QChatRoomUser extends EntityPathBase<ChatRoomUser> {
 
     public static final QChatRoomUser chatRoomUser = new QChatRoomUser("chatRoomUser");
 
+    public final faddy.backend.global.QBaseEntity _super = new faddy.backend.global.QBaseEntity(this);
+
     public final QChatRoom chatRoom;
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> created_at = _super.created_at;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 
     public final faddy.backend.user.domain.QUser user;
 

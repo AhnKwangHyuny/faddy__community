@@ -56,3 +56,32 @@ export const unFollow = async(toUsername) => {
             return false;
         }
 }
+
+/**
+ * 특정 채팅방에서 단일 유저 프로필을 삭제
+ * @param {string} roomId 채팅방 ID
+ * @param {string} username 유저 이름
+ * @returns {Promise<void>}
+ */
+export const deleteUserProfile = async (roomId, username) => {
+    try {
+        await userRequestInstance.delete(END_POINTS.DELETE_PROFILE_IN_CHATROOM(roomId, username));
+    } catch (error) {
+        console.error('사용자 프로필을 삭제하는데 실패했습니다.', error);
+        throw error;
+    }
+};
+
+/**
+ * 특정 채팅방의 모든 유저 프로필을 삭제
+ * @param {string} roomId 채팅방 ID
+ * @returns {Promise<void>}
+ */
+export const deleteAllUserProfiles = async (roomId) => {
+    try {
+        await userRequestInstance.delete(END_POINTS.DELETE_ALL_PROFILES_IN_CHATROOM(roomId));
+    } catch (error) {
+        console.error('모든 사용자 프로필을 삭제하는데 실패했습니다.', error);
+        throw error;
+    }
+};

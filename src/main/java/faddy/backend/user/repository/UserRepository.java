@@ -1,5 +1,6 @@
 package faddy.backend.user.repository;
 
+import com.querydsl.core.annotations.QueryEmbeddable;
 import faddy.backend.user.domain.Profile;
 import faddy.backend.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,5 +65,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.profile FROM User u WHERE u.id = :userId")
     Optional<Profile> findProfileById(@Param("userId") Long userId);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.profile WHERE u.username = :username")
+    Optional<User> findUserByUsernameWithProfile(@Param("username") String username);
+
+    // 채팅방 모든 유저 정보와 프로필 정보 조회
+    @Query("SELECT u FROM User u JOIN FETCH u.profile WHERE u.id IN (:userIds)")
+    List<User> findUsersWithProfileByUserIds(@Param("userIds") List<Long> userIds);
+
 }
 

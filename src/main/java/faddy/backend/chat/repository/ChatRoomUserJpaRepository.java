@@ -1,6 +1,9 @@
 package faddy.backend.chat.repository;
 
+import faddy.backend.chat.domain.ChatRoom;
 import faddy.backend.chat.domain.ChatRoomUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +31,13 @@ public interface ChatRoomUserJpaRepository extends JpaRepository<ChatRoomUser, L
     // room에 참여한 유저 수 카운팅
     @Query("select count(cu) from ChatRoomUser cu where cu.chatRoom.id = :chatRoomId")
     int countByChatRoomId(@Param("chatRoomId") Long chatRoomId);
+
+    // 해당 유저가 존재하는 모든 chatRoom id 조회
+    @Query("SELECT cru.chatRoom.id FROM ChatRoomUser cru WHERE cru.user.id = :userId")
+    Page<Long> findChatRoomIdsByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    // 해당 채팅방에 참여한 모든 유저 id 조회
+    @Query("SELECT cru.user.id FROM ChatRoomUser cru WHERE cru.chatRoom.id = :chatRoomId")
+    List<Long> findUserIdsByChatRoomId(@Param("chatRoomId") Long chatRoomId);
+
 }

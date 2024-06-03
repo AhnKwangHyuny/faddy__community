@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,10 +40,22 @@ public class ChatRoomController {
     private final JwtUtil jwtUtil;
     @GetMapping
     public ResponseEntity<? extends ApiResponse> getRoomList(@RequestParam(value = "type", required = false) String type,
-                                                             @RequestParam(name = "page", defaultValue = "0") int page) {
+                                                             @RequestParam(name = "page", defaultValue = "0") int page,
+                                                             HttpServletRequest request) {
+        String token = jwtUtil.getTokenFromRequest(request);
 
         try {
-            List<ChatRoomResponse> rooms = loadChatRoomService.getChatRooms(page);
+            List<ChatRoomResponse> rooms;
+
+            if (token == null || token.isEmpty()) {
+                // 토큰이 없는 경우 전체 채팅방 목록 로드
+                rooms = loadChatRoomService.getChatRooms(page);
+            } else {
+                // 토큰이 있는 경우 사용자 정보를 추출하여 사용자가 속한 채팅방 목록 로드
+                Long userId = userService.getUserIdByAuthorization(token);
+                rooms = loadChatRoomService.getUserChatRooms(page, userId);
+            }
+
             return SuccessApiResponse.of(rooms);
 
         } catch (Exception e) {
@@ -50,6 +63,7 @@ public class ChatRoomController {
             return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, "채팅방을 불러오는데 실패했습니다.");
         }
     }
+
 
     @PostMapping
     public ResponseEntity<? extends ApiResponse> createRoom(@RequestBody CreateChatRoomRequest request){

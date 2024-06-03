@@ -79,4 +79,9 @@ public class RedisUtil {
     public boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
+
+    /**
+     *  chatRoom User 정보를 Redis에 저장
+     *
+     * */
 }

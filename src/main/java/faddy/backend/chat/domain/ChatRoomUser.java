@@ -1,5 +1,6 @@
 package faddy.backend.chat.domain;
 
+import faddy.backend.global.BaseEntity;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "chat_room_users")
-public class ChatRoomUser {
+public class ChatRoomUser extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

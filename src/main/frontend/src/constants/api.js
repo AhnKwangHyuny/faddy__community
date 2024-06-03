@@ -47,6 +47,12 @@ export const END_POINTS = {
   GET_USER_ID : `${API_USER}/userId`,
   CHECK_USER_ID_EXISTS : `${API_USER}/check-userId`,
 
+  //user profile
+  GET_PROFILE_IN_CHATROOM: (roomId, username) => `${API_TALK}/${roomId}/users/${username}/profile`,
+  GET_ALL_PROFILES_IN_CHATROOM: (roomId) => `${API_TALK}/${roomId}/users/profiles`,
+  DELETE_PROFILE_IN_CHATROOM: (roomId, username) => `${API_TALK}/${roomId}/users/${username}/profile`,
+  DELETE_ALL_PROFILES_IN_CHATROOM: (roomId) => `${API_TALK}/${roomId}/users/profiles`,
+
   //token API
   REISSUE_TOKEN : `${API_AUTH}/reissue-token`,
   VERIFY_TOKEN : `${API_AUTH}/verify-token`,
@@ -94,7 +100,6 @@ export const END_POINTS = {
   SNAP_DETAIL_LOCATION : `/snaps/detail`,
 
   //styleTalks
-
   GET_ALL_TALKS: (type, page) => `${API_TALK}?type=${type}&page=${page + 1}`,
   CREATE_CHAT_ROOM : `${API_TALK}`,
   CHECK_CHAT_ROOM_ACCESS : (roomId) => `${API_TALK}/${roomId}/validate-user`,

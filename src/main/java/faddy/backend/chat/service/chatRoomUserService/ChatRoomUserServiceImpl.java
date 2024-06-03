@@ -6,6 +6,7 @@ import faddy.backend.chat.repository.ChatRoomJpaRepository;
 import faddy.backend.chat.repository.ChatRoomUserJpaRepository;
 import faddy.backend.global.exception.AuthorizationException;
 import faddy.backend.global.exception.ChatRoomException;
+import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -93,4 +94,23 @@ public class ChatRoomUserServiceImpl implements ChatRoomUserService {
         }
     }
 
+
+
+    @Override
+    public List<Long> getUserIdsByChatRoomId(Long chatRoomId) {
+        try {
+            List<Long> userIds = chatRoomUserRepository.findUserIdsByChatRoomId(chatRoomId);
+
+            // 리스트가 비웠을 때 에러 핸들링
+            if (userIds.isEmpty()) {
+                throw new ChatRoomException(HttpStatus.BAD_REQUEST.value(), ERROR_ROOT + "해당 채팅방에 참여한 유저가 없습니다. " + chatRoomId);
+            }
+
+            return userIds;
+
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new ChatRoomException(HttpStatus.BAD_REQUEST.value(), ERROR_ROOT + "헤딩 채팅방에 참여한 유저를 찾을 수 없습니다. [error]");
+        }
+    }
 }

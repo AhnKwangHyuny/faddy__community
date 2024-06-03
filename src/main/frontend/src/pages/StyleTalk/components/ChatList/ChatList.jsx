@@ -16,6 +16,7 @@ const ChatList = ({ chatType }) => {
         setLoading(true);
         try {
             const data = await getTalkList(chatType.toLowerCase(), page);
+            console.log(data);
             setChatList(prevChatList => [...prevChatList, ...data]);
             setHasMore(data.length === 6); // 데이터가 6개일 때만 더 가져옴
         } catch (error) {

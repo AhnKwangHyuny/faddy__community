@@ -10,4 +10,6 @@ public interface ChatRoomLoadUseCase {
 
     List<ChatRoomResponse> getChatRooms(int page);
 
+    List<ChatRoomResponse> getUserChatRooms(int page , Long userId);
+
 }

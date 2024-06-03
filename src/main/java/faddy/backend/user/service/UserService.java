@@ -7,8 +7,8 @@ import faddy.backend.user.domain.User;
 import faddy.backend.user.dto.request.SignupInfoDto;
 import faddy.backend.user.repository.UserRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,28 +20,17 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
     private final RedisUtil redisUtil;
-
     private final JwtUtil jwtUtil;
 
     private final UserIdEncryptionUtil userIdEncryptionUtil;
+    private final PasswordEncoder passwordEncoder;
 
-
-
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil, JwtUtil jwtUtil, UserIdEncryptionUtil userIdEncryptionUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.redisUtil = redisUtil;
-        this.jwtUtil = jwtUtil;
-        this.userIdEncryptionUtil = userIdEncryptionUtil;
-    }
 
     public boolean isUserIdDuplicated(final String field, final String value) {
 
@@ -252,5 +241,11 @@ public class UserService {
                 .map(this::decryptUserId)
                 .toList();
     }
+
+    public User getUserWithProfileByUsername(String username) {
+        return userRepository.findUserByUsernameWithProfile(username)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+    }
+
 }
 

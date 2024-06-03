@@ -11,8 +11,7 @@ import faddy.backend.global.Utils.DateUtils;
 import faddy.backend.global.exception.ChatRoomException;
 import faddy.backend.global.exception.ChatServiceException;
 import faddy.backend.log.exception.ExceptionLogger;
-import faddy.backend.profile.service.useCase.ProfileService;
-import faddy.backend.user.domain.Profile;
+import faddy.backend.profile.service.useCase.UserProfileService;
 import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final ChatRoomUserJpaRepository chatRoomUserRepository;
     private final LoadChatMessageService loadChatMessageService;
     private final UserService userService;
-    private final ProfileService profileService;
+    private final UserProfileService profileService;
     @Override
     public void updateChatRoom(Long roomId, UpdateChatRoomRequest request) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
