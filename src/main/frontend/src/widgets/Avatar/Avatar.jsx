@@ -5,7 +5,6 @@ const Avatar = ({ userInfo }) => {
    const { profileImageUrl, nickname, level } = userInfo;
    const { showLevel, name, color } = getLevelData(level);
    const levelColor = color ? `#${color}` : '#000000'; // 기본 색상은 검정색
-   console.log(userInfo);
    return (
        <div className="user-profile">
            <div className="user-profile__avatar">

@@ -32,7 +32,6 @@ const getCurrentUsername = () => {
  * API response message data를 채팅방에 맞게 변환
  */
 const convertResponseToChat = (messageData, userProfiles) => {
-
     const currentUsername = getCurrentUsername();
     let direction;
 
@@ -48,6 +47,7 @@ const convertResponseToChat = (messageData, userProfiles) => {
             content: messageData.content,
             direction: direction,
             type: messageType,
+            createdAt : messageData.createdAt
         },
         avatar: direction === "outgoing" ? {
             profileImageUrl: userProfiles[messageData.sender]?.profileImageUrl || "/default_profile.jpg",
@@ -68,7 +68,7 @@ const getMessageComponent = (data) => (
             <Message model={item.model}>
                 <MessageContent message={item.model.content} type={item.model.type} />
                 <MessageMetaInfo>
-                    <SentTime />
+                    <SentTime createdAt = {item.model.createdAt} />
                     <ReadCount />
                 </MessageMetaInfo>
             </Message>
@@ -97,7 +97,7 @@ const ChatRoom = () => {
     /**
      * 과거 chat 목록을 가져옴
      */
-    const loadChats = async () => {
+    const loadChats = async (userProfiles) => {
         try {
             const response = await fetchChatMessages(id);
             const chatMessages = response.map((message) => convertResponseToChat(message, userProfiles));
@@ -135,6 +135,8 @@ const ChatRoom = () => {
                 ...prevProfiles,
                 ...userProfile,
             }));
+
+
         } catch (error) {
             console.error('사용자 프로필을 가져오는데 실패했습니다.', error);
         }
@@ -149,6 +151,8 @@ const ChatRoom = () => {
             const userProfiles = await fetchChatRoomUserProfiles(roomId);
 
             setUserProfiles(userProfiles);
+
+            return userProfiles;
         } catch (error) {
             console.error('사용자 프로필을 가져오는데 실패했습니다.', error);
         }
@@ -206,14 +210,13 @@ const ChatRoom = () => {
             await handleEnter(client, headers);
 
             // 유저 프로필 정보 캐싱 후 저장
-            await fetchAndStoreUserProfiles(id);
+            const userProfiles = await fetchAndStoreUserProfiles(id);
 
-            await loadChats(); // 채팅방 메세지 로드 (프로필 캐싱)
+            await loadChats(userProfiles); // 채팅방 메세지 로드 (프로필 캐싱)
 
             // 구독 요청
             client.subscribe(`/sub/talks/${id}`, (message) => {
                 const response = JSON.parse(message.body);
-
                 if (Array.isArray(response)) {
 
                     const newChats = response.map((chat) => {

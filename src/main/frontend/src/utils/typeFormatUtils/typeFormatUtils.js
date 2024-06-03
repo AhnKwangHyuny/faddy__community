@@ -10,3 +10,4 @@ export const formatCount = (number) => {
         return number.toString();
     }
 }
+
