@@ -28,6 +28,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "snap_id")
     private Snap snap;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
