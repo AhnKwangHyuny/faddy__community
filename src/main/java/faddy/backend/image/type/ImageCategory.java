@@ -4,6 +4,7 @@ public enum ImageCategory {
     PROFILE,
     THUMBNAIL,
     SNAP,
+    STYLE_BOARD,
     CHAT,
     POST,
     COMMENT,

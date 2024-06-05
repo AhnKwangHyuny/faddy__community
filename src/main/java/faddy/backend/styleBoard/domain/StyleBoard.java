@@ -3,8 +3,17 @@ package faddy.backend.styleBoard.domain;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(callSuper = true)
+@Getter
 public class StyleBoard extends BaseEntity {
 
     @Id
@@ -24,13 +33,12 @@ public class StyleBoard extends BaseEntity {
     private String content;
 
     @Column(name = "views")
-    private Long views;
+    @Min(0)
+    private int views;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
-
-
 
 
 }

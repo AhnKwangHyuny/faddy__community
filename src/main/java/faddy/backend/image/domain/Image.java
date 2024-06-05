@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.image.type.ImageCategory;
 import faddy.backend.snap.domain.Snap;
+import faddy.backend.styleBoard.domain.StyleBoard;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +45,11 @@ public class Image extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
     private Snap chat;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "style_board_id")
+    private StyleBoard styleBoard;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category")

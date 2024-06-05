@@ -3,6 +3,7 @@ package faddy.backend.hashTags.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.snap.domain.Snap;
+import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.type.ContentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -23,12 +24,16 @@ public class HashTag extends BaseEntity {
     @Column(name = "hashTag_id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonIgnore
-    @JoinColumn(name = "snap_id" )
+    @JoinColumn(name = "snap_id")
     private Snap snap;
 
-    @Column(name = "name")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "style_board_id")
+    private StyleBoard styleBoard;
+
+    @Column(name = "name", nullable = false, length = 10)
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -36,35 +41,29 @@ public class HashTag extends BaseEntity {
     private ContentType type;
 
     @Column(name = "order_num", nullable = false)
-    @Min(0) // 최소값 0
-    @Max(4) // 최대값 5
+    @Min(0)
+    @Max(4)
     private int order;
 
-
-    public HashTag(String name, int order , ContentType type) {
+    public HashTag(String name, int order, ContentType type) {
         this.name = name;
         this.type = type;
         this.order = order;
     }
 
-    public HashTag createTagInstance(String name, ContentType contentType) {
-        return new HashTag(name , order , contentType);
-    }
-
-    public void linkedSnap(Snap snap) {
+    public void linkToSnap(Snap snap) {
         this.snap = snap;
         snap.getHashTags().add(this);
     }
 
+
     @Override
     public String toString() {
         return "HashTag{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", order=" + order +
+                ", type=" + type +
                 '}';
-    }
-
-    public void addSnap(Snap snap) {
-        this.snap = snap;
     }
 }

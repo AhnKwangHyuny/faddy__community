@@ -4,16 +4,19 @@ import faddy.backend.global.BaseEntity;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(callSuper = true)
 public class StyleBoardComment extends BaseEntity {
 
     @Id
