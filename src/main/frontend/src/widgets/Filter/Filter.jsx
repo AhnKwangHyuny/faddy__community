@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Filter = ({ category_list, selectedCategories, setSelectedCategories }) => {
+const Filter = ({ labelHide = false , category_list, selectedCategories, setSelectedCategories }) => {
     const [selectedCategoryStates, setSelectedCategoryStates] = useState({});
 
     useEffect(() => {
@@ -60,7 +60,9 @@ const Filter = ({ category_list, selectedCategories, setSelectedCategories }) =>
     return (
         <div className="filter">
             <div className="filter__wrapper">
-                <div className="category__name">카테고리</div>
+                {!labelHide && (
+                    <div className="category__name">카테고리</div>
+                )}
                 {Object.keys(category_list).some((key) => category_list[key].length > 0) && (
                     <>
                         {Object.keys(category_list).map((categoryKey) => (
@@ -69,7 +71,7 @@ const Filter = ({ category_list, selectedCategories, setSelectedCategories }) =>
                                     <li>
                                         <div className="category__container">
                                             <div className="category_key">
-                                                <div className="logo">{categoryKey}&nbsp;</div>
+                                                <div className="logo">{categoryKey}</div>
                                             </div>
                                             <div className="category-list">
                                                 {category_list[categoryKey].map((value, index) => (

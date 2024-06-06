@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Tagify from '@yaireo/tagify';
 import '@yaireo/tagify/dist/tagify.css';
 
-const HashTagBox = ({ tags, setTags }) => {
+const HashTagBox = ({ labelHide = false  , tags, setTags }) => {
     const inputRef = useRef(null);
     const tagifyInstance = useRef(null);
 
@@ -69,10 +69,10 @@ const HashTagBox = ({ tags, setTags }) => {
         <div className="tags">
             <div className="tags__wrapper">
                 <div className="tags__header">
-                    <div className="logo">태그</div>
+                    {!labelHide && <div className="label">태그</div>}
                 </div>
                 <div className="tags__input">
-                    <input ref={inputRef} name="tags-outside" className="tagify--outside" placeholder="태그를 입력 후 엔터를 누르세요 (최대 5개)" />
+                    <input ref={inputRef} name="tags-outside" className="tagify--outside" placeholder="#원하는 태그를 입력 후 엔터를 눌러주세요 (최대 5개)" />
                 </div>
                 <div className="tags__footer">
                     <div className="line"></div>

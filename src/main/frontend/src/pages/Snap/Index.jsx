@@ -2,7 +2,7 @@ import CreationMenuBar from "widgets/CreationMenuBar/CreationMenuBar";
 import ImageUploader from "widgets/ImageUploader/ImageUploader";
 import Description from "pages/Snap/Components/Description/Description";
 import HashTagBox from "./Components/HashTagBox/HashTagBox";
-import SnapCategory from "pages/Snap/Components/SnapCategory/SnapCategory";
+import CategorySelector from "pages/Snap/Components/SnapCategory/SnapCategory";
 import {useState} from "react";
 import {useAuth} from "shared/context/AuthContext";
 import uploadSnap from "features/snap/UploadSnap";
@@ -58,7 +58,7 @@ const Snap = () => {
             <ImageUploader imageList={imageList} setImageList={setImageList} />
             <Description description={description} setDescription={setDescription} />
             <HashTagBox tags={tags} setTags={setTags} />
-            <SnapCategory selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
+            <CategorySelector selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} />
         </section>
     );
 };

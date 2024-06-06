@@ -38,9 +38,20 @@ export const snapCategoryData = [
         label: '스타일',
         subCategories: ['캐주얼', '아메카지', '댄디', '올드머니', '리조트', '스트릿', '기타'],
     },
-    // {
-    //     id:'job',
-    //     label: '직업',
-    //     subCategories: ['테스트1', '테스트2', '테스트3', '테스트4'],
-    // }
+
 ];
+
+export const searchFilterData = [
+    {
+        id: 'sorting',
+        label: '정렬',
+        subCategories: ['최신순', '인기순' , '조회순'],
+    },
+
+    {
+        id: 'style',
+        label: '스타일',
+        subCategories: ['질문하기', '일상공유', '소식공유', '패션꿀팁'],
+
+    }
+]
