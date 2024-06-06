@@ -76,7 +76,7 @@ public class SnapPostingService {
         snap.getSnapImages().addAll(images);
 
         // snap : hashTag = 1 : N
-        hashTags.forEach(hashTag -> hashTag.addSnap(snap));
+        hashTags.forEach(hashTag -> hashTag.linkToSnap(snap));
         snap.getHashTags().addAll(hashTags);
 
         Snap savedSnap = snapRepository.save(snap);

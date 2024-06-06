@@ -10,6 +10,9 @@ import { useHideAddressBar } from 'shared/hooks/useHideAddressBar';
 import ProtectedRoute from "routes/ProtectedRoute";
 import StyleTalk from "pages/StyleTalk/index.jsx";
 
+// style Board
+import StyleBoardListPage from "pages/StyleBoardListPage";
+
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
 import StyleTalkRoom from "pages/StyleTalkRoom/index";
@@ -30,6 +33,8 @@ function App() {
                     <Route path="/snaps/detail" element={<SnapDetail/>} />
                     <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
                     <Route path="/talks/detail/:type/:id" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
+                    <Route path="/styleBoards" element={<StyleBoardListPage/>} />
+
                 </Routes>
             </Router>
         </AuthProvider>

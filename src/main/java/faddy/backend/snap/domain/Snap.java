@@ -82,7 +82,7 @@ public class Snap extends BaseEntity  {
     }
 
     public void updateHashTags() {
-        this.hashTags.forEach(hashTag -> hashTag.linkedSnap(this));
+        this.hashTags.forEach(hashTag -> hashTag.linkToSnap(this));
     }
 
     public void addCategory(Category category) {

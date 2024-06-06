@@ -47,6 +47,9 @@
 @import "pages/StyleTalk/index";
 @import "pages/StyleTalk/components/ChatTypeSelector/chatTypeSelector";
 
+//styleBoardListPage
+@import "pages/styles/styleBoardListPage";
+
 
 /**features components*/
 //thumbnail-card
@@ -62,6 +65,10 @@
 @import "pages/StyleShare/components/SnapSortingButton/snapSortingButton";
 @import "pages/SnapDetail/Components/MenuIcons/menuIcons";
 
+/**
+* bestStyleBoardCarouselHeader
+*/
+@import "features/styleBoard/bestStyleBoardCarouselHeader/styles/bestStyleBoardCarousel";
 
 
 @import "pages/Snap/index";
@@ -97,3 +104,4 @@
 @import "shared/ui/Logo/logo";
 @import "shared/ui/LoadingUI/loading.scss";
 @import "shared/ui/icons/ImageUploadIcon/imageUploadIcon";
+@import "shared/styles/components/filterIcon";

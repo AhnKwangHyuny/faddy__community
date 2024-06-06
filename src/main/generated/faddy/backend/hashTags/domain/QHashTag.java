@@ -35,6 +35,8 @@ public class QHashTag extends EntityPathBase<HashTag> {
 
     public final faddy.backend.snap.domain.QSnap snap;
 
+    public final faddy.backend.styleBoard.domain.QStyleBoard styleBoard;
+
     public final EnumPath<faddy.backend.type.ContentType> type = createEnum("type", faddy.backend.type.ContentType.class);
 
     //inherited
@@ -59,6 +61,7 @@ public class QHashTag extends EntityPathBase<HashTag> {
     public QHashTag(Class<? extends HashTag> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.snap = inits.isInitialized("snap") ? new faddy.backend.snap.domain.QSnap(forProperty("snap"), inits.get("snap")) : null;
+        this.styleBoard = inits.isInitialized("styleBoard") ? new faddy.backend.styleBoard.domain.QStyleBoard(forProperty("styleBoard"), inits.get("styleBoard")) : null;
     }
 
 }

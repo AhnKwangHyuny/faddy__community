@@ -51,6 +51,7 @@ public class HashTag extends BaseEntity {
         this.order = order;
     }
 
+    //addSnap
     public void linkToSnap(Snap snap) {
         this.snap = snap;
         snap.getHashTags().add(this);

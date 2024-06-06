@@ -33,6 +33,8 @@ public class QLike extends EntityPathBase<Like> {
 
     public final faddy.backend.snap.domain.QSnap snap;
 
+    public final faddy.backend.styleBoard.domain.QStyleBoard styleBoard;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 
@@ -57,6 +59,7 @@ public class QLike extends EntityPathBase<Like> {
     public QLike(Class<? extends Like> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.snap = inits.isInitialized("snap") ? new faddy.backend.snap.domain.QSnap(forProperty("snap"), inits.get("snap")) : null;
+        this.styleBoard = inits.isInitialized("styleBoard") ? new faddy.backend.styleBoard.domain.QStyleBoard(forProperty("styleBoard"), inits.get("styleBoard")) : null;
         this.user = inits.isInitialized("user") ? new faddy.backend.user.domain.QUser(forProperty("user"), inits.get("user")) : null;
     }
 

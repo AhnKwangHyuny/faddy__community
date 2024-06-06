@@ -45,6 +45,8 @@ public class QImage extends EntityPathBase<Image> {
 
     public final faddy.backend.snap.domain.QSnap snap;
 
+    public final faddy.backend.styleBoard.domain.QStyleBoard styleBoard;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 
@@ -68,6 +70,7 @@ public class QImage extends EntityPathBase<Image> {
         super(type, metadata, inits);
         this.chat = inits.isInitialized("chat") ? new faddy.backend.snap.domain.QSnap(forProperty("chat"), inits.get("chat")) : null;
         this.snap = inits.isInitialized("snap") ? new faddy.backend.snap.domain.QSnap(forProperty("snap"), inits.get("snap")) : null;
+        this.styleBoard = inits.isInitialized("styleBoard") ? new faddy.backend.styleBoard.domain.QStyleBoard(forProperty("styleBoard"), inits.get("styleBoard")) : null;
     }
 
 }
