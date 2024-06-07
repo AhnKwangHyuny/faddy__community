@@ -12,6 +12,7 @@ import StyleTalk from "pages/StyleTalk/index.jsx";
 
 // style Board
 import StyleBoardListPage from "pages/styleBoardListPage/index";
+import StyleBoardCreatePage from "pages/styleBoardCreatePage/index";
 
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
@@ -34,7 +35,7 @@ function App() {
                     <Route path="/talks" element={<ProtectedRoute><StyleTalk/></ProtectedRoute>}/>
                     <Route path="/talks/detail/:type/:id" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
                     <Route path="/styleBoards" element={<StyleBoardListPage/>} />
-
+                    <Route path="/styleBoards/create" element={<ProtectedRoute><StyleBoardCreatePage/></ProtectedRoute>} />
                 </Routes>
             </Router>
         </AuthProvider>

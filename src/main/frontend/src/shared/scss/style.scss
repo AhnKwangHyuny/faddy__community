@@ -51,6 +51,7 @@
 @import "pages/styles/styleBoardListPage";
 @import "pages/styleBoardListPage/styles/styleBoardList";
 @import "pages/styleBoardListPage/styles/styleBoard";
+@import "pages/styleBoardListPage/styles/createTopicModal";
 
 
 /**features components*/
@@ -109,4 +110,7 @@
 @import "shared/ui/Logo/logo";
 @import "shared/ui/LoadingUI/loading.scss";
 @import "shared/ui/icons/ImageUploadIcon/imageUploadIcon";
+
+// componets
 @import "shared/styles/components/filterIcon";
+@import "shared/styles/components/floatingActionButton";
