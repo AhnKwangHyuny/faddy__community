@@ -53,6 +53,11 @@
 @import "pages/styleBoardListPage/styles/styleBoard";
 @import "pages/styleBoardListPage/styles/createTopicModal";
 
+//StyleBoardCreatePage
+@import "pages/styleBoardCreatePage/styles/contentEditor";
+@import "pages/styleBoardCreatePage/styles/titleInput";
+
+
 
 /**features components*/
 //thumbnail-card
@@ -114,3 +119,4 @@
 // componets
 @import "shared/styles/components/filterIcon";
 @import "shared/styles/components/floatingActionButton";
+
