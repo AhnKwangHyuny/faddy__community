@@ -11,7 +11,7 @@ import ProtectedRoute from "routes/ProtectedRoute";
 import StyleTalk from "pages/StyleTalk/index.jsx";
 
 // style Board
-import StyleBoardListPage from "pages/StyleBoardListPage";
+import StyleBoardListPage from "pages/styleBoardListPage/index";
 
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
