@@ -127,3 +127,26 @@ section:not(.snapDetail, #style-share) {
     margin:0;
     padding:0;
 }
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.ipflr-20 {
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.wvp-100 {
+  width : 100vw;
+}
+
+.fwip-20 {
+    position: relative;
+    left: -20px;
+    width: calc(100vw + 40px) !important;
+}
+
+.fd-0 {
+    padding: 0px;
+}

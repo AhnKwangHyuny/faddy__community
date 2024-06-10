@@ -57,6 +57,15 @@
 @import "pages/styleBoardCreatePage/styles/contentEditor";
 @import "pages/styleBoardCreatePage/styles/titleInput";
 
+//StyleBoardDetailsPage
+@import "pages/styleBoardDetailPage/styles/TagList";
+@import "pages/styleBoardDetailPage/styles/header";
+@import "pages/styleBoardDetailPage/styles/metaInfo";
+@import "pages/styleBoardDetailPage/styles/contentViewer";
+@import "pages/styleBoardDetailPage/styles/inputBox";
+@import "pages/styleBoardDetailPage/styles/interactionBar";
+@import "pages/styleBoardDetailPage/styles/commentSection";
+
 
 
 /**features components*/
@@ -115,6 +124,7 @@
 @import "shared/ui/Logo/logo";
 @import "shared/ui/LoadingUI/loading.scss";
 @import "shared/ui/icons/ImageUploadIcon/imageUploadIcon";
+@import "shared/styles/ContentDivider";
 
 // componets
 @import "shared/styles/components/filterIcon";
