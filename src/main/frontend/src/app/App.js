@@ -18,6 +18,7 @@ import StyleBoardDetailPage from "pages/styleBoardDetailPage/index";
 import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
 import StyleTalkRoom from "pages/StyleTalkRoom/index";
+import StyleBoardEditPage from "pages/styleBoardEditPage/index";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/styleBoards" element={<StyleBoardListPage/>} />
                     <Route path="/styleBoards/create" element={<ProtectedRoute><StyleBoardCreatePage/></ProtectedRoute>} />
                     <Route path="/styleBoards/detail" element={<StyleBoardDetailPage/>} />
+                    <Route path="/styleBoards/edit" element={<StyleBoardEditPage/>} />
                 </Routes>
             </Router>
         </AuthProvider>
