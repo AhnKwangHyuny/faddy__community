@@ -34,11 +34,18 @@ public class StyleBoard extends BaseEntity {
 
     @Column(name = "views")
     @Min(0)
-    private int views;
+    private int views = 0;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+    public StyleBoard(Category category, String title, String content, User author) {
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.views = 0;
+    }
 
 }
