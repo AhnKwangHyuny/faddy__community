@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { uploadImageFromFile } from "utils/Image/ImageUtils";
-import { deleteImage } from "api/delete";
+import { deleteImage , deleteImages } from "api/delete";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -31,6 +31,24 @@ const ContentEditor = ({ content, setContent }) => {
                 quillInstance.off('text-change', handleTextChange);
             };
         }
+    }, []);
+
+    // 페이지 새로고침, 리다이렉트 또는 페이지 뒤로 가기 버튼 클릭 시 이미지 삭제
+    useEffect(() => {
+        const handleBeforeUnload = async (event) => {
+            try {
+                await deleteImages(imageListRef.current);
+                console.log('Images deleted successfully on unload');
+            } catch (error) {
+                console.error('Error deleting image on unload:', error);
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
     }, []);
 
     // 이미지 url를 통해 useState imageList에 저장된 imageInfo 조회

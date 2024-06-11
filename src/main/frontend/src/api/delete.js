@@ -22,15 +22,28 @@ export const deleteImage = async(request) => {
  *  복수의 image 삭제 요청
  * */
 
-export const deleteImages = async(imageList) => {
+export const deleteImages = async (requests) => {
+   if (requests.length === 0) {
+       return;
+   }
 
+   requests.map(request => {
+       if (!request.hashedName || !request.url) {
+           throw new Error('hashedName 또는 url이 없습니다.');
+       }
+   });
 
-    const config = {
-        data: imageList,
-    };
+   const imageList = requests.map(request => ({
+       hashedName: request.hashedName,
+       url: request.url
+   }));
 
-    return await userRequestInstance.delete(END_POINTS.DELETE_IMAGES , config);
-}
+   const config = {
+       data: imageList,
+   };
+
+   return await userRequestInstance.delete(END_POINTS.DELETE_IMAGES, config);
+};
 
 /** 좋아요 취소 요청*/
 export const deleteLike = async (snapId) => {

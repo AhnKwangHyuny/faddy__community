@@ -20,16 +20,14 @@ public class ImageController {
     public ResponseEntity<Void> handleImageDelete(@RequestBody ImageRequestDto imageRequestDto) {
         imageService.deleteImage(imageRequestDto.getHashedName());
 
-
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/multiple")
     public ResponseEntity<Void> handleImageListDelete(@RequestBody List<ImageRequestDto> images) {
 
-
         imageService.deleteImages(images);
-
+        System.out.println("images = " + images);
         return ResponseEntity.noContent().build();
     }
 
