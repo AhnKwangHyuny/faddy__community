@@ -2,6 +2,9 @@
     margin-bottom: 20px;
 
     .content-editor {
+        max-height: 150px;
+        overflow-y: auto;
+
         .ql-toolbar {
             border: none;
             border-bottom: 2px solid #D9D9D9;

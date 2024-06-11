@@ -35,6 +35,40 @@ export const UploadImage = async (event , category) => {
     }
 
 }
+
+export const uploadImageFromFile = async (file , category) => {
+
+    if (!file) {
+        alert('파일이 업로드되지 않았습니다.');
+        return;
+    }
+
+    if(!category) {
+        alert('이미지 카테고리가 선택되지 않았습니다.');
+        return;
+    }
+
+    const maxSize = 50 * 1024 * 1024;
+    if (file.size > maxSize) {
+        alert('파일 크기가 5MB를 초과합니다.');
+
+        return;
+    }
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    try {
+        // image 정보 반환 (이름 , url , hashName , size ... )
+        return await saveImage(formData , category);
+    } catch (error) {
+        alert('파일 업로드에 실패했습니다. 다시 시도해 주세요.');
+        return;
+    }
+
+}
+
+
 const convert_image_to_dto = (imageObj) => {
         if(!imageObj.url || !imageObj.hashedName) {
             // 이미지 실패 로직
