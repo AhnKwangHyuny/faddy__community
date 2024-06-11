@@ -9,6 +9,7 @@ const ContentEditor = ({ content, setContent }) => {
     const IMAGE_CATEGORY = 'style_board';
     const [imageList, setImageList] = useState([]);
     const imageListRef = useRef(imageList);
+    const [deletedImages, setDeletedImages] = useState([]);
 
     useEffect(() => {
         imageListRef.current = imageList;
@@ -23,11 +24,11 @@ const ContentEditor = ({ content, setContent }) => {
             toolbar.addHandler('image', handleImageUpload);
 
             // 텍스트 변경 이벤트 핸들러 등록 (이미지 삭제 감지용)
-            quillInstance.on('text-change', handleImageDelete);
+            quillInstance.on('text-change', handleTextChange);
 
             // Cleanup 함수: 컴포넌트가 unmount될 때 이벤트 리스너 제거
             return () => {
-                quillInstance.off('text-change', handleImageDelete);
+                quillInstance.off('text-change', handleTextChange);
             };
         }
     }, []);
@@ -67,7 +68,10 @@ const ContentEditor = ({ content, setContent }) => {
             if (uploadedImage?.data?.url != null) {
                 const quillInstance = quillRef.current.getEditor();
                 const range = quillInstance.getSelection(true);
+
+                // 이미지를 삽입하는 부분을 업데이트
                 quillInstance.insertEmbed(range.index, 'image', uploadedImage.data.url);
+                quillInstance.setSelection(range.index + 1); // 이미지 삽입 후 커서를 이미지 다음으로 이동
                 return;
             }
 
@@ -77,15 +81,32 @@ const ContentEditor = ({ content, setContent }) => {
         };
     };
 
-    // 이미지 삭제 핸들러
-    const handleImageDelete = (delta, oldDelta, source) => {
+    // 텍스트 변경 핸들러
+    const handleTextChange = (delta, oldDelta, source) => {
         if (source === 'user') {
-            const deletedImages = oldDelta.ops.filter(op => op.insert && op.insert.image && !delta.ops.some(newOp => newOp.insert === op.insert));
+            const quillInstance = quillRef.current.getEditor();
+            const currentContents = quillInstance.getContents();
 
-            deletedImages.forEach(op => {
-                const imageUrl = op.insert.image;
-                sendDeleteRequest(imageUrl);
+            // 현재 에디터에 있는 이미지 URL을 수집
+            const currentImages = [];
+            currentContents.ops.forEach(op => {
+                if (op.insert && op.insert.image) {
+                    currentImages.push(op.insert.image);
+                }
             });
+
+            // 삭제된 이미지를 찾고, 이미 삭제 요청이 나간 이미지를 제외
+            const newDeletedImages = imageListRef.current.filter(imageInfo =>
+                !currentImages.includes(imageInfo.url) && !deletedImages.includes(imageInfo.url)
+            );
+
+            // 삭제된 이미지 요청 보내기
+            newDeletedImages.forEach(imageInfo => {
+                sendDeleteRequest(imageInfo.url);
+            });
+
+            // 삭제된 이미지 URL을 상태에 추가
+            setDeletedImages(prevList => [...prevList, ...newDeletedImages.map(image => image.url)]);
         }
     };
 
@@ -94,17 +115,21 @@ const ContentEditor = ({ content, setContent }) => {
         try {
             // 이미지 url을 통해 imageInfo 조회
             const imageInfo = findImageInfoByUrl(imageUrl);
-            console.log(imageUrl, imageListRef.current);
-            console.log(imageInfo);
-            const deletedImageInfo = await deleteImage(imageInfo);
+            if (imageInfo) {
+                console.log(imageUrl, imageListRef.current);
+                console.log(imageInfo);
+                await deleteImage(imageInfo);
+                console.log('Image deleted successfully');
 
-            console.log('Image deleted successfully');
+                // 이미지 리스트 업데이트
+                setImageList(prevList => prevList.filter(image => image.url !== imageUrl));
+            }
         } catch (error) {
             console.error('Error deleting image:', error);
         }
     };
 
-    // 최초 렌더링 시 modules 저장 후 매 렌더링 마다 module 새로 생성 하는 이슈 해결
+    // 최초 렌더링 시 modules 저장 후 매 렌더링 마다 module 새로 생성하는 이슈 해결
     const modules = useMemo(() => {
         return {
             toolbar: {
