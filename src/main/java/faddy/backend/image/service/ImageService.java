@@ -34,4 +34,11 @@ public interface ImageService {
      * */
     List<Image> findByImageUrl(List<ImageLookupRequestDTO> imageUrls);
 
+    /**
+     *  styleBoardId로 이미지 조회
+     *  @param Long styleBoardId
+     *  @return Image 이미지 엔티티 리스트
+     * */
+    List<Image> findByStyleBoardId(Long StyleBoardId);
+
 }

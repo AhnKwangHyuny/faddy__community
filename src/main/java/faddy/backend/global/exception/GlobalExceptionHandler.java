@@ -1,5 +1,8 @@
 package faddy.backend.global.exception;
 
+import faddy.backend.global.response.ApiResponse;
+import faddy.backend.global.response.ErrorApiResponse;
+import faddy.backend.log.exception.ExceptionLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -125,6 +128,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
+    //StyleException
+    @ExceptionHandler(StyleBoardDataAccessException.class)
+    public ResponseEntity<? extends ApiResponse> handleStyleBoardDataAccessException(final ChatRoomException e) {
+        ExceptionLogger.logException(e);
 
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
+    }
+
+    @ExceptionHandler(StyleBoardNotFoundException.class)
+    public ResponseEntity<? extends ApiResponse> handleStyleBoardNotFoundException(final ChatRoomException e) {
+        ExceptionLogger.logException(e);
+
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
+    }
 }
 

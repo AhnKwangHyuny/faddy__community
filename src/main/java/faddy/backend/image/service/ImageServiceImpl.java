@@ -228,6 +228,18 @@ public class ImageServiceImpl implements ImageService {
             throw new ImageException(HttpStatus.BAD_REQUEST.value() , "이미지 URL 조회 실패" , e);
         }
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Image> findByStyleBoardId(Long StyleBoardId) {
+        try {
+            return imageRepository.findByStyleBoardId(StyleBoardId);
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new ImageException(HttpStatus.BAD_REQUEST.value() , "이미지 조회 실패" , e);
+        }
+    }
 }
 
 

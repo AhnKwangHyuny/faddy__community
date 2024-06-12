@@ -1,5 +1,6 @@
 package faddy.backend.styleBoard.service;
 
+import faddy.backend.image.service.ImageService;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.request.StyleBoardCreateDTO;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StyleBoardCreateServiceImpl implements StyleBoardCreateService {
 
     private final StyleBoardJpaRepository styleBoardRepository;
+    private final ImageService imageService;
 
     @Override
     public StyleBoard createStyleBoardEntity(StyleBoardCreateDTO request) {

@@ -30,4 +30,6 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
     @Query("SELECT i FROM Image i WHERE i.imageUrl IN :imageUrls")
     List<Image> findByImageUrlIn(@Param("imageUrls") List<String> imageUrls);
 
+    @Query("SELECT i FROM Image i WHERE i.styleBoard.id = :styleBoardId")
+    List<Image> findByStyleBoardId(@Param("styleBoardId") Long styleBoardId);
 }

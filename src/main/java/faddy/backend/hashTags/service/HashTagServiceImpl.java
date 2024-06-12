@@ -93,4 +93,9 @@ public class HashTagServiceImpl implements HashTagService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<HashTag> findHashTagsByStyleBoardId(Long styleBoardId) {
+        return hashTagRepository.findByStyleBoardId(styleBoardId);
+    }
 }

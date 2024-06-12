@@ -14,6 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Getter
+@Table(name = "style_boards")
 public class StyleBoard extends BaseEntity {
 
     @Id

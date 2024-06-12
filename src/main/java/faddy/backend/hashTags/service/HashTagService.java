@@ -19,4 +19,10 @@ public interface HashTagService {
 
     List<HashTag> findHashTagsByIds(List<Long> ids);
 
-    }
+    /**
+     * styleBoardId에 해당하는 해쉬태그 리스트를 반환
+     * @param styleBoardId 스타일보드 아이디
+     * @return List<HashTag> 해쉬태그 리스트
+     * */
+    List<HashTag> findHashTagsByStyleBoardId(Long styleBoardId);
+}
