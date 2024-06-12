@@ -14,4 +14,15 @@ public class SaveEntityException extends RuntimeException {
         this.code = exceptionCode.getCode();
     }
 
+
+    public SaveEntityException(final int code , final String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public SaveEntityException(final int code, final String message, final Throwable cause) {
+        super(message, cause);
+        this.code = code;
+        this.message = message;
+    }
 }

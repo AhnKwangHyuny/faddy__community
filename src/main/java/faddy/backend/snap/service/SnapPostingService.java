@@ -4,7 +4,7 @@ import faddy.backend.category.domain.Category;
 import faddy.backend.category.service.CategoryService;
 import faddy.backend.global.Utils.EncryptionUtils;
 import faddy.backend.hashTags.domain.HashTag;
-import faddy.backend.hashTags.service.TagService;
+import faddy.backend.hashTags.service.HashTagService;
 import faddy.backend.image.domain.Image;
 import faddy.backend.image.service.ImageService;
 import faddy.backend.snap.domain.Snap;
@@ -18,9 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -30,7 +28,7 @@ public class SnapPostingService {
     private final UserService userService;
     private final ImageService imageService;
     private final CategoryService categoryService;
-    private final TagService hashTagService;
+    private final HashTagService hashTagService;
     private final UserIdEncryptionUtil userIdEncryptionUtil;
 
     private final SnapRepository snapRepository;

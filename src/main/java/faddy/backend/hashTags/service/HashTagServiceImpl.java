@@ -6,17 +6,21 @@ import faddy.backend.global.exception.SaveEntityException;
 import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.domain.dto.request.HashTagRequestDto;
 import faddy.backend.hashTags.domain.dto.response.HashTagIdResponseDto;
+import faddy.backend.hashTags.dto.request.HashTagRequestDTO;
 import faddy.backend.hashTags.repository.HashTagRepository;
+import faddy.backend.log.exception.ExceptionLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-public class HashTagServiceImpl implements TagService {
+public class HashTagServiceImpl implements HashTagService {
     private final HashTagRepository hashTagRepository;
 
     @Autowired
@@ -64,5 +68,29 @@ public class HashTagServiceImpl implements TagService {
         return foundHashTags;
     }
 
+    @Override
+    @Transactional
+    public List<HashTag> saveHashTags(List<HashTagRequestDTO> hashTagRequestDTOs) {
+        if (hashTagRequestDTOs == null || hashTagRequestDTOs.isEmpty()) {
+            return Collections.emptyList(); // 태그가 없을 시 빈 리스트 반환
+        }
+
+        try {
+            List<HashTag> hashTagEntities = hashTagRequestDTOs.stream()
+                    .map(hashTagRequestDTO -> new HashTag(
+                            hashTagRequestDTO.getName(),
+                            hashTagRequestDTO.getPriority(),
+                            hashTagRequestDTO.getContentType()))
+                    .collect(Collectors.toList());
+
+            Optional<List<HashTag>> hashTags = Optional.ofNullable(hashTagRepository.saveAll(hashTagEntities));
+
+            return hashTags.orElse(Collections.emptyList()); // 저장된 해시태그 리스트 반환
+
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new SaveEntityException(ExceptionCode.FAIL_CREATE_HASH_TAG);
+        }
+    }
 
 }

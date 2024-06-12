@@ -15,6 +15,8 @@ export const API_HASH_TAG = 'api/v1/hashTags';
 
 export const API_SNAP  = 'api/v1/snaps';
 
+export const API_STYLE_BOARD = 'api/v1/styleBoards';
+
 export const API_CATEGORY  = 'api/v1/categories';
 
 export const API_LIKE = 'api/v1/likes';
@@ -107,6 +109,9 @@ export const END_POINTS = {
   //chats
   GET_CHATS : (roomId) => `${API_CHAT}/${roomId}/messages`,
   POST_CHAT : (roomId) => `${API_CHAT}/${roomId}`,
+
+  //StyleBoard
+  CREATE_STYLE_BOARD : `${API_STYLE_BOARD}/create`,
 };
 
 

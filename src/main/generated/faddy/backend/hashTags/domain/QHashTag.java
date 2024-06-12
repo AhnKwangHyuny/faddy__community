@@ -31,13 +31,13 @@ public class QHashTag extends EntityPathBase<HashTag> {
 
     public final StringPath name = createString("name");
 
-    public final NumberPath<Integer> order = createNumber("order", Integer.class);
+    public final NumberPath<Integer> priority = createNumber("priority", Integer.class);
 
     public final faddy.backend.snap.domain.QSnap snap;
 
     public final faddy.backend.styleBoard.domain.QStyleBoard styleBoard;
 
-    public final EnumPath<faddy.backend.type.ContentType> type = createEnum("type", faddy.backend.type.ContentType.class);
+    public final EnumPath<faddy.backend.hashTags.types.ContentType> type = createEnum("type", faddy.backend.hashTags.types.ContentType.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;

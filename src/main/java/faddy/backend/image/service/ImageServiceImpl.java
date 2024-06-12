@@ -7,9 +7,11 @@ import faddy.backend.image.domain.Image;
 import faddy.backend.image.dto.ImageFile;
 import faddy.backend.image.dto.ImageRequestDto;
 import faddy.backend.image.dto.ImageResponseDto;
+import faddy.backend.image.dto.request.ImageLookupRequestDTO;
 import faddy.backend.image.infrastructure.ImageMapper;
 import faddy.backend.image.repository.ImageRepository;
 import faddy.backend.image.type.ImageCategory;
+import faddy.backend.log.exception.ExceptionLogger;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -204,6 +207,26 @@ public class ImageServiceImpl implements ImageService {
 
         // 리스트의 해쉬 이름을 사용하여 이미지 찾기 로직 구현
         return imageRepository.findByHashedNameIn(hashedNames);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Image> findByImageUrl(List<ImageLookupRequestDTO> imageUrls) {
+        if (imageUrls == null || imageUrls.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        try {
+            List<String> urls = imageUrls.stream()
+                    .map(ImageLookupRequestDTO::imageUrl)
+                    .collect(Collectors.toList());
+
+            return imageRepository.findByImageUrlIn(urls);
+
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new ImageException(HttpStatus.BAD_REQUEST.value() , "이미지 URL 조회 실패" , e);
+        }
     }
 }
 

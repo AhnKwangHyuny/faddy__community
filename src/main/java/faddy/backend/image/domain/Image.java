@@ -65,7 +65,9 @@ public class Image extends BaseEntity {
         this.category = category;
     }
 
-
+    public void linkStyleBoard(StyleBoard styleBoard) {
+        this.styleBoard = styleBoard;
+    }
 
     public void addSnap(Snap snap) {
         this.snap = snap;

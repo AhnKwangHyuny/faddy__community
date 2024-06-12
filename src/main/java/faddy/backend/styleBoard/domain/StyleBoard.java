@@ -45,7 +45,51 @@ public class StyleBoard extends BaseEntity {
         this.title = title;
         this.content = content;
         this.author = author;
-        this.views = 0;
     }
 
+    public StyleBoard(Category category, String title, String content) {
+        this.category = category;
+        this.title = title;
+        this.content = content;
+    }
+
+    /**
+     *  entity methods
+     * */
+
+    public static StyleBoardBuilder builder() {
+        return new StyleBoardBuilder();
+    }
+
+    public static class StyleBoardBuilder {
+        private Category category;
+        private String title;
+        private String content;
+
+        private StyleBoardBuilder() {
+        }
+
+        public StyleBoardBuilder withCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public StyleBoardBuilder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public StyleBoardBuilder withContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public StyleBoard build() {
+            return new StyleBoard(category, title, content);
+        }
+    }
+
+    public void linkToAuthor(User author) {
+        this.author = author;
+    }
 }

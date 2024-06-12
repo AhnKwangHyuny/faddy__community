@@ -3,6 +3,7 @@ package faddy.backend.image.service;
 import faddy.backend.image.domain.Image;
 import faddy.backend.image.dto.ImageRequestDto;
 import faddy.backend.image.dto.ImageResponseDto;
+import faddy.backend.image.dto.request.ImageLookupRequestDTO;
 import faddy.backend.image.type.ImageCategory;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,5 +26,12 @@ public interface ImageService {
     Image findById(Long imageId);
 
     List<Image> findByHashedNames(List<String> hashedNames);
+
+    /**
+     *  이미지 URL로 이미지 조회
+     *  @param imageUrls 이미지 URL 목록
+     *  @return Image 이미지 엔티티 리스트
+     * */
+    List<Image> findByImageUrl(List<ImageLookupRequestDTO> imageUrls);
 
 }

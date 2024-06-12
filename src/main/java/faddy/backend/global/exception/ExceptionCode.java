@@ -126,7 +126,13 @@ public enum ExceptionCode {
      * */
     CHATROOM_NOT_FOUND_ERROR(400 , "해당 채팅방이 존재하지 않습니다."),
     CHAT_FOUND_ERROR(400 , "채팅을 불러오는 중 오류가 발생했습니다."),
-    CHAT_SAVE_ERROR(500 , "메세지 전송에 실패했습니다. [생성 오류]");
+    CHAT_SAVE_ERROR(500 , "메세지 전송에 실패했습니다. [생성 오류]"),
+
+
+    /**
+     * HashTag
+     * */
+    FAIL_CREATE_HASH_TAG(500 , "해시태그 엔티티 생성에 실패했습니다.");
 
     private final int code;
     private final String message;

@@ -25,4 +25,9 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
     List<Image> findAll();
 
     @Query("SELECT i FROM Image i WHERE i.hashName IN :hashedNames")
-    List<Image> findByHashedNameIn(@Param("hashedNames") List<String> hashedNames);}
+    List<Image> findByHashedNameIn(@Param("hashedNames") List<String> hashedNames);
+
+    @Query("SELECT i FROM Image i WHERE i.imageUrl IN :imageUrls")
+    List<Image> findByImageUrlIn(@Param("imageUrls") List<String> imageUrls);
+
+}

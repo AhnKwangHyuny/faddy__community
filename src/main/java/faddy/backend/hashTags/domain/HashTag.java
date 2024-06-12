@@ -2,9 +2,9 @@ package faddy.backend.hashTags.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import faddy.backend.global.BaseEntity;
+import faddy.backend.hashTags.types.ContentType;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.styleBoard.domain.StyleBoard;
-import faddy.backend.type.ContentType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -43,12 +43,16 @@ public class HashTag extends BaseEntity {
     @Column(name = "order_num", nullable = false)
     @Min(0)
     @Max(4)
-    private int order;
+    private int priority;
 
-    public HashTag(String name, int order, ContentType type) {
+    public HashTag(String name, int priority, ContentType type) {
         this.name = name;
         this.type = type;
-        this.order = order;
+        this.priority = priority;
+    }
+
+    public void linkToStyleBoard(StyleBoard styleBoard) {
+        this.styleBoard = styleBoard;
     }
 
     //addSnap
@@ -63,7 +67,7 @@ public class HashTag extends BaseEntity {
         return "HashTag{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", order=" + order +
+                ", priority=" + priority +
                 ", type=" + type +
                 '}';
     }

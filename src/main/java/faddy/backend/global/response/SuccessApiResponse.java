@@ -17,6 +17,17 @@ public class SuccessApiResponse<T> extends ApiResponse {
         this.data = data;
     }
 
+    private SuccessApiResponse(int status, String message) {
+        super(status, message);
+        this.data = null;
+    }
+
+    private SuccessApiResponse(int status, String message, T data) {
+        super(status, message);
+        this.data = data;
+    }
+
+
     private SuccessApiResponse() {
         super(HttpStatus.OK.value(), "성공");
     }
@@ -30,4 +41,11 @@ public class SuccessApiResponse<T> extends ApiResponse {
         return ResponseEntity.ok(new SuccessApiResponse<>());
     }
 
+    public static ResponseEntity<SuccessApiResponse<Void>> of(HttpStatus status, String message) {
+        return ResponseEntity.ok(new SuccessApiResponse<>(status.value(), message));
+    }
+
+    public static <T> ResponseEntity<SuccessApiResponse<T>> of(HttpStatus status, String message, T data) {
+        return ResponseEntity.ok(new SuccessApiResponse<>(status.value(), message, data));
+    }
 }

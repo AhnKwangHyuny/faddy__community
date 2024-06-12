@@ -1,6 +1,5 @@
 package faddy.backend.hashTags.service;
 
-import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.domain.dto.request.HashTagRequestDto;
 import faddy.backend.hashTags.domain.dto.response.HashTagIdResponseDto;
 import faddy.backend.hashTags.repository.HashTagRepository;
@@ -15,10 +14,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class HashTagService {
+public class HashHashTaagService {
 
     @Autowired
-    private TagService tagService;
+    private HashTagService tagService;
 
     @Autowired
     private HashTagRepository hashTagRepository;

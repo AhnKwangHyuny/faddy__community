@@ -13,4 +13,5 @@ public class ServerProcessingException extends RuntimeException{
         this.message = exceptionCode.getMessage();
     }
 
+
 }

@@ -1,6 +1,6 @@
 package faddy.backend.hashTags.domain.dto.request;
 
-import faddy.backend.type.ContentType;
+import faddy.backend.hashTags.types.ContentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

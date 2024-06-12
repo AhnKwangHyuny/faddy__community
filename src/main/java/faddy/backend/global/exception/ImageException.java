@@ -18,4 +18,15 @@ public class ImageException extends RuntimeException {
         this.code = httpStatus.value();
         this.message = message;
     }
+
+    public ImageException(final int code , final String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public ImageException(final int code, final String message, final Throwable cause) {
+        super(message, cause);
+        this.code = code;
+        this.message = message;
+    }
 }

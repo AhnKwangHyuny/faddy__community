@@ -7,7 +7,7 @@ const HashTagBox = ({ labelHide = false, tags, setTags }) => {
     const tagifyInstance = useRef(null);
 
     useEffect(() => {
-        if (inputRef.current) {
+        if (inputRef.current && !tagifyInstance.current) {
             tagifyInstance.current = new Tagify(inputRef.current, {
                 maxTags: 5,
                 placeholder: "type something",
@@ -34,6 +34,16 @@ const HashTagBox = ({ labelHide = false, tags, setTags }) => {
                 tagifyInstance.current = null;
             }
         };
+    }, []);
+
+    useEffect(() => {
+        // Update Tagify tags only if there is a difference
+        if (tagifyInstance.current) {
+            const currentTags = tagifyInstance.current.value.map(tag => tag.value);
+            if (JSON.stringify(currentTags) !== JSON.stringify(tags)) {
+                tagifyInstance.current.loadOriginalValues(tags);
+            }
+        }
     }, [tags]);
 
     const handleTagChange = (e) => {
