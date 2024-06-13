@@ -9,7 +9,7 @@
            width: 100%;
 
            .comment-label {
-               margin-bottom: 20px;
+               margin-bottom: 25px;
 
                .label {
                    font-size: 14px;
@@ -25,7 +25,7 @@
            .comment-list {
                display: flex;
                flex-direction: column;
-               gap: 10px;
+               gap: 15px;
 
                .comment-wrapper {
                    .comment-card {
@@ -125,7 +125,6 @@
 
                                   .more {
                                       width : 13px;
-                                      font-size : 18px;
                                       font-weight: 500;
                                       color : #E6DFDF;
                                       cursor: pointer;
@@ -137,12 +136,12 @@
                        .reply-card {
                            margin-left: 10px;
                            padding-left: 10px;
-                           margin-bottom: 15px;
+                           margin-bottom: 20px;
+                           margin-top: 15px;
                            position: relative;
 
                            .reply-card__container {
                                display: flex;
-                               align-items: flex-start;
 
                                .avatar-container {
                                    margin-right: 8px;
@@ -187,7 +186,8 @@
                            }
 
                            .more-button {
-                                 align-self: flex-start;
+                                display: flex;
+                                 justify-content: flex-start;
                                  padding-top: 1px;
 
                                  .more {

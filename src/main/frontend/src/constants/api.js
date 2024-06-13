@@ -113,6 +113,7 @@ export const END_POINTS = {
   //StyleBoard
   CREATE_STYLE_BOARD : `${API_STYLE_BOARD}/create`,
   GET_STYLE_BOARD_DETAIL : (styleBoardId, category) => `${API_STYLE_BOARD}/detail/${styleBoardId}?category=${category}`,
+  CHECK_IS_STYLE_BOARD_OWNER : (styleBoardId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/check-owner`,
 
 };
 

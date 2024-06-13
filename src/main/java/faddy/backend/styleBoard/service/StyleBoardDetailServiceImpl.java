@@ -7,6 +7,7 @@ import faddy.backend.hashTags.service.HashTagService;
 import faddy.backend.image.service.ImageService;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
+import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardDetailResponseDTO;
 import faddy.backend.styleBoard.repository.StyleBoardJpaRepository;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
@@ -71,4 +72,21 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public CheckOwnerResponseDTO checkStyleBoardOwner(Long styleBoardId, String token) {
+        try {
+            // 로그인된 접근 유저 토큰을 통해 유저 entity 조회
+            User user = userService.findUserByToken(token);
+
+            // 조회된 유저 id를 통해 styleBoard user id와 동일한지 확인
+            boolean isOwner = styleBoardRepository.existsByIdAndUserId(styleBoardId, user.getId());
+
+            return new CheckOwnerResponseDTO(isOwner);
+
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new StyleBoardDataAccessException(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
+    }
 }

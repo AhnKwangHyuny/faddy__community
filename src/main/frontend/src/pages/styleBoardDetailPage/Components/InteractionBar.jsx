@@ -17,11 +17,11 @@ const InteractionBar = ({ initialLikes, shares }) => {
         <div className="interaction-bar">
             <div className="interaction-bar__item like" onClick={handleLike}>
                 <span className={`material-icons thumb-up ${liked ? 'liked' : ''}`}>thumb_up</span>
-                <span className="interaction-bar__count">{likes}</span>
+                <span className="interaction-bar__count">32</span>
             </div>
             <div className="interaction-bar__item share">
                 <span className="material-icons share-icon">share</span>
-                <span>공유하기</span>
+                <span className = "name">공유하기</span>
             </div>
         </div>
     );

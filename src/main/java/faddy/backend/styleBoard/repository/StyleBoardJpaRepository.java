@@ -17,4 +17,11 @@ public interface StyleBoardJpaRepository extends JpaRepository<StyleBoard, Long>
     @EntityGraph(attributePaths = {"author", "author.profile"})
     @Query("SELECT sb FROM StyleBoard sb WHERE sb.id = :styleBoardId")
     Optional<StyleBoard> findByIdWithAuthorAndProfile(@Param("styleBoardId") Long styleBoardId);
+
+    @Query("SELECT CASE " +
+            "WHEN COUNT(sb) > 0 " +
+            "THEN TRUE ELSE FALSE " +
+            "END FROM StyleBoard sb " +
+            "WHERE sb.id = :styleBoardId AND sb.author.id = :userId")
+    boolean existsByIdAndUserId(@Param("styleBoardId") Long styleBoardId, @Param("userId") Long userId);
 }
