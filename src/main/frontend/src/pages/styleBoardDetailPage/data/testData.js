@@ -5,7 +5,6 @@ export const testData = {
     content: `
         <h3>아 난 여기 모자를 어떤색으로 해야할 지 모르겠어.</h3>
         <p>이것은 <strong>테스트</strong> 본문입니다. <em>기울임꼴</em>과 <u>밑줄</u> 텍스트도 포함됩니다.</p>
-        <p>여기에 <a href="https://example.com">링크</a>가 있습니다.</p>
         <hr>
         <ul>
             <li>첫 번째 목록 항목</li>
@@ -13,7 +12,6 @@ export const testData = {
             <li>세 번째 목록 항목</li>
         </ul>
         <p>다음은 이미지입니다:</p>
-        <img src="https://via.placeholder.com/350" alt="테스트 이미지"/>
     `,
     tags: ["테스트", "게시글", "ReactQuill"],
     userProfile: {

@@ -13,7 +13,7 @@ const menuData = {
    { title: "#새 채팅방", type: 'modal' , modalType: 'CreateRoom' },
  ],
  '/styleBoards' : [
-    { title: "모든주제", src: "/styleBoards/detail", type: 'link' },
+    { title: "모든주제", src: "/styleBoards/detail/1?topic=question", type: 'link' },
     { title: "#질문", src: "/styleBoards/create", type: 'link' },
     { title: "#일상", src: "/styleBoards/create", type: 'link' },
     { title: "#패션", src: "/styleBoards/create", type: 'link' },

@@ -3,3 +3,4 @@ export function UserIdEntity(userId) {
         userId,
     };
 }
+

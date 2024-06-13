@@ -38,7 +38,7 @@ function App() {
                     <Route path="/talks/detail/:type/:id" element={<ProtectedRoute><StyleTalkRoom/></ProtectedRoute>}/>
                     <Route path="/styleBoards" element={<StyleBoardListPage/>} />
                     <Route path="/styleBoards/create" element={<ProtectedRoute><StyleBoardCreatePage/></ProtectedRoute>} />
-                    <Route path="/styleBoards/detail" element={<StyleBoardDetailPage/>} />
+                    <Route path="/styleBoards/detail/:id" element={<StyleBoardDetailPage/>} />
                     <Route path="/styleBoards/edit" element={<StyleBoardEditPage/>} />
                 </Routes>
             </Router>

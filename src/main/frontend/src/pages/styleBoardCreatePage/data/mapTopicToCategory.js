@@ -11,3 +11,7 @@ const topicToCategoryMap = {
 export const mapTopicToCategory = (topic) => {
     return topicToCategoryMap[topic] || null;
 };
+
+export const mapCategoryToTopic = (category) => {
+    return Object.keys(topicToCategoryMap).find(key => topicToCategoryMap[key] === category) || null;
+}

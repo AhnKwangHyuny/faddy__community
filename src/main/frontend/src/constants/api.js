@@ -112,7 +112,7 @@ export const END_POINTS = {
 
   //StyleBoard
   CREATE_STYLE_BOARD : `${API_STYLE_BOARD}/create`,
-  GET_STYLE_BOARD_DETAIL : (boardId, topic) => `${API_STYLE_BOARD}/${boardId}?topic=${topic}`,
+  GET_STYLE_BOARD_DETAIL : (styleBoardId, category) => `${API_STYLE_BOARD}/detail/${styleBoardId}?category=${category}`,
 
 };
 

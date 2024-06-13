@@ -1,6 +1,10 @@
 import React from 'react';
+import {getLevelInfo} from "data/LevelData";
 
 const MetaInfo = ({ userProfile, interaction }) => {
+
+    const levelInfo = getLevelInfo(userProfile.level);
+
     return (
         <div className="meta-info">
             <div className = "profile-image_container">
@@ -9,7 +13,9 @@ const MetaInfo = ({ userProfile, interaction }) => {
 
             <div className = "userProfile-interaction_container">
                 <div className="user-profile">
-                    <span className="user-level">{userProfile.level}</span>
+                    <span className="user-level" style={{ color: levelInfo.color }}>
+                        {levelInfo.level} {levelInfo.name}
+                    </span>
                     <span className="user-nickname">{userProfile.nickname}</span>
                     <span className="created-at">• {userProfile.createdAt}</span>
                 </div>

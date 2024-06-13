@@ -130,14 +130,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     //StyleException
     @ExceptionHandler(StyleBoardDataAccessException.class)
-    public ResponseEntity<? extends ApiResponse> handleStyleBoardDataAccessException(final ChatRoomException e) {
+    public ResponseEntity<? extends ApiResponse> handleStyleBoardDataAccessException(final StyleBoardDataAccessException e) {
         ExceptionLogger.logException(e);
 
         return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
     }
 
     @ExceptionHandler(StyleBoardNotFoundException.class)
-    public ResponseEntity<? extends ApiResponse> handleStyleBoardNotFoundException(final ChatRoomException e) {
+    public ResponseEntity<? extends ApiResponse> handleStyleBoardNotFoundException(final StyleBoardDataAccessException e) {
         ExceptionLogger.logException(e);
 
         return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
