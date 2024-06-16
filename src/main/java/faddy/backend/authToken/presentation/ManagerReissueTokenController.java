@@ -40,7 +40,7 @@ public class ManagerReissueTokenController {
 
         // 2. 서비스 단에서 토큰 재발급 로직 수행 (새 access , refresh 토큰 반환)
         AuthTokensResponse tokenResponse = managerReissueTokenService.reissueToken(refreshToken);
-
+        System.out.println("tokenResponse.toString() = " + tokenResponse.toString());
         return ResponseEntity.ok(tokenResponse);
     }
 }

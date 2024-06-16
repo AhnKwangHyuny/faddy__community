@@ -247,5 +247,10 @@ public class UserService {
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
     }
 
+    public User getUserWithProfileById(Long userId) {
+        return userRepository.findUserWithProfileByUserId(userId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
+    }
+
 }
 

@@ -1,5 +1,5 @@
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { mapTopicToCategory } from "pages/styleBoardCreatePage/data/mapTopicToCategory";
 import { validateData } from "pages/styleBoardDetailPage/services/validation";
 import { testData } from "pages/styleBoardDetailPage/data/testData";
@@ -10,24 +10,23 @@ import Header from "pages/styleBoardDetailPage/Components/Header";
 import TagList from "pages/styleBoardDetailPage/Components/TagList";
 import MetaInfo from "pages/styleBoardDetailPage/Components/MetaInfo";
 import ContentViewer from "pages/styleBoardDetailPage/Components/ContentViewer";
-import InputBox from "pages/styleBoardDetailPage/Components/InputBox";
 import InteractionBar from "pages/styleBoardDetailPage/Components/InteractionBar";
 import ContentDivider from "shared/ui/ContentDivider";
 import CommentSection from "pages/styleBoardDetailPage/Components/CommentSection";
 
-import getStyleBoardDetailData from "pages/styleBoardDetailPage/api/getStyleBoardDetailData";
-import checkIsOwner from "pages/styleBoardDetailPage/api/checkIsOwner";
+import { checkIsOwner, getStyleBoardDetailData } from "pages/styleBoardDetailPage/api/get";
+import { createStyleBoardComment, createStyleBoardReply } from "pages/styleBoardDetailPage/api/post";
 
 const StyleBoardDetailPage = () => {
     const navigate = useNavigate();
-
     const [searchParams] = useSearchParams();
     const { id } = useParams();
     const topic = searchParams.get('topic');
 
     const [styleBoardData, setStyleBoardData] = useState(null);
-    const [isOwner, setIsOwner] = useState(false); // 게시글 소유자 여부 확인
-    const [loading, setLoading] = useState(true); // 로딩 상태
+    const [isOwner, setIsOwner] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState([]);
 
     const category = mapTopicToCategory(topic).toLowerCase();
     const hashTagName = mapTopicToHashTagName(topic);
@@ -37,10 +36,8 @@ const StyleBoardDetailPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 게시글 소유자 여부 확인
                 const authentication = localStorage.getItem('ACCESS_TOKEN');
 
-                // 비로그인 사용자는 isOwner false로 설정
                 if (!authentication) {
                     setIsOwner(false);
                 } else {
@@ -48,11 +45,8 @@ const StyleBoardDetailPage = () => {
                     setIsOwner(ownerResponse.isOwner);
                 }
 
-                // 데이터 로드
                 const response = await getStyleBoardDetailData(id, category);
-//                 validateData(response);
 
-                // 데이터 변환
                 const userProfile = {
                     nickname: response.nickname,
                     level: response.userLevel,
@@ -64,9 +58,9 @@ const StyleBoardDetailPage = () => {
             } catch (error) {
                 console.error(DATA_LOAD_ERROR_MESSAGE, error);
                 alert(DATA_LOAD_ERROR_MESSAGE);
-                navigate(-1); // 전 페이지로 이동
+                navigate(-1);
             } finally {
-                setLoading(false); // 로딩 상태 종료
+                setLoading(false);
             }
         };
 
@@ -74,20 +68,39 @@ const StyleBoardDetailPage = () => {
     }, [id, category, navigate]);
 
     const handleBackButtonClick = () => {
-        navigate(-1); // 이전 페이지로 이동
+        navigate(-1);
     };
 
     const handleOptionButtonClick = () => {
-        // 옵션 버튼 클릭 시 동작 구현
         console.log("옵션 버튼 클릭됨");
     };
 
+    const handleAddComment = useCallback(async (comment, parentCommentId = null) => {
+        try {
+            if (parentCommentId) {
+                const response = await createStyleBoardReply(comment, parentCommentId);
+                setComments((prevComments) =>
+                    prevComments.map((c) =>
+                        c.id === parentCommentId
+                            ? { ...c, replyComments: [...(c.replyComments || []), response] }
+                            : c
+                    )
+                );
+            } else {
+                const response = await createStyleBoardComment(id, comment);
+                setComments((prevComments) => [ ...prevComments , response]);
+            }
+        } catch (error) {
+            console.error('댓글 추가에 실패했습니다.', error);
+        }
+    }, [id]);
+
     if (loading) {
-        return <div>로딩 중...</div>; // 로딩 상태 표시
+        return <div>로딩 중...</div>;
     }
 
     return (
-        <section style={{ minHeight: '1300px', marginBottom: '60px' }}>
+        <section style={{ minHeight: '1300px', marginBottom: '60px', position: 'relative' }}>
             {styleBoardData && (
                 <>
                     <Header
@@ -100,8 +113,7 @@ const StyleBoardDetailPage = () => {
                     <ContentViewer title={styleBoardData.title} content={styleBoardData.content} />
                     <InteractionBar likes={testData.interaction.likes} shares={testData.interaction.shares} />
                     <ContentDivider />
-                    <CommentSection comments={testData.comments} />
-                    <InputBox />
+                    <CommentSection comments={comments} onAddComment={handleAddComment} />
                 </>
             )}
         </section>

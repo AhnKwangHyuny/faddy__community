@@ -29,11 +29,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
 
-        private final ImageService imageService;
-        private final UserService userService;
-        private final HashTagService hashTagService;
+    private final ImageService imageService;
+    private final UserService userService;
+    private final HashTagService hashTagService;
 
-        private final StyleBoardJpaRepository styleBoardRepository;
+    private final StyleBoardJpaRepository styleBoardRepository;
+
+    private final String FAIL_GET_STYLE_BOARD = "[error] 스타일보드 조회에 실패했습니다.";
 
     @Override
     @Transactional(readOnly = true)
@@ -87,6 +89,17 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
         } catch (Exception e) {
             ExceptionLogger.logException(e);
             throw new StyleBoardDataAccessException(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public StyleBoard getStyleBoard(Long styleBoardId) {
+        try {
+            return styleBoardRepository.findById(styleBoardId)
+                    .orElseThrow(() -> new StyleBoardNotFoundException(styleBoardId));
+        } catch (Exception e) {
+            throw new StyleBoardDataAccessException(HttpStatus.BAD_REQUEST.value(), FAIL_GET_STYLE_BOARD);
         }
     }
 }

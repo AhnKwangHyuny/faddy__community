@@ -7,140 +7,100 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionResponse> handleBadRequestException(final BadRequestException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(e.getCode() , e.getMessage() ));
+    public ResponseEntity<? extends ApiResponse> handleBadRequestException(final BadRequestException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ExceptionResponse> handleNullPointerException(final NullPointerException e) {
-        log.warn(e.getMessage() , e);
-
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-
+    public ResponseEntity<? extends ApiResponse> handleNullPointerException(final NullPointerException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
-
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex) {
-        log.warn(ex.getMessage(), ex);
-
-        // 클라이언트에게 오류 메시지를 반환합니다.
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value() , ex.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleAllExceptions(Exception e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    // server error
     @ExceptionHandler(InternalServerException.class)
-    public ResponseEntity<ExceptionResponse> handleInternalServerException(final InternalServerException e) {
-        log.warn(e.getMessage() , e);
-
-        return ResponseEntity.badRequest()
-                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
-
+    public ResponseEntity<? extends ApiResponse> handleInternalServerException(final InternalServerException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ExceptionResponse> handleAuthenticationException(final AuthenticationException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleAuthenticationException(final AuthenticationException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     @ExceptionHandler(UnAuthorizationException.class)
-    public ResponseEntity<ExceptionResponse> handleUnAuthenticationException(final AuthenticationException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionResponse(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleUnAuthorizationException(final UnAuthorizationException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
-
-
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionResponse> handleAuthorizationException(final IllegalArgumentException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleIllegalArgumentException(final IllegalArgumentException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(JwtValidationException.class)
-    public ResponseEntity<ExceptionResponse> handleJwtValidationException(final JwtValidationException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleJwtValidationException(final JwtValidationException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(RefreshTokenSaveException.class)
-    public ResponseEntity<ExceptionResponse> handleJwtValidationException(final RefreshTokenSaveException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleRefreshTokenSaveException(final RefreshTokenSaveException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(SaveEntityException.class)
-    public ResponseEntity<ExceptionResponse> handleSaveEntityErrorException(final SaveEntityException e) {
-        log.warn(e.getMessage(), e);
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleSaveEntityException(final SaveEntityException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(SnapException.class)
-    public ResponseEntity<ExceptionResponse> handleSnapException(final SnapException e) {
-        log.error("SnapException occurred", e); // 스택 트레이스를 로그에 출력
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleSnapException(final SnapException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     @ExceptionHandler(FollowException.class)
-    public ResponseEntity<ExceptionResponse> handleFollowException(final SnapException e) {
-        log.error("FollowException occurred", e); // 스택 트레이스를 로그에 출력
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleFollowException(final FollowException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    //ChatRoomException
     @ExceptionHandler(ChatRoomException.class)
-    public ResponseEntity<ExceptionResponse> handleChatRoomException(final ChatRoomException e) {
-        log.error("ChatRoomException occurred", e); // 스택 트레이스를 로그에 출력
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+    public ResponseEntity<? extends ApiResponse> handleChatRoomException(final ChatRoomException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    //StyleException
     @ExceptionHandler(StyleBoardDataAccessException.class)
     public ResponseEntity<? extends ApiResponse> handleStyleBoardDataAccessException(final StyleBoardDataAccessException e) {
         ExceptionLogger.logException(e);
-
-        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(StyleBoardNotFoundException.class)
-    public ResponseEntity<? extends ApiResponse> handleStyleBoardNotFoundException(final StyleBoardDataAccessException e) {
+    public ResponseEntity<? extends ApiResponse> handleStyleBoardNotFoundException(final StyleBoardNotFoundException e) {
         ExceptionLogger.logException(e);
-
-        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST , e.getMessage());
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 }
-

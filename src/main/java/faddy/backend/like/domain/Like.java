@@ -3,7 +3,7 @@ package faddy.backend.like.domain;
 import faddy.backend.global.BaseEntity;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.styleBoard.domain.StyleBoard;
-import faddy.backend.styleBoard.styleBoardComment.domain.StyleBoardComment;
+import faddy.backend.styleBoardComment.domain.StyleBoardComment;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Where(clause = "deleted_at is null")
 @Table(name = "likes")
@@ -45,6 +45,10 @@ public class Like extends BaseEntity {
     @JoinColumn(name = "style_board_id")
     private StyleBoard styleBoard;
 
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "style_board_comment_id")
+    private StyleBoardComment styleBoardComment;
+
     public Like(User user, Snap snap) {
         this.user = user;
         this.snap = snap;
@@ -62,4 +66,20 @@ public class Like extends BaseEntity {
         }
     }
 
+    // 연관관계 메소드
+    public void associateSnap(Snap snap) {
+        this.snap = snap;
+    }
+
+    public void associateStyleBoard(StyleBoard styleBoard) {
+        this.styleBoard = styleBoard;
+    }
+
+    public void associateUser(User user) {
+        this.user = user;
+    }
+
+    public void associateStyleBoardComment(StyleBoardComment comment) {
+        this.styleBoardComment = comment;
+    }
 }

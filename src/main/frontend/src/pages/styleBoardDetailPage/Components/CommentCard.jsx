@@ -1,35 +1,27 @@
 import React, { useState } from 'react';
 import getLevelData from "../../../utils/user/getLevelData";
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import {mapToComment} from "pages/styleBoardDetailPage/utils/responseMapper";
 
-const CommentCard = ({ comment, onReplyClick, onReplySubmit, isReplyOpen }) => {
-    const [replyContent, setReplyContent] = useState('');
+const CommentCard = ({ comment, onReplyClick }) => {
 
-    const { color } = getLevelData(comment.user.level);
+    const adComment = mapToComment(comment);
+    const { color } = getLevelData(adComment.author.level);
     const levelColor = color ? `#${color}` : '#000000';
-
-    const handleReplyChange = (e) => {
-        setReplyContent(e.target.value);
-    };
-
-    const handleSubmitReply = (e) => {
-        e.preventDefault();
-        onReplySubmit(replyContent);
-        setReplyContent('');
-    };
 
     return (
         <div className="comment-card">
             <div className="comment-card__container">
                 <div className="avatar-container">
-                    <img className="avatar" src={comment.user.imageUrl} alt={comment.username} />
+                    <img className="avatar" src={adComment.author.profileImageUrl} alt={adComment.author.nickname} />
                 </div>
                 <div className="comment-details">
                     <div className="profile-info">
-                        <span className="level" style={{ color: levelColor }}>{comment.user.level}</span>
-                        <span className="username">{comment.user.username}</span>
-                        <span className="timestamp"> · {comment.createdAt}</span>
+                        <span className="level" style={{ color: levelColor }}>{adComment.author.level}</span>
+                        <span className="username">{adComment.author.nickname}</span>
+                        <span className="timestamp"> · {adComment.createdAt}</span>
                     </div>
-                    <p className="comment-content">{comment.content}</p>
+                    <p className="comment-content">{adComment.content}</p>
                     <div className="comment-meta">
                         <div className="reply-button" onClick={onReplyClick}>
                             <span>답글</span>
@@ -54,21 +46,6 @@ const CommentCard = ({ comment, onReplyClick, onReplySubmit, isReplyOpen }) => {
                     ))}
                 </ul>
             )}
-
-            {isReplyOpen && (
-                <div className="reply-input-wrapper">
-                    <input
-                        className="reply-input"
-                        type="text"
-                        placeholder="답글을 작성하세요..."
-                        value={replyContent}
-                        onChange={handleReplyChange}
-                    />
-                    <button className="reply-submit-button" onClick={handleSubmitReply} disabled={!replyContent}>
-                        등록
-                    </button>
-                </div>
-            )}
         </div>
     );
 };
@@ -91,7 +68,6 @@ const ReplyCard = ({ comment }) => {
                     </div>
                     <p className="comment-content">{comment.content}</p>
                 </div>
-
                 <div className="more-button">
                     <span className="material-icons more">more_vert</span>
                 </div>

@@ -26,80 +26,80 @@ export const testData = {
     }
 };
 
-
-export const comments = [
-    {
-      id: 1,
-      user: {
-        level: "Lv4",
-        imageUrl: "/default_profile.jpg",
-        username: '사용자1',
-      },
-      content: '멋진 사진이네요! 배경도 정말 예뻐요.',
-      createdAt: '19시간 전',
-      like: {
-        count: 3,
-        isLike: false,
-      },
-      replyComments: [
-        {
-          id: 101,
-          user: {
-            level: "Lv2",
-            imageUrl: "/default_profile.jpg",
-            username: '사용자2',
-          },
-          content: '감사합니다! 저도 이 사진이 마음에 듭니다.',
-          createdAt: '15시간 전',
-          like: {
-            count: 1,
-            isLike: true,
-          },
-        },
-        {
-          id: 102,
-          user: {
-            level: "Lv3",
-            imageUrl: "/default_profile.jpg",
-            username: '사용자3',
-          },
-          content: '저도 이 사진 정말 좋아요. 다음에 또 올려주세요!',
-          createdAt: '12시간 전',
-          like: {
-            count: 2,
-            isLike: false,
-          },
-        },
-      ],
-    },
-    {
-      id: 2,
-      user: {
-        level: "Lv3",
-        imageUrl: "/default_profile.jpg",
-        username: '사용자2',
-      },
-      content: '옷도 잘 어울려요!',
-      createdAt: '20시간 전',
-      like: {
-        count: 0,
-        isLike: false,
-      },
-    },
-    {
-      id: 3,
-      user: {
-        level: "Lv2",
-        imageUrl: "/default_profile.jpg",
-        username: '사용자3',
-      },
-      content: '저도 이런 사진 찍어보고 싶어요!',
-      createdAt: '21시간 전',
-      like: {
-        count: 1,
-        isLike: false,
-      },
-    },
-];
-
+//
+//export const testComments = [
+//    {
+//      id: 1,
+//      author: {
+//        level: "Lv4",
+//        profileImageUrl: "/default_profile.jpg",
+//        username: '사용자1',
+//      },
+//      content: '멋진 사진이네요! 배경도 정말 예뻐요.',
+//      createdAt: '19시간 전',
+//      like: {
+//        count: 3,
+//        isLike: false,
+//      },
+//      replyComments: [
+//        {
+//          id: 101,
+//          author: {
+//            level: "Lv2",
+//            profileImageUrl: "/default_profile.jpg",
+//            username: '사용자2',
+//          },
+//          content: '감사합니다! 저도 이 사진이 마음에 듭니다.',
+//          createdAt: '15시간 전',
+//          like: {
+//            count: 1,
+//            isLike: true,
+//          },
+//        },
+//        {
+//          id: 102,
+//          author: {
+//            level: "Lv3",
+//            profileImageUrl: "/default_profile.jpg",
+//            username: '사용자3',
+//          },
+//          content: '저도 이 사진 정말 좋아요. 다음에 또 올려주세요!',
+//          createdAt: '12시간 전',
+//          like: {
+//            count: 2,
+//            isLike: false,
+//          },
+//        },
+//      ],
+//    },
+//    {
+//      id: 2,
+//      author: {
+//        level: "Lv3",
+//        profileImageUrl: "/default_profile.jpg",
+//        username: '사용자2',
+//      },
+//      content: '옷도 잘 어울려요!',
+//      createdAt: '20시간 전',
+//      like: {
+//        count: 0,
+//        isLike: false,
+//      },
+//    },
+//    {
+//      id: 3,
+//      author: {
+//        level: "Lv2",
+//        profileImageUrl: "/default_profile.jpg",
+//        username: '사용자3',
+//      },
+//      content: '저도 이런 사진 찍어보고 싶어요!',
+//      createdAt: '21시간 전',
+//      like: {
+//        count: 1,
+//        isLike: false,
+//      },
+//    },
+//];
+//
 

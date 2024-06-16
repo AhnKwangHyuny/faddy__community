@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const InputBox = () => {
+const InputBox = ({ parentCommentId = null, onAddComment, placeholder }) => {
+    const { id } = useParams();
     const [comment, setComment] = useState('');
-
-    const handleSubmitComment = () => {
-        // 댓글 처리 로직 추가
-    };
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
+    };
+
+    const handleSubmit = () => {
+        onAddComment(comment, parentCommentId);
+        setComment('');
     };
 
     return (
@@ -17,7 +20,7 @@ const InputBox = () => {
                 <div className="emoticon-box">
                     <div className="emoticon-icon">
                         <span className="material-icons button-icon">
-                          sentiment_satisfied_alt
+                            sentiment_satisfied_alt
                         </span>
                     </div>
                 </div>
@@ -25,15 +28,19 @@ const InputBox = () => {
                     <input
                         type="text"
                         className="text-form"
-                        placeholder="자유롭게 댓글 달아주세요."
+                        placeholder={placeholder}
                         value={comment}
                         onChange={handleCommentChange}
                     />
                 </div>
                 <div className="submit-comment">
-                    <div className="submit-button" onClick={handleSubmitComment}>
+                    <button
+                        className="submit-button"
+                        onClick={handleSubmit}
+                        disabled={!comment.trim()}
+                    >
                         <span className="material-icons">send</span>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>

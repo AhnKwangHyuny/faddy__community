@@ -28,7 +28,6 @@ public class StyleBoardController {
     private static final String CREATE_SUCCESS_MESSAGE = "[create] 게시글이 성공적으로 등록되었습니다.";
     private static final String CREATE_FAIL_MESSAGE = "[create] 게시글 등록에 실패했습니다.";
     private static final String DETAIL_SUCCESS_MESSAGE = "[detail] 게시글 상세 조회 성공";
-
     private static final String CHECK_OWNER_SUCCESS_MESSAGE = "[check] 작성자 확인 성공";
     private static final String CHECK_OWNER_FAIL_MESSAGE = "[check] 작성자 확인 실패";
 

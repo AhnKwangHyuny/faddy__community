@@ -1,5 +1,6 @@
 package faddy.backend.styleBoard.service.useCase;
 
+import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardDetailResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,5 +15,13 @@ public interface StyleBoardDetailService {
      *  @return CheckOwnerResponseDTO {isOwner: boolean}
      * */
     CheckOwnerResponseDTO checkStyleBoardOwner(Long styleBoardId, String token);
+
+
+    /**
+     *  styleBoard 조회 후 반환
+     *  @param styleBoardId
+     *  @return styleBoard styleBoard 엔티티
+     * */
+    StyleBoard getStyleBoard(Long styleBoardId);
 
 }

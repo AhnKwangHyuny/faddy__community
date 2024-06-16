@@ -1,4 +1,4 @@
-package faddy.backend.styleBoard.styleBoardComment.domain;
+package faddy.backend.styleBoardComment.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,13 +16,15 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QStyleBoardComment extends EntityPathBase<StyleBoardComment> {
 
-    private static final long serialVersionUID = -1481767405L;
+    private static final long serialVersionUID = -8333106L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QStyleBoardComment styleBoardComment = new QStyleBoardComment("styleBoardComment");
 
     public final faddy.backend.global.QBaseEntity _super = new faddy.backend.global.QBaseEntity(this);
+
+    public final faddy.backend.user.domain.QUser author;
 
     public final ListPath<StyleBoardComment, QStyleBoardComment> children = this.<StyleBoardComment, QStyleBoardComment>createList("children", StyleBoardComment.class, QStyleBoardComment.class, PathInits.DIRECT2);
 
@@ -44,8 +46,6 @@ public class QStyleBoardComment extends EntityPathBase<StyleBoardComment> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updated_at = _super.updated_at;
 
-    public final faddy.backend.user.domain.QUser user;
-
     public QStyleBoardComment(String variable) {
         this(StyleBoardComment.class, forVariable(variable), INITS);
     }
@@ -64,9 +64,9 @@ public class QStyleBoardComment extends EntityPathBase<StyleBoardComment> {
 
     public QStyleBoardComment(Class<? extends StyleBoardComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.author = inits.isInitialized("author") ? new faddy.backend.user.domain.QUser(forProperty("author"), inits.get("author")) : null;
         this.parent = inits.isInitialized("parent") ? new QStyleBoardComment(forProperty("parent"), inits.get("parent")) : null;
         this.styleBoard = inits.isInitialized("styleBoard") ? new faddy.backend.styleBoard.domain.QStyleBoard(forProperty("styleBoard"), inits.get("styleBoard")) : null;
-        this.user = inits.isInitialized("user") ? new faddy.backend.user.domain.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

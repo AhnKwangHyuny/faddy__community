@@ -1,9 +1,10 @@
-package faddy.backend.styleBoard.styleBoardComment.domain;
+package faddy.backend.styleBoardComment.domain;
 
 import faddy.backend.global.BaseEntity;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ public class StyleBoardComment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User author;
 
     @Lob
     @Column(name = "content", nullable = false , columnDefinition = "TEXT")
@@ -52,9 +53,21 @@ public class StyleBoardComment extends BaseEntity {
     // 댓글 생성자
     public StyleBoardComment(StyleBoard styleBoard, User user, String content) {
         this.styleBoard = styleBoard;
-        this.user = user;
+        this.author = user;
         this.content = content;
     }
+
+    @Builder
+    public StyleBoardComment(StyleBoard styleBoard, User author, String content, StyleBoardComment parent) {
+        this.styleBoard = styleBoard;
+        this.author = author;
+        this.content = content;
+        if (parent != null) {
+            this.parent = parent;
+        }
+    }
+
+
 
     // 대댓글 생성 메서드
     public static StyleBoardComment createReply(StyleBoardComment parent, User user, String content) {
@@ -81,15 +94,5 @@ public class StyleBoardComment extends BaseEntity {
         this.content = "삭제된 댓글입니다.";
     }
 
-    // 좋아요 추가 메서드
-    public void addLike() {
-        this.likes++;
-    }
 
-    // 좋아요 취소 메서드
-    public void removeLike() {
-        if (this.likes > 0) {
-            this.likes--;
-        }
-    }
 }

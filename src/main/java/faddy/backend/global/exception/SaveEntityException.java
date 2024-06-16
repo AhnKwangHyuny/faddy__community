@@ -2,6 +2,7 @@ package faddy.backend.global.exception;
 
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class SaveEntityException extends RuntimeException {
@@ -17,6 +18,11 @@ public class SaveEntityException extends RuntimeException {
 
     public SaveEntityException(final int code , final String message) {
         this.code = code;
+        this.message = message;
+    }
+
+    public SaveEntityException(HttpStatus httpStatus , final String message) {
+        this.code = httpStatus.value();
         this.message = message;
     }
 

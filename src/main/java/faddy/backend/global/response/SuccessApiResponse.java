@@ -27,7 +27,6 @@ public class SuccessApiResponse<T> extends ApiResponse {
         this.data = data;
     }
 
-
     private SuccessApiResponse() {
         super(HttpStatus.OK.value(), "성공");
     }

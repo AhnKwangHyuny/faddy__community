@@ -111,10 +111,14 @@ export const END_POINTS = {
   POST_CHAT : (roomId) => `${API_CHAT}/${roomId}`,
 
   //StyleBoard
+
+  //StyleBoard
   CREATE_STYLE_BOARD : `${API_STYLE_BOARD}/create`,
   GET_STYLE_BOARD_DETAIL : (styleBoardId, category) => `${API_STYLE_BOARD}/detail/${styleBoardId}?category=${category}`,
   CHECK_IS_STYLE_BOARD_OWNER : (styleBoardId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/check-owner`,
 
+  CREATE_STYLE_BOARD_COMMENT : (styleBoardId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/comments`,
+  CREATE_STYLE_BOARD_COMMENT_REPLY : (styleBoardId, commentId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/comments/${commentId}/replies`,
 };
 
 
