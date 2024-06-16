@@ -16,9 +16,13 @@ export const createStyleBoardComment = async (styleBoardId, content) => {
     }
 }
 
-export const createStyleBoardReply = async (styleBoardId, commentId, reply) => {
+export const createStyleBoardReply = async (styleBoardId, parentId, content) => {
     try {
-        const response = await userRequestInstance.post(END_POINTS.CREATE_STYLE_BOARD_COMMENT_REPLY(styleBoardId, commentId), { reply });
+        const data = {
+            content,
+        }
+
+        const response = await userRequestInstance.post(END_POINTS.CREATE_STYLE_BOARD_COMMENT_REPLY(styleBoardId, parentId), data);
         return response.data.data;
     } catch (error) {
         console.error('Error creating style board reply:', error);

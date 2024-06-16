@@ -1,4 +1,4 @@
-package faddy.backend.styleBoardComment.dto.response;
+package faddy.backend.styleBoardComment.dto.response.create;
 
 import lombok.Builder;
 import lombok.Data;

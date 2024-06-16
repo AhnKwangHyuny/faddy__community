@@ -1,12 +1,8 @@
 package faddy.backend.styleBoardComment.utils;
 
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
-import faddy.backend.styleBoardComment.dto.response.StyleBoardCommentCreateResponseDTO;
-import faddy.backend.styleBoardComment.dto.response.UserDTO;
-
-
-import java.util.List;
-import java.util.stream.Collectors;
+import faddy.backend.styleBoardComment.dto.response.create.StyleBoardCommentCreateResponseDTO;
+import faddy.backend.styleBoardComment.dto.response.create.UserDTO;
 
 public class StyleBoardCommentMapper {
 

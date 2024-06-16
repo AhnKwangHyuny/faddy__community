@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "style_board_comments")
+@SQLDelete(sql = "UPDATE style SET status = 'DELETED' WHERE id = ?") // 논리 삭제 채택
 public class StyleBoardComment extends BaseEntity {
 
     @Id
@@ -70,11 +73,9 @@ public class StyleBoardComment extends BaseEntity {
 
 
     // 대댓글 생성 메서드
-    public static StyleBoardComment createReply(StyleBoardComment parent, User user, String content) {
-        if (parent.getParent() != null) {
-            throw new IllegalArgumentException("대댓글에는 대댓글을 달 수 없습니다.");
-        }
-        StyleBoardComment reply = new StyleBoardComment(parent.getStyleBoard(), user, content);
+    public static StyleBoardComment createReply(StyleBoardComment parent, User author, String content , StyleBoard styleBoard) {
+
+        StyleBoardComment reply = new StyleBoardComment(parent.getStyleBoard(), author, content);
         reply.parent = parent;
         parent.addChild(reply);
         return reply;
@@ -87,6 +88,7 @@ public class StyleBoardComment extends BaseEntity {
         }
         this.children.add(child);
     }
+
 
     // 댓글 삭제 메서드
     public void delete() {

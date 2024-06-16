@@ -1,13 +1,15 @@
 package faddy.backend.styleBoardComment.service;
 
+import faddy.backend.global.exception.CommentNotFoundException;
 import faddy.backend.global.exception.SaveEntityException;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
 import faddy.backend.styleBoardComment.dto.request.StyleBoardCommentCreateRequestDTO;
-import faddy.backend.styleBoardComment.dto.response.StyleBoardCommentCreateResponseDTO;
+import faddy.backend.styleBoardComment.dto.response.create.StyleBoardCommentCreateResponseDTO;
+import faddy.backend.styleBoardComment.dto.response.find.StyleBoardReplyResponseDTO;
 import faddy.backend.styleBoardComment.repository.StyleBoardCommentJpaRepository;
-import faddy.backend.styleBoardComment.service.useCase.CreateStyleBoardCommentCreateService;
+import faddy.backend.styleBoardComment.service.useCase.CreateStyleBoardCommentService;
 import faddy.backend.styleBoardComment.utils.StyleBoardCommentMapper;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.service.UserService;
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class CreateStyleBoardCommentCreateServiceImpl implements CreateStyleBoardCommentCreateService {
+public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardCommentService {
 
     private final StyleBoardCommentJpaRepository styleBoardCommentRepository;
 
@@ -30,6 +32,9 @@ public class CreateStyleBoardCommentCreateServiceImpl implements CreateStyleBoar
     private final StyleBoardDetailService styleBoardDetailService;
     private final UserService userService;
 
+
+    //Error message
+    private static final String COMMENT_NOT_FOUND = "댓글이 존재하지 않습니다.";
 
     @Override
     public StyleBoardCommentCreateResponseDTO create(StyleBoardCommentCreateRequestDTO commentDto ,
@@ -56,7 +61,40 @@ public class CreateStyleBoardCommentCreateServiceImpl implements CreateStyleBoar
             return StyleBoardCommentMapper.toDto(savedComment);
 
         } catch (Exception e) {
-            throw new SaveEntityException(HttpStatus.INTERNAL_SERVER_ERROR , e.getMessage());
+            throw new SaveEntityException(HttpStatus.BAD_REQUEST , e.getMessage());
+        }
+    }
+
+
+
+    /**
+    * @title 대댓글 생성 전 댓글 밍 styleBoard 데이터 유효성 검증 (동시성 , 정합성)
+    * */
+    @Override
+    @Transactional
+    public StyleBoardReplyResponseDTO createReply(StyleBoardCommentCreateRequestDTO commentDto, HttpServletRequest request, Long styleBoardId, Long parentId) {
+        try {
+            // styleBoard 조회
+            StyleBoard styleBoard = styleBoardDetailService.getStyleBoard(styleBoardId);
+
+            //유저 조회
+            String token = request.getHeader("Authorization");
+            User author = userService.findUserByToken(token);
+
+            // 부모 댓글 조회
+            StyleBoardComment parent = styleBoardCommentRepository.findById(parentId)
+                    .orElseThrow(() -> new CommentNotFoundException(HttpStatus.BAD_REQUEST.value(), COMMENT_NOT_FOUND));
+
+            // 대댓글 생성 [연관관계 설정]
+            StyleBoardComment reply = StyleBoardComment.createReply(parent, author, commentDto.getContent(), styleBoard);
+
+            // 대댓글 저장
+            StyleBoardComment savedReply = styleBoardCommentRepository.save(reply);
+
+            return StyleBoardReplyResponseDTO.from(savedReply);
+
+        } catch (Exception e) {
+            throw new SaveEntityException(HttpStatus.BAD_REQUEST , e.getMessage());
         }
     }
 }

@@ -103,4 +103,10 @@ public class GlobalExceptionHandler {
         ExceptionLogger.logException(e);
         return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<? extends ApiResponse> handleCommentNotFoundException(final CommentNotFoundException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
 }

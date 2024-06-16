@@ -47,7 +47,7 @@ const CommentSection = memo(({ comments, onAddComment }) => {
                         ? <InputBox
                             parentCommentId={replyingTo}
                             onAddComment={onAddComment}
-                            placeholder={`@${comments.find((c) => c.id === replyingTo)?.user.username} 님에게 답글을 남겨주세요.`}
+                            placeholder={`@${comments.find((c) => c.id === replyingTo)?.author.nickname} 님에게 답글을 남겨주세요.`}
                           />
                         : <InputBox
                             onAddComment={onAddComment}

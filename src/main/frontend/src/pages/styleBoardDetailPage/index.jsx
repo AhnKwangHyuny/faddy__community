@@ -14,7 +14,7 @@ import InteractionBar from "pages/styleBoardDetailPage/Components/InteractionBar
 import ContentDivider from "shared/ui/ContentDivider";
 import CommentSection from "pages/styleBoardDetailPage/Components/CommentSection";
 
-import { checkIsOwner, getStyleBoardDetailData } from "pages/styleBoardDetailPage/api/get";
+import { checkIsOwner, getStyleBoardDetailData , getStyleBoardComments} from "pages/styleBoardDetailPage/api/get";
 import { createStyleBoardComment, createStyleBoardReply } from "pages/styleBoardDetailPage/api/post";
 
 const StyleBoardDetailPage = () => {
@@ -34,6 +34,7 @@ const StyleBoardDetailPage = () => {
     const DATA_LOAD_ERROR_MESSAGE = "[error] 데이터를 불러오는데 실패했습니다.";
 
     useEffect(() => {
+        // styleBoard Detail Data 불러오기
         const fetchData = async () => {
             try {
                 const authentication = localStorage.getItem('ACCESS_TOKEN');
@@ -64,7 +65,20 @@ const StyleBoardDetailPage = () => {
             }
         };
 
+        // styleBoard Comment Data 불러오기
+        const fetchComments = async () => {
+            try {
+                const response = await getStyleBoardComments(id);
+                setComments(response);
+            } catch (error) {
+                console.error(DATA_LOAD_ERROR_MESSAGE, error);
+                alert(DATA_LOAD_ERROR_MESSAGE);
+                navigate(-1);
+            }
+        };
+
         fetchData();
+        fetchComments();
     }, [id, category, navigate]);
 
     const handleBackButtonClick = () => {
@@ -75,14 +89,15 @@ const StyleBoardDetailPage = () => {
         console.log("옵션 버튼 클릭됨");
     };
 
-    const handleAddComment = useCallback(async (comment, parentCommentId = null) => {
+    const handleAddComment = useCallback(async (comment, parentId = null) => {
         try {
-            if (parentCommentId) {
-                const response = await createStyleBoardReply(comment, parentCommentId);
+            if (parentId) {
+                const response = await createStyleBoardReply(id, parentId, comment);
+
                 setComments((prevComments) =>
                     prevComments.map((c) =>
-                        c.id === parentCommentId
-                            ? { ...c, replyComments: [...(c.replyComments || []), response] }
+                        c.id === parentId
+                            ? { ...c, replies: [...(c.replies || []), response] }
                             : c
                     )
                 );
