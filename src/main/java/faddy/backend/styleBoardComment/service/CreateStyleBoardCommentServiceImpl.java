@@ -2,6 +2,8 @@ package faddy.backend.styleBoardComment.service;
 
 import faddy.backend.global.exception.CommentNotFoundException;
 import faddy.backend.global.exception.SaveEntityException;
+import faddy.backend.like.service.useCase.LikeRedisService;
+import faddy.backend.like.type.ContentType;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
@@ -28,10 +30,10 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
 
     private final StyleBoardCommentJpaRepository styleBoardCommentRepository;
 
-
     private final StyleBoardDetailService styleBoardDetailService;
     private final UserService userService;
 
+    private final LikeRedisService likeRedisService;
 
     //Error message
     private static final String COMMENT_NOT_FOUND = "댓글이 존재하지 않습니다.";
@@ -54,8 +56,12 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
                     .author(author)
                     .build();
 
+
             //comment 저장
             StyleBoardComment savedComment = styleBoardCommentRepository.save(comment);
+
+            //like 초기화
+            likeRedisService.initializeLikes(savedComment.getId(), ContentType.STYLE_BOARD_COMMENT);
 
             // comment to response
             return StyleBoardCommentMapper.toDto(savedComment);
@@ -91,7 +97,10 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
             // 대댓글 저장
             StyleBoardComment savedReply = styleBoardCommentRepository.save(reply);
 
-            return StyleBoardReplyResponseDTO.from(savedReply);
+            //like 초기화
+            likeRedisService.initializeLikes(savedReply.getId(), ContentType.STYLE_BOARD_COMMENT);
+
+            return StyleBoardReplyResponseDTO.from(savedReply , 0);
 
         } catch (Exception e) {
             throw new SaveEntityException(HttpStatus.BAD_REQUEST , e.getMessage());

@@ -6,7 +6,6 @@ import faddy.backend.styleBoardComment.dto.response.create.UserDTO;
 
 public class StyleBoardCommentMapper {
 
-    // savedComment to StyleBoardCommentCreateResponseDTO
     public static StyleBoardCommentCreateResponseDTO toDto(StyleBoardComment comment) {
         if (comment == null) {
             return null;
@@ -23,6 +22,7 @@ public class StyleBoardCommentMapper {
                 .author(user)
                 .content(comment.getContent())
                 .createdAt(comment.getCreated_at())
+                .likeCount(0)
                 .build();
     }
 

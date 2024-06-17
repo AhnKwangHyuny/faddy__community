@@ -11,6 +11,7 @@ export const mapToComment = (comment) => {
            level: comment.author.level,
            profileImageUrl: comment.author.profileImageUrl,
        },
+       likeCount : comment.likeCount,
        content: comment.content,
        parentId: comment.parentId || null,
        replies: comment.replies || null,

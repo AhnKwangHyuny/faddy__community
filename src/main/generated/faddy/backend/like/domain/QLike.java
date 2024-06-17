@@ -24,10 +24,10 @@ public class QLike extends EntityPathBase<Like> {
 
     public final faddy.backend.global.QBaseEntity _super = new faddy.backend.global.QBaseEntity(this);
 
+    public final EnumPath<faddy.backend.like.type.ContentType> contentType = createEnum("contentType", faddy.backend.like.type.ContentType.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> created_at = _super.created_at;
-
-    public final DateTimePath<java.time.LocalDateTime> deletedAt = createDateTime("deletedAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

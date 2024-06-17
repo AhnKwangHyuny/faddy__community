@@ -2,7 +2,7 @@ package faddy.backend.like.presentation;
 
 import faddy.backend.api.Dto.ResponseDto;
 import faddy.backend.global.Utils.EncryptionUtils;
-import faddy.backend.like.service.LikeService;
+import faddy.backend.like.service.useCase.LikeService;
 import faddy.backend.user.service.UserIdEncryptionUtil;
 import faddy.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -83,4 +83,8 @@ public class LikeController {
         }
         return userEncryptionUtil.decryptUserId(encryptedUserId);
     }
+
+
+
+
 }

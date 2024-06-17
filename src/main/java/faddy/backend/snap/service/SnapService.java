@@ -111,6 +111,14 @@ public class SnapService {
     }
 
 
+    @Transactional(readOnly = true)
+    public Snap getSnapById(Long snapId) {
+        return snapRepository.findById(snapId)
+                .orElseThrow(() -> new SnapException(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "해당 스냅이 존재하지 않습니다. [snapId : " + snapId + "]"
+                ));
+    }
 
 }
 

@@ -26,7 +26,9 @@ const CommentCard = ({ comment, onReplyClick }) => {
                         </div>
                         <div className="like-button">
                             <span className="material-icons like">thumb_up_off_alt</span>
-                            <span className="count">10</span>
+                           {adComment.likeCount > 0 && (
+                             <span className="count">{adComment.likeCount}</span>
+                           )}
                         </div>
                     </div>
                 </div>
@@ -53,19 +55,28 @@ const ReplyCard = ({ reply }) => {
     const levelInfo = getLevelInfo(adReply.author.level);
 
     return (
-        <div className="reply-card">
+         <div className="reply-card">
             <div className="reply-card__container">
                 <div className="avatar-container">
                     <img className="avatar" src={adReply.author.profileImageUrl} alt={adReply.nickname} />
                 </div>
                 <div className="comment-details">
                     <div className="profile-info">
-                        <span className="level" style={{ color: levelInfo.color} }>{levelInfo.level} {levelInfo.name}</span>
+                        <span className="level" style={{ color: levelInfo.color }}>{levelInfo.level} {levelInfo.name}</span>
                         <span className="username">{adReply.author.nickname}</span>
                         <span className="timestamp"> · {adReply.created_at}</span>
                     </div>
                     <p className="comment-content">{adReply.content}</p>
+                     <div className="reply-meta">
+                        <div className="like-button-reply">
+                            <span className="material-icons like-rp">thumb_up_off_alt</span>
+                            {adReply.likeCount > 0 && (
+                                <span className="count-rp">{adReply.likeCount}</span>
+                            )}
+                        </div>
+                    </div>
                 </div>
+
                 <div className="more-button">
                     <span className="material-icons more">more_vert</span>
                 </div>

@@ -1,7 +1,7 @@
 package faddy.backend.global.scheduler;
 
 import faddy.backend.like.repository.LikeJpaRepository;
-import faddy.backend.like.service.LikeService;
+import faddy.backend.like.service.useCase.LikeService;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.repository.SnapRepository;
 import faddy.backend.user.domain.User;

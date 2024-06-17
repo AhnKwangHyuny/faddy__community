@@ -1,6 +1,7 @@
 package faddy.backend.like.domain;
 
 import faddy.backend.global.BaseEntity;
+import faddy.backend.like.type.ContentType;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
@@ -22,7 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Where(clause = "deleted_at is null")
 @Table(name = "likes")
 public class Like extends BaseEntity {
 
@@ -33,9 +33,6 @@ public class Like extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt = null;
 
     @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     @JoinColumn(name = "snap_id")
@@ -49,22 +46,42 @@ public class Like extends BaseEntity {
     @JoinColumn(name = "style_board_comment_id")
     private StyleBoardComment styleBoardComment;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "content_type")
+    private ContentType contentType;
+
     public Like(User user, Snap snap) {
         this.user = user;
         this.snap = snap;
     }
 
-
-    /**
-     *  좋아요 복귀 메소드
-     * */
-    public void recoverLike(Like likes) {
-
-        if(this.id == likes.getId()) {
-            this.deletedAt = null ;
-
-        }
+    // 생성 메소드
+    public static Like createLikeForSnap(User user, Snap snap) {
+        Like like = new Like();
+        like.user = user;
+        like.snap = snap;
+        like.contentType = ContentType.SNAP;
+        return like;
     }
+
+    public static Like createLikeForStyleBoard(User user, StyleBoard styleBoard) {
+        Like like = new Like();
+        like.user = user;
+        like.styleBoard = styleBoard;
+        like.contentType = ContentType.STYLE_BOARD;
+        return like;
+    }
+
+    public static Like createLikeForStyleBoardComment(User user, StyleBoardComment styleBoardComment) {
+        Like like = new Like();
+        like.user = user;
+        like.styleBoardComment = styleBoardComment;
+        like.contentType = ContentType.STYLE_BOARD_COMMENT;
+        return like;
+    }
+
+
+
 
     // 연관관계 메소드
     public void associateSnap(Snap snap) {

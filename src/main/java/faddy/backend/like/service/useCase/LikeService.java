@@ -1,4 +1,4 @@
-package faddy.backend.like.service;
+package faddy.backend.like.service.useCase;
 
 import java.util.Set;
 
@@ -13,4 +13,7 @@ public interface LikeService {
 
     boolean hasLiked(Long userId, Long snapId);
 
+    void createLike(String objectType, Long objectId , String token);
+
+    void deleteLike(String objectType, Long objectId);
 }

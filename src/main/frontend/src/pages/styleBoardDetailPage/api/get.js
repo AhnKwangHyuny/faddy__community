@@ -25,6 +25,7 @@ export const getStyleBoardDetailData = async (styleBoardId, category) => {
 export const getStyleBoardComments = async (styleBoardId) => {
     try {
         const response = await userRequestInstance.get(END_POINTS.GET_STYLE_BOARD_COMMENTS(styleBoardId));
+        console.log(response);
         return response.data.data;
     } catch (error) {
         console.error('Error fetching style board comments:', error);

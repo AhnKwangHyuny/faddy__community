@@ -20,14 +20,16 @@ public class StyleBoardReplyResponseDTO {
     private Long parentId;
     private UserDTO author;
     private LocalDateTime created_at;
+    private int likeCount;
 
-    public static StyleBoardReplyResponseDTO from(StyleBoardComment reply) {
+    public static StyleBoardReplyResponseDTO from(StyleBoardComment reply , int likeCount) {
         return StyleBoardReplyResponseDTO.builder()
                 .id(reply.getId())
                 .content(reply.getContent())
                 .isDeleted(reply.isDeleted())
                 .parentId(reply.getParent().getId())
                 .author(UserDTO.from(reply.getAuthor()))
+                .likeCount(likeCount)
                 .created_at(reply.getCreated_at())
                 .build();
     }
