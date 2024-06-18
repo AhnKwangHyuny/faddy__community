@@ -30,7 +30,9 @@ public class StyleBoardCommentResponseDTO {
 
     private int likeCount;
 
-    public static StyleBoardCommentResponseDTO from(StyleBoardComment comment, int likeCount) {
+    private boolean isLiked;
+
+    public static StyleBoardCommentResponseDTO from(StyleBoardComment comment, int likeCount , boolean isLiked) {
         return StyleBoardCommentResponseDTO.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
@@ -38,6 +40,7 @@ public class StyleBoardCommentResponseDTO {
                 .author(UserDTO.from(comment.getAuthor()))
                 .created_at(comment.getCreated_at())
                 .likeCount(likeCount)
+                .isLiked(isLiked)
                 .build();
     }
 

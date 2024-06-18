@@ -20,6 +20,9 @@ public class StyleBoardDetailResponseDTO {
     private final UserLevel userLevel;
     private final String profileImageUrl;
 
+    private final int likeCount;
+    private final boolean isLiked;
+
     private final List<String> hashTags;
 
 }

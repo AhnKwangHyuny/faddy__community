@@ -5,6 +5,8 @@ import faddy.backend.global.exception.StyleBoardNotFoundException;
 import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.service.HashTagService;
 import faddy.backend.image.service.ImageService;
+import faddy.backend.like.service.useCase.LikeRedisService;
+import faddy.backend.like.type.ContentType;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
@@ -32,6 +34,7 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
     private final ImageService imageService;
     private final UserService userService;
     private final HashTagService hashTagService;
+    private final LikeRedisService likeRedisService;
 
     private final StyleBoardJpaRepository styleBoardRepository;
 
@@ -56,6 +59,11 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
             User author = styleBoard.getAuthor();
             Profile profile = author.getProfile();
 
+            //like 조회
+            ContentType type = ContentType.STYLE_BOARD;
+            int likeCount = likeRedisService.countLikes(styleBoardId, type);
+            boolean isLiked = likeRedisService.isLiked(styleBoardId, author.getId(), type);
+
             // DTO 생성 및 반환
             return StyleBoardDetailResponseDTO.builder()
                     .title(styleBoard.getTitle())
@@ -66,6 +74,8 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
                     .userLevel(profile.getUserLevel())
                     .profileImageUrl(profile.getProfileImageUrl())
                     .hashTags(hashTagList)
+                    .likeCount(likeCount)
+                    .isLiked(isLiked)
                     .build();
 
         } catch (Exception e) {

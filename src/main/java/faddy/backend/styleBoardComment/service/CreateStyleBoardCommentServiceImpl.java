@@ -100,9 +100,10 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
             //like 초기화
             likeRedisService.initializeLikes(savedReply.getId(), ContentType.STYLE_BOARD_COMMENT);
 
-            return StyleBoardReplyResponseDTO.from(savedReply , 0);
+            return StyleBoardReplyResponseDTO.from(savedReply , 0 , false);
 
         } catch (Exception e) {
+            log.error("Exception occurred while creating comment: ", e);
             throw new SaveEntityException(HttpStatus.BAD_REQUEST , e.getMessage());
         }
     }

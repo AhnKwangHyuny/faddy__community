@@ -1,4 +1,5 @@
 export const formatCreatedAt = (createdAt) => {
+
     if (!Array.isArray(createdAt) || createdAt.length < 6) {
         throw new Error('Invalid createdAt array');
     }

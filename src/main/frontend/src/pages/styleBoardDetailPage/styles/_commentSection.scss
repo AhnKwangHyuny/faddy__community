@@ -112,10 +112,16 @@
                                        .like {
                                            margin-right: 2px;
                                            font-size: 15px;
+
+                                           &.liked {
+                                               color: #E53935;
+                                           }
                                        }
 
                                        .count {
                                            font-size: 11px;
+                                           font-weight: bold;
+
                                        }
                                    }
                                }

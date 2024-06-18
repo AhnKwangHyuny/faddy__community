@@ -12,6 +12,7 @@ export const mapToComment = (comment) => {
            profileImageUrl: comment.author.profileImageUrl,
        },
        likeCount : comment.likeCount,
+       isLiked : comment.liked,
        content: comment.content,
        parentId: comment.parentId || null,
        replies: comment.replies || null,

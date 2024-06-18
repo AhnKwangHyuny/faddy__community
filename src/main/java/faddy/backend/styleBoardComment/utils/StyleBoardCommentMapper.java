@@ -21,8 +21,9 @@ public class StyleBoardCommentMapper {
                 .id(comment.getId())
                 .author(user)
                 .content(comment.getContent())
-                .createdAt(comment.getCreated_at())
+                .created_at(comment.getCreated_at())
                 .likeCount(0)
+                .isLiked(false)
                 .build();
     }
 

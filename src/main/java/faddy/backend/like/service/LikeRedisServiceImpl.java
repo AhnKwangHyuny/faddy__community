@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class LikeRedisServiceImpl implements LikeRedisService {
@@ -26,8 +28,7 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     @Transactional
     public void initializeLikes(Long objectId, ContentType contentType) {
         String redisKey = generateRedisKey(contentType, objectId);
-        System.out.println("redisKey = " + redisKey);
-        redisTemplate.opsForSet().add(redisKey);
+        redisTemplate.opsForSet().add(redisKey , "initialized");
     }
 
     @Override
@@ -43,7 +44,7 @@ public class LikeRedisServiceImpl implements LikeRedisService {
             }
 
         } catch (Exception e) {
-            throw new SaveEntityException(HttpStatus.BAD_REQUEST , "[redis] 좋아요 저장에 실패했습니다.");
+            throw new SaveEntityException(HttpStatus.BAD_REQUEST , e.getMessage());
         }
 
     }
@@ -69,7 +70,18 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     @Transactional(readOnly = true)
     public int countLikes(Long objectId, ContentType contentType) {
         String redisKey = generateRedisKey(contentType, objectId);
-        Long size = redisTemplate.opsForSet().size(redisKey);
-        return size != null ? size.intValue() : 0;
+        try {
+            Set<Object> members = redisTemplate.opsForSet().members(redisKey);
+
+            if (members.contains("initialized")) {
+                return members.size() - 1; // "initialized" 값을 제외한 개수
+            } else {
+                return members.size();
+            }
+
+        } catch (Exception e) {
+            return 0;
+        }
+
     }
 }

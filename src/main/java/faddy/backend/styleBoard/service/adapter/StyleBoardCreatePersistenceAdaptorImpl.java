@@ -7,6 +7,8 @@ import faddy.backend.hashTags.service.HashTagService;
 import faddy.backend.image.domain.Image;
 import faddy.backend.image.dto.request.ImageLookupRequestDTO;
 import faddy.backend.image.service.ImageService;
+import faddy.backend.like.service.useCase.LikeRedisService;
+import faddy.backend.like.type.ContentType;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.request.StyleBoardCreateDTO;
@@ -36,6 +38,7 @@ public class StyleBoardCreatePersistenceAdaptorImpl implements StyleBoardCreateP
     private final StyleBoardCreateService styleBoardCreateService;
     private final ImageService imageService;
     private final HashTagService hashTagService;
+    private final LikeRedisService likeRedisService;
 
     private final StyleBoardJpaRepository styleBoardRepository;
 
@@ -65,6 +68,9 @@ public class StyleBoardCreatePersistenceAdaptorImpl implements StyleBoardCreateP
 
             //styleBoard 저장 (다른 연관관계 dirty checking)
             StyleBoard saved = styleBoardRepository.save(styleBoard);
+
+            //styleBoard like 초기화
+            likeRedisService.initializeLikes(saved.getId(), ContentType.STYLE_BOARD);
 
             return saved.getId();
 

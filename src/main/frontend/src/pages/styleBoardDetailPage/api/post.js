@@ -29,3 +29,13 @@ export const createStyleBoardReply = async (styleBoardId, parentId, content) => 
         throw error;
     }
 }
+
+export const createCommentLike = async (objectType , objectId) => {
+    try {
+        const response = await userRequestInstance.post(END_POINTS.CREATE_LIKE(objectType ,objectId ));
+        return response.data.status;
+    } catch (error) {
+        console.error('Error adding like:', error);
+        return error.response.data.status;
+    }
+}

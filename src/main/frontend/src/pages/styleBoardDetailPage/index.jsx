@@ -126,7 +126,7 @@ const StyleBoardDetailPage = () => {
                     <TagList topic={hashTagName} tags={styleBoardData.hashTags} />
                     <MetaInfo userProfile={styleBoardData.userProfile} interaction={testData.interaction} />
                     <ContentViewer title={styleBoardData.title} content={styleBoardData.content} />
-                    <InteractionBar likes={testData.interaction.likes} shares={testData.interaction.shares} />
+                    <InteractionBar likeCount={styleBoardData.likeCount} liked = {styleBoardData.liked} shares={testData.interaction.shares} />
                     <ContentDivider />
                     <CommentSection comments={comments} onAddComment={handleAddComment} />
                 </>

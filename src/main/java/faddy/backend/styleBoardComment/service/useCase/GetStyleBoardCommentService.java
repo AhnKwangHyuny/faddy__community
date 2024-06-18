@@ -11,9 +11,10 @@ public interface GetStyleBoardCommentService {
     /**
      * 특정 스타일보드 댓글 조회
      * @param styleBoardId
+     * @param userId // 로그인 유저의 id , 비로그인 && 말료된 토큰 유저 요청 시 null
      * @return List<StyleBoardCommentResponseDTO>
      */
-    List<StyleBoardCommentResponseDTO> findByStyleBoardIdWithReplies(Long styleBoardId);
+    List<StyleBoardCommentResponseDTO> findByStyleBoardIdWithReplies(Long styleBoardId , Long userId);
 
 
     /**

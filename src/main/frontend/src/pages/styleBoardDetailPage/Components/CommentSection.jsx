@@ -12,6 +12,7 @@ const CommentSection = memo(({ comments, onAddComment }) => {
         setReplyingTo(commentId);
     };
 
+
     useEffect(() => {
         console.log(replyingTo);
     }, [replyingTo]);
@@ -36,7 +37,8 @@ const CommentSection = memo(({ comments, onAddComment }) => {
                             <li className="comment-wrapper" key={comment.id}>
                                 <CommentCard
                                     comment={comment}
-                                    onReplyClick={() => handleReplyClick(comment.id)}
+                                    onReplyClick={() => handleReplyClick(comment.id)
+                                    }
                                 />
                             </li>
                         ))}

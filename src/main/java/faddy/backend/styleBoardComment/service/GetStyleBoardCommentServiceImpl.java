@@ -34,7 +34,7 @@ public class GetStyleBoardCommentServiceImpl implements GetStyleBoardCommentServ
 
     @Override
     @Transactional(readOnly = true)
-    public List<StyleBoardCommentResponseDTO> findByStyleBoardIdWithReplies(Long styleBoardId) {
+    public List<StyleBoardCommentResponseDTO> findByStyleBoardIdWithReplies(Long styleBoardId , Long userId) {
         try {
             List<StyleBoardComment> comments = styleBoardCommentRepository.findByStyleBoardIdWithChildren(styleBoardId);
             List<StyleBoardCommentResponseDTO> response = new ArrayList<>();
@@ -43,13 +43,28 @@ public class GetStyleBoardCommentServiceImpl implements GetStyleBoardCommentServ
 
                 int likeCount = likeRedisService.countLikes(comment.getId(), ContentType.STYLE_BOARD_COMMENT);
 
+                // 비 로그인 유저가 조회 시 isLiked = false
+                boolean isLiked = false;
+
+                if(userId != null) {
+                    isLiked = likeRedisService.isLiked(comment.getId(),  userId , ContentType.STYLE_BOARD_COMMENT);
+                }
+
                 //dto에 comment , like count 매핑
-                StyleBoardCommentResponseDTO dto = StyleBoardCommentResponseDTO.from(comment, likeCount);
+                StyleBoardCommentResponseDTO dto = StyleBoardCommentResponseDTO.from(comment, likeCount , isLiked);
 
                 dto.setReplies(comment.getChildren().stream()
                         .map(reply -> {
                             int replyLikeCount = likeRedisService.countLikes(reply.getId(), ContentType.STYLE_BOARD_COMMENT);
-                            return StyleBoardReplyResponseDTO.from(reply, replyLikeCount);
+
+                            // 비 로그인 유저가 조회 시 isLiked = false
+                            boolean isReplyLiked = false;
+
+                            if(userId != null) {
+                                isReplyLiked = likeRedisService.isLiked(reply.getId(),  userId , ContentType.STYLE_BOARD_COMMENT);
+                            }
+
+                            return StyleBoardReplyResponseDTO.from(reply, replyLikeCount , isReplyLiked);
                         })
                         .collect(Collectors.toList()));
 

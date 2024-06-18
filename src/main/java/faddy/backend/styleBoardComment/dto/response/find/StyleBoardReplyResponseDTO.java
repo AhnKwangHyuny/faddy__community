@@ -21,8 +21,9 @@ public class StyleBoardReplyResponseDTO {
     private UserDTO author;
     private LocalDateTime created_at;
     private int likeCount;
+    private boolean isLiked;
 
-    public static StyleBoardReplyResponseDTO from(StyleBoardComment reply , int likeCount) {
+    public static StyleBoardReplyResponseDTO from(StyleBoardComment reply , int likeCount , boolean isLike) {
         return StyleBoardReplyResponseDTO.builder()
                 .id(reply.getId())
                 .content(reply.getContent())
@@ -30,6 +31,7 @@ public class StyleBoardReplyResponseDTO {
                 .parentId(reply.getParent().getId())
                 .author(UserDTO.from(reply.getAuthor()))
                 .likeCount(likeCount)
+                .isLiked(isLike)
                 .created_at(reply.getCreated_at())
                 .build();
     }

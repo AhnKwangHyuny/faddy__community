@@ -1,5 +1,6 @@
 package faddy.backend.styleBoardComment.presentation;
 
+import faddy.backend.auth.jwt.Service.JwtUtil;
 import faddy.backend.global.response.ApiResponse;
 import faddy.backend.global.response.SuccessApiResponse;
 import faddy.backend.styleBoardComment.dto.request.StyleBoardCommentCreateRequestDTO;
@@ -8,6 +9,7 @@ import faddy.backend.styleBoardComment.dto.response.find.StyleBoardCommentRespon
 import faddy.backend.styleBoardComment.dto.response.find.StyleBoardReplyResponseDTO;
 import faddy.backend.styleBoardComment.service.useCase.CreateStyleBoardCommentService;
 import faddy.backend.styleBoardComment.service.useCase.GetStyleBoardCommentService;
+import faddy.backend.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,10 @@ public class StyleBoardCommentController {
 
     private final CreateStyleBoardCommentService styleBoardCommentCreateService;
     private final GetStyleBoardCommentService getStyleBoardCommentService;
+
+    private final JwtUtil jwtUtil;
+    private final UserService userService;
+
     private final static String CREATE_SUCCESS_MESSAGE = "[create] 댓글이 성공적으로 등록되었습니다.";
 
     @Description("스타일보드 댓글 생성")
@@ -53,10 +59,18 @@ public class StyleBoardCommentController {
 
     @Description("스타일보드 댓글 조회")
     @GetMapping("/detail/{styleBoardId}/comments")
-    public ResponseEntity<? extends ApiResponse> getStyleBoardComments(@PathVariable("styleBoardId") Long styleBoardId) {
+    public ResponseEntity<? extends ApiResponse> getStyleBoardComments(@PathVariable("styleBoardId") Long styleBoardId , HttpServletRequest request) {
+
+        String authorization = request.getHeader("Authorization");
+        Long userId = null;
+
+        //로그인 or 비로그인 유저 조회 구분
+        if(authorization != null && jwtUtil.isExpired(authorization)) {
+            userId = userService.getUserIdByAuthorization(authorization);
+        }
 
         //댓글 조회
-        List<StyleBoardCommentResponseDTO> response = getStyleBoardCommentService.findByStyleBoardIdWithReplies(styleBoardId);
+        List<StyleBoardCommentResponseDTO> response = getStyleBoardCommentService.findByStyleBoardIdWithReplies(styleBoardId , userId); // 비로그인 : userId = null
 
         return SuccessApiResponse.of(response);
     }

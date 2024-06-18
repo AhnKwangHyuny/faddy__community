@@ -11,7 +11,7 @@ public class StyleBoardCommentCreateResponseDTO {
     private Long id;
     private UserDTO author;
     private String content;
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
     private int likeCount;
-
+    private boolean isLiked;
 }

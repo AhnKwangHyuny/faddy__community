@@ -1,6 +1,7 @@
 package faddy.backend.styleBoard.service;
 
 import faddy.backend.image.service.ImageService;
+import faddy.backend.like.service.useCase.LikeRedisService;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.request.StyleBoardCreateDTO;

@@ -23,7 +23,7 @@ public class LikeTestController {
     private final LikeRedisService likeRedisService;
 
     @PostMapping
-    public ResponseEntity<? extends ApiResponse> addLike(@RequestParam String objectType, @RequestParam Long objectId , HttpServletRequest request) {
+    public ResponseEntity<? extends ApiResponse> addLike(@RequestParam("objectType") String objectType, @RequestParam("objectId") Long objectId , HttpServletRequest request) {
 
         // userId 조회
         String token = request.getHeader("Authorization");
@@ -31,7 +31,7 @@ public class LikeTestController {
         Long userId = userEncryptionUtil.decryptUserId(encryptedUserId);
 
         //ContentType 조회
-        ContentType contentType = ContentType.valueOf(objectType.toUpperCase());
+        ContentType contentType = ContentType.fromString(objectType);
 
         // 좋아요 등록
         likeRedisService.saveLike(objectId, userId, contentType);
@@ -40,7 +40,7 @@ public class LikeTestController {
     }
 
     @DeleteMapping
-    public ResponseEntity<? extends ApiResponse> removeLike( @RequestParam String objectType,  @RequestParam Long objectId,  HttpServletRequest request) {
+    public ResponseEntity<? extends ApiResponse> removeLike(@RequestParam("objectType") String objectType, @RequestParam("objectId") Long objectId,  HttpServletRequest request) {
 
         // userId 조회
         String token = request.getHeader("Authorization");
@@ -48,7 +48,7 @@ public class LikeTestController {
         Long userId = userEncryptionUtil.decryptUserId(encryptedUserId);
 
         //ContentType 조회
-        ContentType contentType = ContentType.valueOf(objectType.toUpperCase());
+        ContentType contentType = ContentType.fromString(objectType);
 
         // 좋아요 취소
         likeRedisService.removeLike(objectId, userId, contentType);
@@ -59,9 +59,9 @@ public class LikeTestController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<? extends ApiResponse> getLikeCount(@RequestParam String objectType, @RequestParam Long objectId) {
+    public ResponseEntity<? extends ApiResponse> getLikeCount(@RequestParam("objectType") String objectType, @RequestParam("objectId") Long objectId) {
 
-        int count = likeRedisService.countLikes(objectId, ContentType.valueOf(objectType.toUpperCase()));
+        int count = likeRedisService.countLikes(objectId, ContentType.fromString(objectType));
 
         LikeCountResponseDTO response = LikeCountResponseDTO.builder().count(count).build();
 
