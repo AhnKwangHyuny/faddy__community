@@ -159,6 +159,7 @@ export const checkChatRoomAccess = async (roomId) => {
  * @param {string} username 유저 이름
  * @returns {Promise<object>} 유저 프로필
  */
+
 export const fetchChatRoomUserProfile = async (roomId, username) => {
     try {
         const response = await userRequestInstance.get(END_POINTS.GET_PROFILE_IN_CHATROOM(roomId, username));

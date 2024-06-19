@@ -19,6 +19,7 @@ import faddy.backend.styleBoard.service.useCase.StyleBoardCreateService;
 import faddy.backend.styleBoard.utils.StyleBoardRequestParser;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.service.UserService;
+import faddy.backend.views.service.useCase.ViewRedisService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class StyleBoardCreatePersistenceAdaptorImpl implements StyleBoardCreateP
     private final ImageService imageService;
     private final HashTagService hashTagService;
     private final LikeRedisService likeRedisService;
+    private final ViewRedisService viewRedisService;
 
     private final StyleBoardJpaRepository styleBoardRepository;
 
@@ -71,6 +73,10 @@ public class StyleBoardCreatePersistenceAdaptorImpl implements StyleBoardCreateP
 
             //styleBoard like 초기화
             likeRedisService.initializeLikes(saved.getId(), ContentType.STYLE_BOARD);
+
+            //styleBoard 조회수 초기화
+            faddy.backend.views.type.ContentType contentType = faddy.backend.views.type.ContentType.STYLE_BOARD;
+            viewRedisService.initializeViews(saved.getId(), contentType);
 
             return saved.getId();
 

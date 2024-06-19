@@ -9,6 +9,7 @@ import faddy.backend.styleBoard.dto.response.StyleBoardCreateResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardDetailResponseDTO;
 import faddy.backend.styleBoard.service.adapter.useCase.StyleBoardCreatePersistenceAdaptor;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
+import faddy.backend.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class StyleBoardController {
 
     private final StyleBoardCreatePersistenceAdaptor styleBoardCreatePersistenceAdaptor;
     private final StyleBoardDetailService styleBoardDetailService;
+    private final UserService userService;
     private static final String CREATE_SUCCESS_MESSAGE = "[create] 게시글이 성공적으로 등록되었습니다.";
     private static final String CREATE_FAIL_MESSAGE = "[create] 게시글 등록에 실패했습니다.";
     private static final String DETAIL_SUCCESS_MESSAGE = "[detail] 게시글 상세 조회 성공";
@@ -48,9 +50,17 @@ public class StyleBoardController {
     @Description("스타일보드 상세 페이지 데이터 조회")
     @GetMapping("/detail/{styleBoard_id}")
     public ResponseEntity<? extends ApiResponse> getStyleBoardDetail(@PathVariable("styleBoard_id") Long styleBoardId,
-                                                                     @RequestParam(value = "category", required = true) String category) {
+                                                                     @RequestParam(value = "category", required = true) String category,
+                                                                     HttpServletRequest request) {
 
-        StyleBoardDetailResponseDTO response = styleBoardDetailService.getStyleBoardDetailData(styleBoardId, category.toUpperCase());
+        String token = request.getHeader("Authorization");
+
+        Long viewerId = null;
+        if(token != null) {
+            viewerId = userService.findUserIdByToken(token);
+        }
+
+        StyleBoardDetailResponseDTO response = styleBoardDetailService.getStyleBoardDetailData(styleBoardId, category.toUpperCase(), viewerId);
 
         return SuccessApiResponse.of(HttpStatus.OK, DETAIL_SUCCESS_MESSAGE, response);
     }

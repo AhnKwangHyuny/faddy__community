@@ -16,6 +16,7 @@ import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
 import faddy.backend.user.domain.Profile;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.service.UserService;
+import faddy.backend.views.service.useCase.ViewRedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
     private final UserService userService;
     private final HashTagService hashTagService;
     private final LikeRedisService likeRedisService;
+    private final ViewRedisService viewRedisService;
 
     private final StyleBoardJpaRepository styleBoardRepository;
 
@@ -42,7 +44,7 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
 
     @Override
     @Transactional(readOnly = true)
-    public StyleBoardDetailResponseDTO getStyleBoardDetailData(Long styleBoardId, String category) {
+    public StyleBoardDetailResponseDTO getStyleBoardDetailData(Long styleBoardId, String category , Long viewerId) {
         try {
             // StyleBoard 조회
             StyleBoard styleBoard = styleBoardRepository.findByIdWithAuthorAndProfile(styleBoardId)
@@ -64,6 +66,12 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
             int likeCount = likeRedisService.countLikes(styleBoardId, type);
             boolean isLiked = likeRedisService.isLiked(styleBoardId, author.getId(), type);
 
+            //view 조회
+            faddy.backend.views.type.ContentType contentType = faddy.backend.views.type.ContentType.STYLE_BOARD;
+            viewRedisService.saveView(styleBoardId,viewerId, contentType);
+            int viewCount = viewRedisService.countViews(styleBoardId, contentType);
+
+
             // DTO 생성 및 반환
             return StyleBoardDetailResponseDTO.builder()
                     .title(styleBoard.getTitle())
@@ -76,6 +84,7 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
                     .hashTags(hashTagList)
                     .likeCount(likeCount)
                     .isLiked(isLiked)
+                    .viewCount(viewCount)
                     .build();
 
         } catch (Exception e) {

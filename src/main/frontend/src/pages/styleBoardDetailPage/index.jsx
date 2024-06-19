@@ -55,7 +55,13 @@ const StyleBoardDetailPage = () => {
                     createdAt: formatCreatedAt(response.createdAt),
                 };
 
-                setStyleBoardData({ ...response, userProfile });
+                const interaction = {
+                    views: response.viewCount,
+                    likes: response.likeCount,
+                };
+
+                setStyleBoardData({ ...response, userProfile ,interaction });
+
             } catch (error) {
                 console.error(DATA_LOAD_ERROR_MESSAGE, error);
                 alert(DATA_LOAD_ERROR_MESSAGE);
@@ -124,7 +130,7 @@ const StyleBoardDetailPage = () => {
                         isOwner={isOwner}
                     />
                     <TagList topic={hashTagName} tags={styleBoardData.hashTags} />
-                    <MetaInfo userProfile={styleBoardData.userProfile} interaction={testData.interaction} />
+                    <MetaInfo userProfile={styleBoardData.userProfile} interaction={styleBoardData.interaction} />
                     <ContentViewer title={styleBoardData.title} content={styleBoardData.content} />
                     <InteractionBar likeCount={styleBoardData.likeCount} liked = {styleBoardData.liked} shares={testData.interaction.shares} />
                     <ContentDivider />

@@ -23,6 +23,8 @@ public class StyleBoardDetailResponseDTO {
     private final int likeCount;
     private final boolean isLiked;
 
+    private int viewCount;
+
     private final List<String> hashTags;
 
 }

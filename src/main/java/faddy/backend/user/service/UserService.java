@@ -252,5 +252,14 @@ public class UserService {
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_USER_ID));
     }
 
+    @Transactional(readOnly = true)
+    public Long findUserIdByToken(String token) {
+        String rawToken = jwtUtil.extractRawToken(token);
+
+        String username = jwtUtil.getUsername(rawToken);
+
+        return userRepository.findUserIdByUsername(username);
+
+    }
 }
 
