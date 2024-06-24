@@ -23,4 +23,7 @@ public interface StyleBoardCommentJpaRepository extends JpaRepository<StyleBoard
 
 
     Optional<StyleBoardComment> findById(Long id);
+
+    @Query("SELECT c FROM StyleBoardComment c ")
+    List<StyleBoardComment> findAllStyleBoardComment();
 }

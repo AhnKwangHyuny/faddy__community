@@ -109,4 +109,11 @@ public class GlobalExceptionHandler {
         ExceptionLogger.logException(e);
         return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
     }
+
+    @ExceptionHandler(DbSyncException.class)
+    public ResponseEntity<? extends ApiResponse> handleDbAsyncException(final DbSyncException e) {
+        ExceptionLogger.logException(e);
+        return ErrorApiResponse.of(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
 }

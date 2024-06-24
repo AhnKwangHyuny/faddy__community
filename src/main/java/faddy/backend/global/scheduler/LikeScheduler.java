@@ -1,12 +1,14 @@
 package faddy.backend.global.scheduler;
 
 import faddy.backend.like.repository.LikeJpaRepository;
+import faddy.backend.like.service.adapter.useCase.LikeCountSyncAdapter;
 import faddy.backend.like.service.useCase.LikeService;
 import faddy.backend.snap.domain.Snap;
 import faddy.backend.snap.repository.SnapRepository;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,41 +20,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikeScheduler {
-    private final LikeService likeService;
-    private final LikeJpaRepository likeRepository;
-    private final SnapRepository snapRepository;
-    private final UserRepository userRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final LikeCountSyncAdapter likeCountSyncAdapter;
 
-    @Scheduled(fixedDelay = 120000)
-    public void refreshRedisData() {
-        String lastSyncKey = "last_sync_time";
-        Long lastSyncTime = redisTemplate.opsForValue().get(lastSyncKey) != null ? Long.parseLong(redisTemplate.opsForValue().get(lastSyncKey).toString()) : 0L;
-
-        List<Snap> updatedSnaps = snapRepository.findByUpdatedAtGreaterThanOrderByUpdatedAtAsc(new Date(lastSyncTime));
-
-        for (Snap snap : updatedSnaps) {
-            String key = "snap:" + snap.getId();
-
-            Long likeCount = likeRepository.countBySnap(snap);
-            List<User> users = likeRepository.findUsersBySnap(snap);
-
-            Set<String> userIds = users.stream()
-                    .map(user -> user.getId().toString())
-                    .collect(Collectors.toSet());
-
-            try {
-                redisTemplate.opsForHash().put(key, "likeCount", likeCount);
-                redisTemplate.opsForSet().add(key + ":userIds", userIds.toArray(new String[0]));
-
-            } catch (Exception e) {
-                redisTemplate.delete(key);
-                redisTemplate.delete(key + ":userIds");
-                throw e;
-            }
-        }
-
-        redisTemplate.opsForValue().set(lastSyncKey, System.currentTimeMillis());
+    /**
+     *  styleBoard 좋아요 수 동기화
+     *
+     * */
+    @Scheduled(fixedRate =60000 )
+    public void updateStyleBoardLikes() {
+        log.info("좋아요 동기화 작업을 시작합니다.");
+        likeCountSyncAdapter.updateStyleBoardLikeInDatabase();
+        log.info("좋아요 동기화 작업을 완료했습니다.");
     }
+
+
 }

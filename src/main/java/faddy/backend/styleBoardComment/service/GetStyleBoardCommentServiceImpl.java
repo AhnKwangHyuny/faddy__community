@@ -84,4 +84,9 @@ public class GetStyleBoardCommentServiceImpl implements GetStyleBoardCommentServ
         return styleBoardCommentRepository.findById(styleBoardId)
                 .orElseThrow(() -> new CommentNotFoundException(HttpStatus.BAD_REQUEST.value(), "댓글이 존재하지 않습니다. {id : " + styleBoardId + "}"));
     }
+
+    @Override
+    public List<StyleBoardComment> loadALlStyleBoardComment() {
+        return styleBoardCommentRepository.findAllStyleBoardComment();
+    }
 }

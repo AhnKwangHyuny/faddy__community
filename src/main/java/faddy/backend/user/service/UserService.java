@@ -261,5 +261,9 @@ public class UserService {
         return userRepository.findUserIdByUsername(username);
 
     }
+
+    public List<User> findUsersByUserIds(List<Long> userIds) {
+        return userRepository.findUsersByUserIds(userIds);
+    }
 }
 

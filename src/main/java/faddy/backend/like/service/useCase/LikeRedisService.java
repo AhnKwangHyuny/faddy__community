@@ -2,6 +2,8 @@ package faddy.backend.like.service.useCase;
 
 import faddy.backend.like.type.ContentType;
 
+import java.util.List;
+
 public interface LikeRedisService {
 
     /**
@@ -48,4 +50,6 @@ public interface LikeRedisService {
      * @return 해당 객체에 대한 전체 좋아요 수
      */
     int countLikes(Long objectId, ContentType contentType);
+
+    List<Long> getLikedUserIds(Long objectId, ContentType contentType);
 }

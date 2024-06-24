@@ -23,4 +23,10 @@ public interface GetStyleBoardCommentService {
      * @return StyleBoardComment
      */
     StyleBoardComment loadStyleBoardById(Long styleBoardCommentId);
+
+    /**
+     *  모든 styleBoardComment 조회
+     *
+     * */
+    List<StyleBoardComment> loadALlStyleBoardComment();
 }

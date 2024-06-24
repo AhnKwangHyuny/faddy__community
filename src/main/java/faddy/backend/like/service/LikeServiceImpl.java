@@ -2,6 +2,7 @@ package faddy.backend.like.service;
 
 import faddy.backend.global.exception.SaveEntityException;
 import faddy.backend.like.domain.Like;
+import faddy.backend.like.repository.LikeCustomRepository;
 import faddy.backend.like.repository.LikeJpaRepository;
 import faddy.backend.like.service.useCase.LikeService;
 import faddy.backend.like.type.ContentType;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class LikeServiceImpl implements LikeService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final LikeJpaRepository likeRepository;
+    private final LikeCustomRepository likeCustomRepository;
 
     private final UserService userService;
     private final SnapService snapService;
@@ -224,4 +227,46 @@ public class LikeServiceImpl implements LikeService {
 
 
 
+    @Override
+    @Transactional
+    public void batchSaveStyleBoardCommentLikes(StyleBoardComment comment,List<User> users) {
+
+        // Comment content type
+        ContentType contentType = ContentType.STYLE_BOARD_COMMENT;
+
+        try {
+            // like entity 생성
+            List<Like> likes = users.stream()
+                    .map(user -> Like.createLikeForStyleBoardComment(user, comment))
+                    .collect(Collectors.toList());
+
+            // like 저장 (jdbc batch save)
+            likeCustomRepository.batchSaveLikesForStyleBoardComments(likes);
+
+        } catch (Exception e) {
+            throw new SaveEntityException(HttpStatus.BAD_REQUEST, CREATE_ERROR_MESSAGE);
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void batchSaveStyleBoardLikes(StyleBoard styleBoard, List<User> users) {
+        // StyleBoard content type
+        ContentType contentType = ContentType.STYLE_BOARD;
+
+        try {
+            // like entity 생성
+            List<Like> likes = users.stream()
+                    .map(user -> Like.createLikeForStyleBoard(user, styleBoard))
+                    .collect(Collectors.toList());
+
+            // like 저장 (jdbc batch save)
+            likeCustomRepository.batchSaveLikesForStyleBoards(likes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveEntityException(HttpStatus.BAD_REQUEST, CREATE_ERROR_MESSAGE);
+        }
+    }
 }

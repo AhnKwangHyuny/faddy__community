@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +25,8 @@ public interface StyleBoardJpaRepository extends JpaRepository<StyleBoard, Long>
             "END FROM StyleBoard sb " +
             "WHERE sb.id = :styleBoardId AND sb.author.id = :userId")
     boolean existsByIdAndUserId(@Param("styleBoardId") Long styleBoardId, @Param("userId") Long userId);
+
+    @Query("SELECT sb FROM StyleBoard sb")
+    List<StyleBoard> findAll();
+
 }

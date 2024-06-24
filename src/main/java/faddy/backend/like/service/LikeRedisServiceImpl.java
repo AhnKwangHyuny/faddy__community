@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,4 +86,24 @@ public class LikeRedisServiceImpl implements LikeRedisService {
         }
 
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long> getLikedUserIds(Long objectId, ContentType contentType) {
+        String redisKey = generateRedisKey(contentType, objectId);
+
+        try {
+            Set<Object> members = redisTemplate.opsForSet().members(redisKey);
+
+            members.remove("initialized"); // "initialized" 값은 제외
+
+            // Set<Object>를 List<Long>으로 변환
+            return members.stream()
+                    .map(member -> Long.parseLong((String) member))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new BadRequestException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "[redis] 좋아요 사용자 목록 조회에 실패했습니다.");
+        }
+    }
+
 }

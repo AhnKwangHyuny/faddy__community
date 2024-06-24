@@ -132,7 +132,14 @@ public enum ExceptionCode {
     /**
      * HashTag
      * */
-    FAIL_CREATE_HASH_TAG(500 , "해시태그 엔티티 생성에 실패했습니다.");
+    FAIL_CREATE_HASH_TAG(500 , "해시태그 엔티티 생성에 실패했습니다."),
+
+
+    /**
+     *  db async 동기화 에러
+     *
+     * */
+    FAIL_DB_ASYNC_ERROR(500 , "DB 동기화 처리 중 에러가 발생했습니다.");
 
     private final int code;
     private final String message;

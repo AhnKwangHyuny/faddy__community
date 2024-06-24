@@ -90,7 +90,13 @@ public class StyleBoard extends BaseEntity {
         }
     }
 
+
     public void linkToAuthor(User author) {
         this.author = author;
     }
+
+    public void updateViewCount (int views) {
+        this.views = views;
+    }
+
 }
