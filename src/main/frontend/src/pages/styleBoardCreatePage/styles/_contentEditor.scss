@@ -1,8 +1,9 @@
 .content-editor-container {
+    min-height:300px;
+    max-height: 800px;
     margin-bottom: 20px;
 
     .content-editor {
-        max-height: 150px;
         overflow-y: auto;
 
         .ql-toolbar {
