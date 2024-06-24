@@ -28,7 +28,7 @@ public class LikeScheduler {
      *  styleBoard 좋아요 수 동기화
      *
      * */
-    @Scheduled(fixedRate =60000 )
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
     public void updateStyleBoardLikes() {
         log.info("좋아요 동기화 작업을 시작합니다.");
         likeCountSyncAdapter.updateStyleBoardLikeInDatabase();

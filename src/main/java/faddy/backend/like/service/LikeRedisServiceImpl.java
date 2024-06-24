@@ -22,7 +22,7 @@ public class LikeRedisServiceImpl implements LikeRedisService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private String generateRedisKey(ContentType contentType, Long objectId) {
-        return contentType.name().toLowerCase() + ":" + objectId;
+        return "like:" + contentType.name().toLowerCase() + ":" + objectId;
     }
 
 

@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionLogger {
     public static void logException(Exception e) {
+        e.printStackTrace();
+
         StackTraceElement[] stackTrace = e.getStackTrace();
         if (stackTrace.length > 0) {
             StackTraceElement element = stackTrace[0];
