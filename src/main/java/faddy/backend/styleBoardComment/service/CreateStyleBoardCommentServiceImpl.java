@@ -12,6 +12,7 @@ import faddy.backend.styleBoardComment.dto.response.create.StyleBoardCommentCrea
 import faddy.backend.styleBoardComment.dto.response.find.StyleBoardReplyResponseDTO;
 import faddy.backend.styleBoardComment.repository.StyleBoardCommentJpaRepository;
 import faddy.backend.styleBoardComment.service.useCase.CreateStyleBoardCommentService;
+import faddy.backend.styleBoardComment.service.useCase.StyleBoardCommentRedisService;
 import faddy.backend.styleBoardComment.utils.StyleBoardCommentMapper;
 import faddy.backend.user.domain.User;
 import faddy.backend.user.service.UserService;
@@ -32,6 +33,7 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
 
     private final StyleBoardDetailService styleBoardDetailService;
     private final UserService userService;
+    private final StyleBoardCommentRedisService styleBoardCommentRedisService;
 
     private final LikeRedisService likeRedisService;
 
@@ -62,6 +64,9 @@ public class CreateStyleBoardCommentServiceImpl implements CreateStyleBoardComme
 
             //like 초기화
             likeRedisService.initializeLikes(savedComment.getId(), ContentType.STYLE_BOARD_COMMENT);
+
+            //redis에 댓글 저장
+            styleBoardCommentRedisService.saveStyleBoardComment(styleBoardId , savedComment.getId());
 
             // comment to response
             return StyleBoardCommentMapper.toDto(savedComment);

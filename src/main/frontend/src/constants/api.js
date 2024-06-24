@@ -121,6 +121,7 @@ export const END_POINTS = {
   CREATE_STYLE_BOARD_COMMENT_REPLY : (styleBoardId, commentId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/comments/${commentId}/replies`,
   GET_STYLE_BOARD_COMMENTS : (styleBoardId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/comments`,
 
+  GET_STYLE_BOARDS : `${API_STYLE_BOARD}`,
 
 
   /**

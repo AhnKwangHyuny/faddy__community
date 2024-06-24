@@ -1,7 +1,8 @@
 import React from "react";
 import StyleBoard from "./StyleBoard";
+import LoadingAnimation from "shared/ui/LoadingUI/Loading";
 
-const StyleBoardList = ({ styleBoards = [] }) => {
+const StyleBoardList = ({ styleBoards = [], listRef }) => {
     return (
         <div>
             <ul>
@@ -11,6 +12,10 @@ const StyleBoardList = ({ styleBoards = [] }) => {
                     </li>
                 ))}
             </ul>
+
+            <div ref={listRef}>
+                <LoadingAnimation />
+            </div>
         </div>
     );
 }

@@ -15,4 +15,29 @@ public enum Category {
     public String getDisplayName() {
         return displayName;
     }
+
+
+    public static Category fromUrlValue(String urlValue) {
+
+        //urlValue가 null이거나 비어있으면 null 반환
+        if (urlValue == null || urlValue.isEmpty()) {
+            return null;
+        }
+
+        switch (urlValue.toLowerCase()) {
+            case "question":
+                return QUESTION;
+            case "daily":
+                return DAILY_SHARE;
+            case "fashion":
+                return FASHION_SHARE;
+            case "tips":
+                return STYLE_TIP;
+            case "news":
+                return NEWS_SHARE;
+            default:
+                throw new IllegalArgumentException("Unknown category: " + urlValue);
+        }
+    }
+
 }

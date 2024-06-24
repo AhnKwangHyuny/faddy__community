@@ -7,8 +7,10 @@ import faddy.backend.styleBoard.dto.request.StyleBoardRequestDTO;
 import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardCreateResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardDetailResponseDTO;
+import faddy.backend.styleBoard.dto.response.StyleBoardResponseDTO;
 import faddy.backend.styleBoard.service.adapter.useCase.StyleBoardCreatePersistenceAdaptor;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
+import faddy.backend.styleBoard.service.useCase.StyleBoardLoadService;
 import faddy.backend.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class StyleBoardController {
 
     private final StyleBoardCreatePersistenceAdaptor styleBoardCreatePersistenceAdaptor;
     private final StyleBoardDetailService styleBoardDetailService;
+    private final StyleBoardLoadService styleBoardLoadService;
     private final UserService userService;
     private static final String CREATE_SUCCESS_MESSAGE = "[create] 게시글이 성공적으로 등록되었습니다.";
     private static final String CREATE_FAIL_MESSAGE = "[create] 게시글 등록에 실패했습니다.";
@@ -65,10 +70,32 @@ public class StyleBoardController {
         return SuccessApiResponse.of(HttpStatus.OK, DETAIL_SUCCESS_MESSAGE, response);
     }
 
+    @Description("스타일보드 목록 조회")
+    @GetMapping
+    public ResponseEntity<? extends ApiResponse> getStyleBoards(
+            @RequestParam(value = "sort", defaultValue = "newest") String sort,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "tags", required = false) String tags) {
+
+        try {
+            // sort , category , tags , page , size 파라미터를 이용하여 스타일보드 목록 조회
+            log.info("sort = " + sort + ", category = " + category + ", page = " + page + ", size = " + size + ", tags = " + tags);
+
+            List<StyleBoardResponseDTO> response = styleBoardLoadService.getFilteredStyleBoards(category, sort, tags, page, size);
+
+            return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 목록 조회 성공", response);
+
+        } catch (Exception e) {
+            return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "스타일보드 목록 조회 실패");
+        }
+    }
+
     @Description("detail 페이지 접근자가 스타일보드 작성자인지 확인")
     @GetMapping("/detail/{styleBoardId}/check-owner")
     public ResponseEntity<? extends ApiResponse> checkStyleBoardOwner(@PathVariable("styleBoardId") Long styleBoardId,
-                                                                     HttpServletRequest request) {
+                                                                      HttpServletRequest request) {
         // token 추출
         String token = request.getHeader("Authorization");
 

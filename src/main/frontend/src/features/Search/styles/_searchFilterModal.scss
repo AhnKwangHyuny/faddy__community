@@ -44,7 +44,8 @@
             .close-button {
                 @include centerFlex;
                 position: absolute;
-                left: 10px;
+                left : -280px !important;
+                top: -15px !important;
                 font-size: 15px;
                 padding: 4px 5px 5px 5px;
             }

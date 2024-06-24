@@ -1,6 +1,9 @@
 package faddy.backend.styleBoard.repository;
 
+import faddy.backend.styleBoard.domain.Category;
 import faddy.backend.styleBoard.domain.StyleBoard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,5 +31,17 @@ public interface StyleBoardJpaRepository extends JpaRepository<StyleBoard, Long>
 
     @Query("SELECT sb FROM StyleBoard sb")
     List<StyleBoard> findAll();
+
+    @Query("SELECT sb FROM StyleBoard sb WHERE sb.category = :category")
+    Page<StyleBoard> findByCategory(@Param("category") Category category, Pageable pageable);
+
+    @Query("SELECT sb FROM StyleBoard sb WHERE sb.category = :category AND (SELECT COUNT(ht) FROM HashTag ht WHERE ht.styleBoard = sb AND ht.name IN :tags) = :tagSize")
+    Page<StyleBoard> findByCategoryAndTagsIn(@Param("category") Category category, @Param("tags") List<String> tags, @Param("tagSize") long tagSize, Pageable pageable);
+
+    @Query("SELECT sb FROM StyleBoard sb WHERE EXISTS (SELECT ht FROM HashTag ht WHERE ht.styleBoard = sb AND ht.name IN :tags)")
+    Page<StyleBoard> findByTagsIn(@Param("tags") List<String> tags, Pageable pageable);
+
+    @Query("SELECT sb FROM StyleBoard sb ORDER BY sb.created_at DESC")
+    Page<StyleBoard> findAllStyleBoardsSortedByCreationDateDesc(Pageable pageable);
 
 }
