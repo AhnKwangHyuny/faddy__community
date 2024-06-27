@@ -5,7 +5,7 @@ const topicToCategoryMap = {
     daily: 'DAILY_SHARE',
     fashion: 'FASHION_SHARE',
     tips: 'STYLE_TIP',
-    news: 'NEWS_SHARE'
+
 };
 
 export const mapTopicToCategory = (topic) => {
@@ -14,4 +14,4 @@ export const mapTopicToCategory = (topic) => {
 
 export const mapCategoryToTopic = (category) => {
     return Object.keys(topicToCategoryMap).find(key => topicToCategoryMap[key] === category) || null;
-}
+};

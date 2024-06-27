@@ -51,7 +51,7 @@ export const searchFilterData = [
     {
         id: 'style',
         label: '스타일',
-        subCategories: ['질문하기', '일상공유', '소식공유', '패션꿀팁'],
+        subCategories: ['질문하기', '일상공유', '패션공유', '패션꿀팁'],
 
     }
 ]

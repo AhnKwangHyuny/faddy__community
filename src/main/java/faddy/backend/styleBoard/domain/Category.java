@@ -36,7 +36,7 @@ public enum Category {
             case "news":
                 return NEWS_SHARE;
             default:
-                throw new IllegalArgumentException("Unknown category: " + urlValue);
+                return null;
         }
     }
 

@@ -3,7 +3,7 @@ import Filter from "widgets/Filter/Filter";
 import { snapCategoryData, searchFilterData } from "data/category";
 
 const CategorySelector = ({ selectedCategories, setSelectedCategories }) => {
-    const [categoryData, setCategoryData] = useState(snapCategoryData);
+    const [categoryData, setCategoryData] = useState([]);
 
     // styleBoard Modal에선 카테고리 label 가림
     const isLabelHide = window.location.pathname.startsWith('/styleBoards');

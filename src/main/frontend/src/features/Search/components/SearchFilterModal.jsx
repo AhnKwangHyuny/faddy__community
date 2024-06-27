@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
-import CommentCard from "widgets/Comment/CommentCard/CommentCard";
+import React, { useState, useEffect } from 'react';
 import HashTagBox from "pages/Snap/Components/HashTagBox/HashTagBox";
 import CategorySelector from "pages/Snap/Components/SnapCategory/SnapCategory";
 
-const SearchFilterModal = ({ showModal, setShowModal }) => {
+const SearchFilterModal = ({ showModal, setShowModal, setFilterOptions, onSubmit }) => {
     const [tags, setTags] = useState([]);
-    const [activeTab, setActiveTab] = useState('tag'); // State to manage active tab
+    const [activeTab, setActiveTab] = useState('tag');
     const [selectedCategories, setSelectedCategories] = useState({});
 
-    const handleCLose = () => {
+    const handleClose = () => {
         setShowModal(false);
     };
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
+
+    const handleSearchClick = () => {
+
+        const filterOptions = {
+            tags: tags,
+            category: selectedCategories
+        };
+
+        handleClose();
+
+        onSubmit(filterOptions); // Load data after setting filter options
+    };
+
+    // 모달이 열릴 때 상태 초기화
+    useEffect(() => {
+        if (showModal) {
+            setTags([]);
+            setSelectedCategories({});
+        }
+    }, [showModal]);
 
     return (
         <div className={`search-filter-modal ${showModal ? 'open' : ''}`}>
@@ -23,8 +42,8 @@ const SearchFilterModal = ({ showModal, setShowModal }) => {
                     <div className="touch-bar"></div>
                 </div>
                 <div className="search-filter-modal__header">
-                    <div className="close-button" onClick={handleCLose}>
-                       <span className="material-icons">close</span>
+                    <div className="close-button" onClick={handleClose}>
+                        <span className="material-icons">close</span>
                     </div>
                     <div className="modal-title__container">
                         <span className="title">검색 옵션을 선택해주세요.</span>
@@ -46,18 +65,17 @@ const SearchFilterModal = ({ showModal, setShowModal }) => {
                 </div>
                 <div className="search-filter-modal__content">
                     {activeTab === 'tag' && (
-                        <>
-                            <HashTagBox labelHide={true} tags={tags} setTags={setTags} />
-                        </>
+                        <HashTagBox labelHide={true} tags={tags} setTags={setTags} />
                     )}
                     {activeTab === 'category' && (
-                        <div>
-                            <CategorySelector />
-                        </div>
+                        <CategorySelector
+                            selectedCategories={selectedCategories}
+                            setSelectedCategories={setSelectedCategories}
+                        />
                     )}
                 </div>
                 <div className="search-filter-modal__footer">
-                    <button className="search-button">검색</button>
+                    <button className="search-button" onClick={handleSearchClick}>검색</button>
                 </div>
             </div>
         </div>

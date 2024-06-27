@@ -1,6 +1,5 @@
 package faddy.backend.styleBoard.service;
 
-import faddy.backend.global.Utils.TagUtils;
 import faddy.backend.hashTags.repository.HashTagRepository;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.Category;
@@ -41,14 +40,16 @@ public class StyleBoardLoadServiceImpl implements StyleBoardLoadService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<StyleBoardResponseDTO> getFilteredStyleBoards(String category, String sort, String tagStr, int page, int size) {
+    public List<StyleBoardResponseDTO> getFilteredStyleBoards(String category, String sort, List<String> tags, int page, int size) {
+
+        //파라미터 전부 조회
+        log.info("category : {}, sort : {}, tags : {}, page : {}, size : {}", category, sort, tags, page, size);
 
         //페이징 정보 객체 생성
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        PageRequest pageRequest = PageRequest.of(page , size);
 
         Category categoryData = Category.fromUrlValue(category);
-        List<String> tags = TagUtils.convertTagsToList(tagStr);
-        System.out.println("tags = " + tags);
+
         //filtered styleBoard 조회
         Page<StyleBoard> styleBoards;
 
@@ -92,10 +93,12 @@ public class StyleBoardLoadServiceImpl implements StyleBoardLoadService {
 
     private StyleBoardResponseDTO toStyleBoardResponseDTO(StyleBoard styleBoard, InteractionCountDTO interactionCountDTO) {
         return StyleBoardResponseDTO.builder()
+                .boardId(styleBoard.getId())
                 .title(styleBoard.getTitle())
                 .createdAt(styleBoard.getCreated_at())
                 .userProfileDTO(UserProfileDTO.from(styleBoard.getAuthor()))
                 .interactionCountDTO(interactionCountDTO)
+                .category(styleBoard.getCategory())
                 .build();
     }
 

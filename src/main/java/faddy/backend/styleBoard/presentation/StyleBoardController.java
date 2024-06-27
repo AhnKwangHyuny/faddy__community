@@ -3,6 +3,7 @@ package faddy.backend.styleBoard.presentation;
 import faddy.backend.global.response.ApiResponse;
 import faddy.backend.global.response.ErrorApiResponse;
 import faddy.backend.global.response.SuccessApiResponse;
+import faddy.backend.styleBoard.dto.request.FilteredStyleBoardRequestDTO;
 import faddy.backend.styleBoard.dto.request.StyleBoardRequestDTO;
 import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardCreateResponseDTO;
@@ -71,23 +72,28 @@ public class StyleBoardController {
     }
 
     @Description("스타일보드 목록 조회")
-    @GetMapping
-    public ResponseEntity<? extends ApiResponse> getStyleBoards(
-            @RequestParam(value = "sort", defaultValue = "newest") String sort,
-            @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "tags", required = false) String tags) {
+    @PostMapping
+    public ResponseEntity<? extends ApiResponse> getStyleBoards(@RequestBody FilteredStyleBoardRequestDTO request) {
 
         try {
-            // sort , category , tags , page , size 파라미터를 이용하여 스타일보드 목록 조회
-            log.info("sort = " + sort + ", category = " + category + ", page = " + page + ", size = " + size + ", tags = " + tags);
+            // DTO에서 파라미터 추출
+            String sort = request.getSort();
+            String category = request.getCategory();
+            int page = request.getPage();
+            int size = request.getSize();
+            List<String> tags = request.getTags();
+
 
             List<StyleBoardResponseDTO> response = styleBoardLoadService.getFilteredStyleBoards(category, sort, tags, page, size);
+
+
+            //styleBoardDto 리스트 조회
+            System.out.println("response.size() = " + response.size());
 
             return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 목록 조회 성공", response);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ErrorApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "스타일보드 목록 조회 실패");
         }
     }

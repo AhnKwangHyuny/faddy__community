@@ -23,6 +23,6 @@ public interface StyleBoardLoadService {
      * @param size      페이지 당 항목 수
      * @return 필터링 및 정렬된 styleBoard 리스트
      */
-    List<StyleBoardResponseDTO> getFilteredStyleBoards(String category, String sort, String tags, int page, int size);
+    List<StyleBoardResponseDTO> getFilteredStyleBoards(String category, String sort, List<String> tags, int page, int size);
 
 }

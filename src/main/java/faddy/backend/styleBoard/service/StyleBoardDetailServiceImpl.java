@@ -1,5 +1,7 @@
 package faddy.backend.styleBoard.service;
 
+import faddy.backend.auth.jwt.Service.JwtUtil;
+import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.global.exception.StyleBoardDataAccessException;
 import faddy.backend.global.exception.StyleBoardNotFoundException;
 import faddy.backend.hashTags.domain.HashTag;
@@ -37,6 +39,7 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
     private final HashTagService hashTagService;
     private final LikeRedisService likeRedisService;
     private final ViewRedisService viewRedisService;
+    private final JwtUtil jwtUtil;
 
     private final StyleBoardJpaRepository styleBoardRepository;
 
@@ -94,9 +97,10 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CheckOwnerResponseDTO checkStyleBoardOwner(Long styleBoardId, String token) {
+
         try {
+
             // 로그인된 접근 유저 토큰을 통해 유저 entity 조회
             User user = userService.findUserByToken(token);
 
@@ -106,10 +110,12 @@ public class StyleBoardDetailServiceImpl implements StyleBoardDetailService {
             return new CheckOwnerResponseDTO(isOwner);
 
         } catch (Exception e) {
-            ExceptionLogger.logException(e);
-            throw new StyleBoardDataAccessException(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+            // 기타 예외 처리
+            log.warn("checkStyleBoardOwner error : " + e.getMessage());
+            return new CheckOwnerResponseDTO(false);
         }
     }
+
 
     @Override
     @Transactional(readOnly = true)
