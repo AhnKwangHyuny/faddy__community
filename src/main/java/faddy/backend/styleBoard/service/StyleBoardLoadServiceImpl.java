@@ -1,10 +1,12 @@
 package faddy.backend.styleBoard.service;
 
+import faddy.backend.global.exception.BadRequestException;
 import faddy.backend.hashTags.repository.HashTagRepository;
 import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.Category;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoard.dto.response.InteractionCountDTO;
+import faddy.backend.styleBoard.dto.response.StyleBoardEditResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardResponseDTO;
 import faddy.backend.styleBoard.dto.response.UserProfileDTO;
 import faddy.backend.styleBoard.repository.StyleBoardJpaRepository;
@@ -15,10 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -102,5 +106,23 @@ public class StyleBoardLoadServiceImpl implements StyleBoardLoadService {
                 .build();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public StyleBoardEditResponseDTO getStyleBoardForEdit(Long styleBoardId) {
+        Optional<StyleBoard> optionalStyleBoard = styleBoardRepository.findById(styleBoardId);
 
+        if (optionalStyleBoard.isPresent()) {
+            StyleBoard styleBoard = optionalStyleBoard.get();
+            List<String> hashTags = hashTagRepository.findTagNamesByStyleBoardId(styleBoardId);
+
+            return StyleBoardEditResponseDTO.builder()
+                    .boardId(styleBoard.getId())
+                    .title(styleBoard.getTitle())
+                    .content(styleBoard.getContent())
+                    .hashTags(hashTags)
+                    .build();
+        } else {
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(), "StyleBoard not found with id: " + styleBoardId);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package faddy.backend.styleBoard.service.useCase;
 
 import faddy.backend.styleBoard.domain.StyleBoard;
+import faddy.backend.styleBoard.dto.response.StyleBoardEditResponseDTO;
 import faddy.backend.styleBoard.dto.response.StyleBoardResponseDTO;
 
 import java.util.List;
@@ -24,5 +25,12 @@ public interface StyleBoardLoadService {
      * @return 필터링 및 정렬된 styleBoard 리스트
      */
     List<StyleBoardResponseDTO> getFilteredStyleBoards(String category, String sort, List<String> tags, int page, int size);
+
+    /**
+     *  styleBoard 수정을 위한 styleBoardId에 해당하는 styleBoard 조회 후 반환
+     *  @param styleBoardId  조회할 styleBoard의 id
+     *  @return styleBoardEditResponseDTO styleBoard 수정을 위한 정보
+     * */
+    StyleBoardEditResponseDTO getStyleBoardForEdit(Long styleBoardId);
 
 }

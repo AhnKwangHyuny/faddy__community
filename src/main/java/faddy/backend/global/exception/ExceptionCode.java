@@ -22,6 +22,7 @@ public enum ExceptionCode {
     *
     * */
     NOT_SAVE_USER(3000 , "회원가입 처리 중 서버 오류가 발생했습니다. 잠시 후 다시 시도 부탁드립니다."),
+    FAIL_DELETE_ENTITY(3001 , "엔티티 삭제에 실패했습니다."),
 
     /**
      * @Return User info request exception : 4000~ 5000
@@ -140,6 +141,8 @@ public enum ExceptionCode {
      *
      * */
     FAIL_DB_ASYNC_ERROR(500 , "DB 동기화 처리 중 에러가 발생했습니다.");
+
+
 
     private final int code;
     private final String message;

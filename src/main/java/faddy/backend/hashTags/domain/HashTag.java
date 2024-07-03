@@ -55,6 +55,11 @@ public class HashTag extends BaseEntity {
         this.styleBoard = styleBoard;
     }
 
+
+    public void updatePriority(int priority) {
+        this.priority = priority;
+    }
+
     //addSnap
     public void linkToSnap(Snap snap) {
         this.snap = snap;

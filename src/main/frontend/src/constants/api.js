@@ -122,8 +122,9 @@ export const END_POINTS = {
   GET_STYLE_BOARD_COMMENTS : (styleBoardId) => `${API_STYLE_BOARD}/detail/${styleBoardId}/comments`,
 
   GET_STYLE_BOARDS : `${API_STYLE_BOARD}`,
-
-
+  GET_STYLE_BOARD_DATA : (boardId) => `${API_STYLE_BOARD}/${boardId}`,
+  GET_STYLE_BOARD_EDIT_DATA : (boardId) => `${API_STYLE_BOARD}/${boardId}/edit`,
+  UPDATE_STYLE_BOARD_DATA : (boardId) => `${API_STYLE_BOARD}/${boardId}`,
   /**
   *  좋아요 요청
   *

@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -88,6 +90,12 @@ public class StyleBoard extends BaseEntity {
         public StyleBoard build() {
             return new StyleBoard(category, title, content);
         }
+    }
+
+    // 업데이트 메서드 추가
+    public void update(String title, String content ) {
+        this.title = title;
+        this.content = content;
     }
 
 

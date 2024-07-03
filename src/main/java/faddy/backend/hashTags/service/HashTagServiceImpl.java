@@ -9,6 +9,8 @@ import faddy.backend.hashTags.domain.dto.response.HashTagIdResponseDto;
 import faddy.backend.hashTags.dto.request.HashTagRequestDTO;
 import faddy.backend.hashTags.repository.HashTagRepository;
 import faddy.backend.log.exception.ExceptionLogger;
+import faddy.backend.styleBoard.domain.StyleBoard;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
+@Slf4j
 public class HashTagServiceImpl implements HashTagService {
     private final HashTagRepository hashTagRepository;
 
@@ -98,4 +101,62 @@ public class HashTagServiceImpl implements HashTagService {
     public List<HashTag> findHashTagsByStyleBoardId(Long styleBoardId) {
         return hashTagRepository.findByStyleBoardId(styleBoardId);
     }
+
+
+    @Override
+    @Transactional
+    public void updateHashTagsForStyleBoard(StyleBoard styleBoard, List<HashTagRequestDTO> newHashTags) {
+        try {
+            // 기존 해시태그 가져오기
+            List<HashTag> existingHashTags = hashTagRepository.findByStyleBoardId(styleBoard.getId());
+
+            // 새로운 해시태그 이름 목록
+            List<String> newTagNames = newHashTags.stream()
+                    .map(HashTagRequestDTO::getName)
+                    .collect(Collectors.toList());
+
+            // 기존 해시태그 중에서 새로운 해시태그 이름 목록에 없는 것들 삭제
+            existingHashTags.forEach(existingTag -> {
+                if (!newTagNames.contains(existingTag.getName())) {
+                    try {
+                        hashTagRepository.delete(existingTag);
+                    } catch (Exception e) {
+                        throw new SaveEntityException(ExceptionCode.FAIL_DELETE_ENTITY);
+                    }
+                }
+            });
+
+            // 새로운 해시태그 추가 및 업데이트
+            IntStream.range(0, newHashTags.size())
+                    .forEach(index -> {
+                        HashTagRequestDTO newTag = newHashTags.get(index);
+                        Optional<HashTag> existingTag = existingHashTags.stream()
+                                .filter(tag -> tag.getName().equals(newTag.getName()))
+                                .findFirst();
+
+                        if (existingTag.isPresent()) {
+                            // 기존 해시태그 업데이트
+                            HashTag tag = existingTag.get();
+                            tag.linkToStyleBoard(styleBoard);
+                            tag.updatePriority(index);
+                        } else {
+                            // 새로운 해시태그 추가
+                            HashTag tag = new HashTag(newTag.getName(), index, newTag.getContentType());
+                            tag.linkToStyleBoard(styleBoard);
+                            try {
+                                hashTagRepository.save(tag);
+                            } catch (Exception e) {
+                                ExceptionLogger.logException(e);
+                                throw new SaveEntityException(ExceptionCode.FAIL_SAVE_ENTITY);
+                            }
+                        }
+                    });
+
+        } catch (Exception e) {
+            log.warn("updateHashTagsForStyleBoard error", e);
+            throw new SaveEntityException(ExceptionCode.FAIL_SAVE_ENTITY);
+        }
+    }
+
+
 }

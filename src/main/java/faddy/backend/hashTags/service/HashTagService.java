@@ -4,6 +4,7 @@ import faddy.backend.hashTags.domain.HashTag;
 import faddy.backend.hashTags.domain.dto.request.HashTagRequestDto;
 import faddy.backend.hashTags.domain.dto.response.HashTagIdResponseDto;
 import faddy.backend.hashTags.dto.request.HashTagRequestDTO;
+import faddy.backend.styleBoard.domain.StyleBoard;
 
 import java.util.List;
 
@@ -25,4 +26,13 @@ public interface HashTagService {
      * @return List<HashTag> 해쉬태그 리스트
      * */
     List<HashTag> findHashTagsByStyleBoardId(Long styleBoardId);
+
+
+    /**
+     * styleBoardId에 해당하는 해쉬태그 리스트를 업데이트
+     * @param styleBoard 스타일보드 아이디
+     * @param hashTags 해쉬태그 리스트
+     * */
+    void updateHashTagsForStyleBoard(StyleBoard styleBoard, List<HashTagRequestDTO> hashTags);
+
 }

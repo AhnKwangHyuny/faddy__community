@@ -39,7 +39,7 @@ function App() {
                     <Route path="/styleBoards" element={<StyleBoardListPage/>} />
                     <Route path="/styleBoards/create" element={<ProtectedRoute><StyleBoardCreatePage/></ProtectedRoute>} />
                     <Route path="/styleBoards/detail/:id" element={<StyleBoardDetailPage/>} />
-                    <Route path="/styleBoards/edit" element={<StyleBoardEditPage/>} />
+                    <Route path="/styleBoards/edit/:id" element={<StyleBoardEditPage/>} />
                 </Routes>
             </Router>
         </AuthProvider>

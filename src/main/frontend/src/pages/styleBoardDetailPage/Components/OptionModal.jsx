@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+
 
 const OptionModal = ({ onClose, onOptionButtonClick }) => {
     const [show, setShow] = useState(false);
+    const { id } = useParams();
     const [showConfirmation, setShowConfirmation] = useState(false);
 
     useEffect(() => {
@@ -45,7 +48,7 @@ const OptionModal = ({ onClose, onOptionButtonClick }) => {
                         </span>
                     </button>
                     <div className="modal-buttons">
-                        <button onClick={() => window.location.href = '/edit'}>수정하기</button>
+                        <button onClick={() => window.location.href = `/styleBoards/edit/${id}`}>수정하기</button>
                         <button onClick={handleDeleteClick}>삭제하기</button>
                     </div>
                 </div>

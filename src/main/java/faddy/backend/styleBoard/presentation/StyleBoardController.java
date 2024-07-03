@@ -4,13 +4,12 @@ import faddy.backend.global.response.ApiResponse;
 import faddy.backend.global.response.ErrorApiResponse;
 import faddy.backend.global.response.SuccessApiResponse;
 import faddy.backend.styleBoard.dto.request.FilteredStyleBoardRequestDTO;
+import faddy.backend.styleBoard.dto.request.StyleBoardEditRequestDTO;
 import faddy.backend.styleBoard.dto.request.StyleBoardRequestDTO;
-import faddy.backend.styleBoard.dto.response.CheckOwnerResponseDTO;
-import faddy.backend.styleBoard.dto.response.StyleBoardCreateResponseDTO;
-import faddy.backend.styleBoard.dto.response.StyleBoardDetailResponseDTO;
-import faddy.backend.styleBoard.dto.response.StyleBoardResponseDTO;
+import faddy.backend.styleBoard.dto.response.*;
 import faddy.backend.styleBoard.service.adapter.useCase.StyleBoardCreatePersistenceAdaptor;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
+import faddy.backend.styleBoard.service.useCase.StyleBoardEditService;
 import faddy.backend.styleBoard.service.useCase.StyleBoardLoadService;
 import faddy.backend.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +31,7 @@ public class StyleBoardController {
     private final StyleBoardCreatePersistenceAdaptor styleBoardCreatePersistenceAdaptor;
     private final StyleBoardDetailService styleBoardDetailService;
     private final StyleBoardLoadService styleBoardLoadService;
+    private final StyleBoardEditService styleBoardEditService;
     private final UserService userService;
     private static final String CREATE_SUCCESS_MESSAGE = "[create] 게시글이 성공적으로 등록되었습니다.";
     private static final String CREATE_FAIL_MESSAGE = "[create] 게시글 등록에 실패했습니다.";
@@ -53,12 +53,31 @@ public class StyleBoardController {
         }
     }
 
+
+    @Description("스타일보드 edit 데이터 조회")
+    @GetMapping("{styleBoardId}/edit")
+    public ResponseEntity<? extends ApiResponse> getStyleBoard(@PathVariable("styleBoardId") Long styleBoardId) {
+        StyleBoardEditResponseDTO response = styleBoardLoadService.getStyleBoardForEdit(styleBoardId);
+
+        return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 edit 조회 성공", response);
+    }
+
+    @Description("스타일보드 수정")
+    @PutMapping("/{styleBoardId}")
+    public ResponseEntity<? extends ApiResponse> editStyleBoard(@RequestBody StyleBoardEditRequestDTO request , @PathVariable("styleBoardId") Long styleBoardId) {
+
+        styleBoardEditService.updateStyleBoard(request , styleBoardId);
+
+        return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 수정 성공");
+
+    }
+
+
     @Description("스타일보드 상세 페이지 데이터 조회")
     @GetMapping("/detail/{styleBoard_id}")
     public ResponseEntity<? extends ApiResponse> getStyleBoardDetail(@PathVariable("styleBoard_id") Long styleBoardId,
                                                                      @RequestParam(value = "category", required = true) String category,
                                                                      HttpServletRequest request) {
-
         String token = request.getHeader("Authorization");
 
         Long viewerId = null;
@@ -105,13 +124,15 @@ public class StyleBoardController {
         // token 추출
         String token = request.getHeader("Authorization");
 
-        //token 없으면 에러 반환
-        if(token == null) {
-            return ErrorApiResponse.of(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다.");
+        // token 없으면 isOwner: false로 설정된 DTO 반환
+        if (token == null) {
+            CheckOwnerResponseDTO response = new CheckOwnerResponseDTO(false);
+            return ErrorApiResponse.of(HttpStatus.UNAUTHORIZED, "토큰이 존재하지 않습니다.", response);
         }
 
         CheckOwnerResponseDTO response = styleBoardDetailService.checkStyleBoardOwner(styleBoardId, token);
 
-        return SuccessApiResponse.of(HttpStatus.OK, CHECK_OWNER_SUCCESS_MESSAGE, response);
+        return SuccessApiResponse.of(HttpStatus.OK, "소유자 확인 성공", response);
     }
+
 }

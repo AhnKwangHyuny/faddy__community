@@ -21,4 +21,8 @@ public interface HashTagRepository extends JpaRepository<HashTag, Long>, CustomH
 
     @Query("SELECT ht.styleBoard FROM HashTag ht WHERE ht.name IN :tags GROUP BY ht.styleBoard HAVING COUNT(ht.id) = :tagSize")
     List<StyleBoard> findStyleBoardsByTags(@Param("tags") List<String> tags, @Param("tagSize") long tagSize);
+
+    // styleBoardId에 해당하는 해시태그 이름 리스트를 반환
+    @Query("SELECT h.name FROM HashTag h WHERE h.styleBoard.id = :styleBoardId")
+    List<String> findTagNamesByStyleBoardId(@Param("styleBoardId") Long styleBoardId);
 }
