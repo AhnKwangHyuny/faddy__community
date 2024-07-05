@@ -1,5 +1,6 @@
 package faddy.backend.styleBoard.service;
 
+import faddy.backend.global.exception.DeleteEntityException;
 import faddy.backend.like.service.useCase.LikeRedisService;
 import faddy.backend.like.type.ContentType;
 import faddy.backend.styleBoard.dto.response.InteractionCountDTO;
@@ -8,6 +9,7 @@ import faddy.backend.styleBoardComment.service.useCase.StyleBoardCommentRedisSer
 import faddy.backend.views.service.useCase.ViewRedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +40,22 @@ public class InteractionCountServiceImpl implements InteractionCountService {
                 .likeCount(likeCount)
                 .commentCount(commentCount)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void deleteStyleBoardInteractionCounts(Long styleBoardId) {
+        try {
+
+            ContentType likeContentType = ContentType.STYLE_BOARD;
+            faddy.backend.views.type.ContentType viewContentType = faddy.backend.views.type.ContentType.STYLE_BOARD;
+
+            likeRedisService.deleteLikes(styleBoardId, likeContentType);
+            viewRedisService.deleteViews(styleBoardId, viewContentType);
+            styleBoardCommentRedisService.deleteStyleBoardComments(styleBoardId);
+
+        } catch (Exception e) {
+            throw new DeleteEntityException(HttpStatus.BAD_REQUEST, e.getMessage(), styleBoardId);
+        }
     }
 }

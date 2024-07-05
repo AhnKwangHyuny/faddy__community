@@ -1,5 +1,6 @@
 package faddy.backend.like.service;
 
+import faddy.backend.global.exception.DeleteEntityException;
 import faddy.backend.global.exception.SaveEntityException;
 import faddy.backend.like.domain.Like;
 import faddy.backend.like.repository.LikeCustomRepository;
@@ -176,9 +177,61 @@ public class LikeServiceImpl implements LikeService {
 
 
     @Override
-    public void deleteLike(String objectType, Long objectId) {
-        System.out.println("objectType = " + objectType);
+    @Transactional
+    public void deleteLike(ContentType type, Long objectId) {
+        // ContentType에 따라서 like 삭제 로직 수행
+        switch (type) {
+            case STYLE_BOARD:
+                handleDeleteStyleBoardLike(objectId);
+                break;
+            case SNAP:
+                handleDeleteSnapLike(objectId);
+                break;
+            case STYLE_BOARD_COMMENT:
+                handleDeleteStyleBoardCommentLike(objectId);
+                break;
+            default:
+                log.warn("정해지지 않은 contentType 입니다. [좋아요 삭제 실패]");
+                throw new DeleteEntityException(HttpStatus.BAD_REQUEST, "정해지지 않은 contentType 입니다. [좋아요 삭제 실패]" , objectId);
+        }
     }
+
+    @Transactional
+    private void handleDeleteStyleBoardLike(Long objectId) {
+        StyleBoard styleBoard = styleBoardDetailService.getStyleBoard(objectId);
+        List<Like> likes = likeRepository.findByStyleBoard(styleBoard);
+
+        try {
+            likeRepository.deleteAll(likes);
+        } catch (Exception e) {
+            throw new DeleteEntityException(HttpStatus.BAD_REQUEST, "스타일보드 좋아요 삭제에 실패했습니다." , objectId);
+        }
+    }
+
+    @Transactional
+    private void handleDeleteSnapLike(Long objectId) {
+        Snap snap = snapService.getSnapById(objectId);
+        List<Like> likes = likeRepository.findBySnap(snap);
+
+        try {
+            likeRepository.deleteAll(likes);
+        } catch (Exception e) {
+            throw new DeleteEntityException(HttpStatus.BAD_REQUEST, "스냅 좋아요 삭제에 실패했습니다." , objectId);
+        }
+    }
+
+    @Transactional
+    private void handleDeleteStyleBoardCommentLike(Long objectId) {
+        StyleBoardComment comment = getStyleBoardCommentService.loadStyleBoardById(objectId);
+        List<Like> likes = likeRepository.findByStyleBoardComment(comment);
+
+        try {
+            likeRepository.deleteAll(likes);
+        } catch (Exception e) {
+            throw new DeleteEntityException(HttpStatus.BAD_REQUEST, "스타일보드 댓글 삭제에 실패했습니다" , objectId);
+        }
+    }
+
 
     @Transactional
     private void handleStyleBoardLike(User user, Long objectId) {

@@ -1,6 +1,6 @@
 package faddy.backend.like.service.useCase;
 
-import faddy.backend.comment.domain.Comment;
+import faddy.backend.like.type.ContentType;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
 import faddy.backend.user.domain.User;
@@ -21,13 +21,13 @@ public interface LikeService {
 
     void createLike(String objectType, Long objectId , String token);
 
-    void deleteLike(String objectType, Long objectId);
+    void deleteLike(ContentType type, Long objectId);
 
 
 
     /**
      * Comment에 좋아요를 저장합니다.
-     * @param StyleBoardComment 좋아요를 누른 Comment
+     * @param comment 좋아요를 누른 Comment
      * @param users 좋아요를 누른 사용자 목록
      */
     void batchSaveStyleBoardCommentLikes(StyleBoardComment comment, List<User> users);

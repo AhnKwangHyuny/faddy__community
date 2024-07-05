@@ -52,4 +52,13 @@ public interface LikeRedisService {
     int countLikes(Long objectId, ContentType contentType);
 
     List<Long> getLikedUserIds(Long objectId, ContentType contentType);
+
+
+    /**
+     * 특정 객체에 대한 좋아요 정보를 Redis에서 삭제
+     *
+     * @param objectId    좋아요 대상 객체의 ID
+     * @param contentType 좋아요 대상 객체의 타입 (Snap, StyleBoard, StyleBoardComment, User)
+     */
+    void deleteLikes(Long objectId, ContentType contentType);
 }

@@ -8,6 +8,7 @@ import faddy.backend.styleBoard.dto.request.StyleBoardEditRequestDTO;
 import faddy.backend.styleBoard.dto.request.StyleBoardRequestDTO;
 import faddy.backend.styleBoard.dto.response.*;
 import faddy.backend.styleBoard.service.adapter.useCase.StyleBoardCreatePersistenceAdaptor;
+import faddy.backend.styleBoard.service.useCase.StyleBoardDeleteService;
 import faddy.backend.styleBoard.service.useCase.StyleBoardDetailService;
 import faddy.backend.styleBoard.service.useCase.StyleBoardEditService;
 import faddy.backend.styleBoard.service.useCase.StyleBoardLoadService;
@@ -32,6 +33,7 @@ public class StyleBoardController {
     private final StyleBoardDetailService styleBoardDetailService;
     private final StyleBoardLoadService styleBoardLoadService;
     private final StyleBoardEditService styleBoardEditService;
+    private final StyleBoardDeleteService styleBoardDeleteService;
     private final UserService userService;
     private static final String CREATE_SUCCESS_MESSAGE = "[create] 게시글이 성공적으로 등록되었습니다.";
     private static final String CREATE_FAIL_MESSAGE = "[create] 게시글 등록에 실패했습니다.";
@@ -60,6 +62,17 @@ public class StyleBoardController {
         StyleBoardEditResponseDTO response = styleBoardLoadService.getStyleBoardForEdit(styleBoardId);
 
         return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 edit 조회 성공", response);
+    }
+
+    @Description("스타일보드 삭제")
+    @DeleteMapping("/{styleBoardId}")
+    public ResponseEntity<? extends ApiResponse> deleteStyleBoard(@PathVariable("styleBoardId") Long styleBoardId , HttpServletRequest request) {
+
+        String authorization = request.getHeader("Authorization");
+        styleBoardDeleteService.deleteStyleBoard(authorization , styleBoardId);
+
+        return SuccessApiResponse.of(HttpStatus.OK, "스타일보드 삭제 성공");
+
     }
 
     @Description("스타일보드 수정")

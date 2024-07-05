@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +46,8 @@ public interface StyleBoardJpaRepository extends JpaRepository<StyleBoard, Long>
     @Query("SELECT sb FROM StyleBoard sb ORDER BY sb.created_at DESC")
     Page<StyleBoard> findAllStyleBoardsSortedByCreationDateDesc(Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM StyleBoard sb WHERE sb.id = :styleBoardId")
+    void deleteById(@Param("styleBoardId") Long styleBoardId);
 }

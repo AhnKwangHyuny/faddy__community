@@ -78,4 +78,15 @@ public class ViewRedisServiceImpl implements ViewRedisService {
             return 0;
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteViews(Long objectId, ContentType contentType) {
+        try {
+            String redisKey = generateRedisKey(contentType, objectId);
+            redisTemplate.delete(redisKey);
+        } catch (Exception e) {
+            throw new BadRequestException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+    }
 }

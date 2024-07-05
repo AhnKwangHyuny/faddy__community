@@ -10,4 +10,10 @@ public interface InteractionCountService {
      *  @return InteractionCountDTO styleBoard의 interactionCount
      * */
     InteractionCountDTO getInteractionCount(Long styleBoardId);
+
+    /**
+     *  styleBoardId에 해당하는 styleBoard의 모든 interactionCount 삭제 - likeCount, viewCount, commentCount
+     *  @param styleBoardId  삭제할 styleBoard의 id
+     * */
+    void deleteStyleBoardInteractionCounts(Long styleBoardId);
 }

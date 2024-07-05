@@ -10,3 +10,14 @@ export const cancelLike = async (objectType , objectId) => {
         throw error.response.data.status;
     }
 }
+
+export const deleteStyleBoard = async (styleBoardId) => {
+    try {
+        const response = await userRequestInstance.delete(END_POINTS.DELETE_STYLE_BOARD(styleBoardId));
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting style board:', error);
+        throw error;
+    }
+}

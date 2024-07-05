@@ -28,7 +28,7 @@ public class StyleBoardComment extends BaseEntity {
     @Column(name = "comment_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "style_board_id", nullable = false)
     private StyleBoard styleBoard;
 

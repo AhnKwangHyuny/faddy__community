@@ -35,4 +35,10 @@ public interface HashTagService {
      * */
     void updateHashTagsForStyleBoard(StyleBoard styleBoard, List<HashTagRequestDTO> hashTags);
 
+    /**
+     * 해당 object 삭제 시 연관 hashTag 삭제
+     * @param objectId 삭제할 object id
+     * */
+    void deleteHashTagsByStyleBoardId(Long styleBoardId);
+
 }

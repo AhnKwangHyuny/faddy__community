@@ -2,6 +2,8 @@ package faddy.backend.like.repository;
 
 import faddy.backend.like.domain.Like;
 import faddy.backend.snap.domain.Snap;
+import faddy.backend.styleBoard.domain.StyleBoard;
+import faddy.backend.styleBoardComment.domain.StyleBoardComment;
 import faddy.backend.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,8 +35,26 @@ public interface LikeJpaRepository extends JpaRepository<Like, Long> {
     @Query("SELECT l.user FROM Like l WHERE l.snap = :snap")
     List<User> findUsersBySnap(@Param("snap") Snap snap);
 
-    //snapId로 해당 likes들 모두 삭제
+    // snapId로 해당 likes들 모두 삭제
     @Modifying
     @Query("DELETE FROM Like l WHERE l.snap in :snap")
     void deleteAllLikesBySnap(@Param("snap") Snap snap);
+
+    // styleBoard로 해당 likes들 모두 조회
+    @Query("SELECT l FROM Like l WHERE l.styleBoard = :styleBoard")
+    List<Like> findByStyleBoard(@Param("styleBoard") StyleBoard styleBoard);
+
+    // styleBoard로 해당 likes들 모두 삭제
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.styleBoard = :styleBoard")
+    void deleteAllLikesByStyleBoard(@Param("styleBoard") StyleBoard styleBoard);
+
+    // styleBoardComment로 해당 likes들 모두 조회
+    @Query("SELECT l FROM Like l WHERE l.styleBoardComment = :styleBoardComment")
+    List<Like> findByStyleBoardComment(@Param("styleBoardComment") StyleBoardComment styleBoardComment);
+
+    // styleBoardComment로 해당 likes들 모두 삭제
+    @Modifying
+    @Query("DELETE FROM Like l WHERE l.styleBoardComment = :styleBoardComment")
+    void deleteAllLikesByStyleBoardComment(@Param("styleBoardComment") StyleBoardComment styleBoardComment);
 }

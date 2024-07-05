@@ -1,6 +1,7 @@
 package faddy.backend.hashTags.service;
 
 import faddy.backend.global.exception.BadRequestException;
+import faddy.backend.global.exception.DeleteEntityException;
 import faddy.backend.global.exception.ExceptionCode;
 import faddy.backend.global.exception.SaveEntityException;
 import faddy.backend.hashTags.domain.HashTag;
@@ -12,6 +13,7 @@ import faddy.backend.log.exception.ExceptionLogger;
 import faddy.backend.styleBoard.domain.StyleBoard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,5 +160,15 @@ public class HashTagServiceImpl implements HashTagService {
         }
     }
 
+    @Override
+    public void deleteHashTagsByStyleBoardId(Long styleBoardId) {
+        try {
+            hashTagRepository.deleteByStyleBoardId(styleBoardId);
 
+
+        } catch (Exception e) {
+            ExceptionLogger.logException(e);
+            throw new DeleteEntityException(HttpStatus.BAD_REQUEST.value() , "해시태그 삭제에 실패했습니다." , styleBoardId);
+        }
+    }
 }

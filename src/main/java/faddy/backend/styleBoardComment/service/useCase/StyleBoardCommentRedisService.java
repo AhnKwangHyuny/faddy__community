@@ -13,4 +13,6 @@ public interface StyleBoardCommentRedisService {
     int countStyleBoardComments(Long styleBoardId);
 
     List<Long> getStyleBoardCommentIds(Long styleBoardId);
+
+    void deleteStyleBoardComments(Long styleBoardId);
 }

@@ -2,6 +2,7 @@ package faddy.backend.views.service.useCase;
 
 
 import faddy.backend.views.type.ContentType;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ViewRedisService {
 
@@ -40,4 +41,13 @@ public interface ViewRedisService {
      * @return 해당 객체에 대한 전체 조회수
      */
     int countViews(Long objectId, ContentType contentType);
+
+    /**
+     * 특정 객체에 대한 조회수 정보를 Redis에서 삭제
+     *
+     * @param objectId    조회수 대상 객체의 ID
+     * @param contentType 조회수 대상 객체의 타입 (Snap, StyleBoard, StyleBoardComment, User)
+     */
+    void deleteViews(Long objectId, ContentType contentType);
+
 }

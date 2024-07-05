@@ -3,9 +3,11 @@ package faddy.backend.styleBoardComment.repository;
 import faddy.backend.styleBoardComment.domain.StyleBoardComment;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +21,15 @@ public interface StyleBoardCommentJpaRepository extends JpaRepository<StyleBoard
             "LEFT JOIN FETCH ch.author cha " +
             "LEFT JOIN FETCH cha.profile " +
             "WHERE c.styleBoard.id = :styleBoardId AND c.parent IS NULL")
-    List<StyleBoardComment> findByStyleBoardIdWithChildren(@Param("styleBoardId")Long styleBoardId);
-
+    List<StyleBoardComment> findByStyleBoardIdWithChildren(@Param("styleBoardId") Long styleBoardId);
 
     Optional<StyleBoardComment> findById(Long id);
 
     @Query("SELECT c FROM StyleBoardComment c ")
     List<StyleBoardComment> findAllStyleBoardComment();
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM StyleBoardComment c WHERE c.styleBoard.id = :styleBoardId")
+    void deleteAllByStyleBoardId(@Param("styleBoardId") Long styleBoardId);
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { deleteStyleBoard } from 'pages/styleBoardDetailPage/api/delete';
 
-
-const OptionModal = ({ onClose, onOptionButtonClick }) => {
+const OptionModal = ({ onClose }) => {
     const [show, setShow] = useState(false);
     const { id } = useParams();
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setShow(true);
@@ -13,19 +14,25 @@ const OptionModal = ({ onClose, onOptionButtonClick }) => {
 
     const handleClose = () => {
         setShow(false);
-        setTimeout(onClose, 300); // Match the transition duration
+        setTimeout(onClose, 300);
     };
 
     const handleDeleteClick = () => {
         setShowConfirmation(true);
     };
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setShowConfirmation(false);
         setShow(false);
-        setTimeout(() => {
-            // 여기에서 삭제 요청을 보냅니다.
-            console.log("삭제 요청 보냄");
+        setTimeout(async () => {
+            try {
+                await deleteStyleBoard(id);
+                alert('스타일보드가 성공적으로 삭제되었습니다.');
+                navigate('/styleBoards');
+            } catch (error) {
+                console.error('Error deleting style board:', error);
+                alert('스타일보드 삭제에 실패했습니다.');
+            }
             onClose();
         }, 300);
     };
@@ -43,7 +50,7 @@ const OptionModal = ({ onClose, onOptionButtonClick }) => {
                     onTouchStart={(e) => e.stopPropagation()} // 모바일 터치 이벤트 추가
                 >
                     <button onClick={handleClose} className="close-button">
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             close
                         </span>
                     </button>
@@ -60,6 +67,7 @@ const OptionModal = ({ onClose, onOptionButtonClick }) => {
                     onTouchStart={(e) => e.stopPropagation()} // 모바일 터치 이벤트 추가
                 >
                     <p>정말 삭제하시겠습니까?</p>
+                    <p>삭제된 데이터는 복구할 수 없습니다.</p>
                     <div className="confirmation-buttons">
                         <button onClick={handleConfirmDelete}>예</button>
                         <button onClick={handleCancelDelete}>아니오</button>

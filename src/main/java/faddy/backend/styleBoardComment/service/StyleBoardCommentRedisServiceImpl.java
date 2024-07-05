@@ -85,4 +85,15 @@ public class StyleBoardCommentRedisServiceImpl implements StyleBoardCommentRedis
             throw new BadRequestException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "[redis] 댓글 목록 조회에 실패했습니다.");
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteStyleBoardComments(Long styleBoardId) {
+        try {
+            String redisKey = generateRedisKey(styleBoardId);
+            redisTemplate.delete(redisKey);
+        } catch (Exception e) {
+            throw new BadRequestException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+    }
 }
