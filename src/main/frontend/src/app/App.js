@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import OnTheBoard from "pages/OnTheBoard/OnTheBoard";
-import Login from "pages/Login/LoginForm";
+import LoginPage from "pages/Login/LoginPage";
 import Signup from "pages/SignUp/Signup";
 import StyleShare from "pages/StyleShare/StyleShare";
 import SnapCreation from "pages/Snap/Index";
@@ -19,7 +19,7 @@ import {AuthProvider} from 'shared/context/AuthContext';
 import SnapDetail from "pages/SnapDetail/index";
 import StyleTalkRoom from "pages/StyleTalkRoom/index";
 import StyleBoardEditPage from "pages/styleBoardEditPage/index";
-
+import Login from "pages/Login/test";
 
 function App() {
     useHideAddressBar();
@@ -30,7 +30,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<OnTheBoard />} />
                     <Route path="/styleShare" element={<StyleShare />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup/*" element={<Signup />} />
                     <Route path="/snaps" element={<ProtectedRoute><SnapCreation /></ProtectedRoute>} />
                     <Route path="/snaps/detail" element={<SnapDetail/>} />
