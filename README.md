@@ -1,6 +1,4 @@
-<img width="829" alt="image" src="https://github.com/user-attachments/assets/6a1c28fe-e59b-4d17-a904-68fcfa346cba" /># Faddy - 패션 중심 SNS 커뮤니티 플랫폼
-
-패션 애호가들을 위한 소셜 네트워킹 서비스로, 사용자들이 자신의 패션 스타일을 공유하고 소통할 수 있는 플랫폼입니다.
+패션 애호가들을 위한 소셜 네트워킹 서비스로, 사용자들이 자신의 패션 스타일을 마음껏 공유하고 소통할 수 있는 플랫폼입니다.
 
 ## 주요 기능
 
@@ -35,7 +33,13 @@
 - **이미지 스토리지**: AWS S3
 
 ## 아키텍처
+
+### Faddy 아키텍처 다이어그램
 <img width="829" alt="image" src="https://github.com/user-attachments/assets/7b64c43a-872f-4951-bb1b-68336c08f4fd" />
+
+### Faddy 사용자 인터렉션 다이어그램
+<img width="771" alt="image" src="https://github.com/user-attachments/assets/09b01997-28b0-423a-929e-e747eda8e775" />
+
 
 ### 아키텍처 개요
 - **프론트엔드**: React SPA(Single Page Application)을 통한 사용자 인터페이스 제공
